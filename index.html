@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mo Bahi - Read Free Books</title>
     <!-- Add your final SEO and Open Graph meta tags here -->
-    
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -14,15 +13,15 @@
             --accent-blue: #3E64FF; --card-bg: #F5F5F5;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg-color); color: var(--primary-text); font-family: 'Poppins', sans-serif; }
-        .app-wrapper { max-width: 450px; margin: 0 auto; background-color: var(--bg-color); min-height: 100vh; position: relative; padding-top: 60px; padding-bottom: 80px; }
+        body { background-color: #f0f2f5; color: var(--primary-text); font-family: 'Poppins', sans-serif; }
+        .app-wrapper { max-width: 450px; margin: 0 auto; background-color: var(--bg-color); min-height: 100vh; position: relative; padding-top: 60px; padding-bottom: 80px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
         a { text-decoration: none; color: inherit; }
         .page-view { padding: 16px; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
-        .app-header { position: fixed; top: 0; left: 0; right: 0; background-color: var(--bg-color); height: 60px; max-width: 450px; margin: 0 auto; padding: 0 16px; font-size: 24px; font-weight: 700; z-index: 100; display: flex; align-items: center; border-bottom: 1px solid #eee; }
-        .app-header .back-btn { font-size: 28px; cursor: pointer; margin-right: 16px; line-height: 1; }
-        .app-header .header-title { margin: 0; font-size: 20px; }
+        .app-header { position: fixed; top: 0; left: 0; right: 0; background-color: var(--bg-color); height: 60px; max-width: 450px; margin: 0 auto; padding: 0 16px; z-index: 100; display: flex; align-items: center; border-bottom: 1px solid #eee; }
+        .app-header .back-btn { font-size: 28px; cursor: pointer; margin-right: 16px; line-height: 1; color: var(--primary-text); }
+        .app-header .header-title { margin: 0; font-size: 20px; font-weight: 700; }
 
         .slider-container { width: 100%; border-radius: 16px; overflow: hidden; position: relative; aspect-ratio: 16 / 9; }
         .swiper-slide { cursor: pointer; position: relative; }
@@ -73,7 +72,7 @@
         .search-bar { margin-bottom: 24px; }
         .search-bar input { width: 100%; padding: 14px; font-size: 16px; border-radius: 8px; border: 1px solid #ddd; }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--bg-color); display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #eee; z-index: 100;}
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--bg-color); display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #eee; z-index: 100; max-width: 450px; margin: 0 auto;}
         .nav-item { flex: 1; text-align: center; color: var(--secondary-text); }
         .nav-item.active { color: var(--primary-text); }
         .nav-item svg { margin-bottom: 4px; }
@@ -101,23 +100,10 @@
         const header = document.getElementById('app-header');
         
         function createBookCard(book) {
-            return `
-                <a href="#book/${book.id}" class="book-card">
-                    <img src="${book.coverUrl}" class="book-cover" alt="${book.title}">
-                    <div class="book-info">
-                        <div class="book-title">${book.title}</div>
-                        <div class="book-author">${book.author}</div>
-                        <div class="book-price-row">
-                            <div class="book-price">${book.yourPrice}</div>
-                            <div class="book-list-price">${book.listPrice}</div>
-                        </div>
-                    </div>
-                </a>`;
+            return `<a href="#book/${book.id}" class="book-card"><img src="${book.coverUrl}" class="book-cover" alt="${book.title}"><div class="book-info"><div class="book-title">${book.title}</div><div class="book-author">${book.author}</div><div class="book-price-row"><div class="book-price">${book.yourPrice}</div><div class="book-list-price">${book.listPrice}</div></div></div></a>`;
         }
         function renderHeader(title, showBackButton = false) {
-            header.innerHTML = `
-                ${showBackButton ? `<div class="back-btn" onclick="window.history.back()">←</div>` : ''}
-                <div class="header-title">${title}</div>`;
+            header.innerHTML = `${showBackButton ? `<div class="back-btn" onclick="window.history.back()">←</div>` : ''}<div class="header-title">${title}</div>`;
         }
         function renderHomePage() {
             renderHeader('Mo Bahi');
@@ -126,16 +112,7 @@
                 <div class="page-view">
                     <div class="slider-container swiper-container">
                         <div class="swiper-wrapper">
-                            ${sliderBooks.map(book => `
-                                <div class="swiper-slide" data-id="${book.id}">
-                                    <img src="${book.sliderImageUrl}" alt="${book.title}">
-                                    <div class="slider-overlay">
-                                        <div class="slider-title">${book.title}</div>
-                                        <div class="slider-tagline">${book.tagline}</div>
-                                        <div class="slider-author">${book.author}</div>
-                                    </div>
-                                    <div class="slider-read-btn">Read Now</div>
-                                </div>`).join('')}
+                            ${sliderBooks.map(book => `<div class="swiper-slide" data-id="${book.id}"><img src="${book.sliderImageUrl}" alt="${book.title}"><div class="slider-overlay"><div class="slider-title">${book.title}</div><div class="slider-tagline">${book.tagline}</div><div class="slider-author">${book.author}</div></div><div class="slider-read-btn">Read Now</div></div>`).join('')}
                         </div>
                         <div class="swiper-button-next"></div><div class="swiper-button-prev"></div>
                     </div>
@@ -161,7 +138,7 @@
             renderHeader('My Library');
             const savedBookIds = JSON.parse(localStorage.getItem('mobahi_library')) || [];
             const savedBooks = booksDB.filter(book => savedBookIds.includes(book.id));
-            appContainer.innerHTML = `<div class="page-view"><div class="book-grid">${savedBooks.length > 0 ? savedBooks.map(createBookCard).join('') : `<p>Your library is empty.</p>`}</div></div>`;
+            appContainer.innerHTML = `<div class="page-view"><div class="book-grid">${savedBooks.length > 0 ? savedBooks.map(createBookСard).join('') : `<p>Your library is empty. Like a book to save it here.</p>`}</div></div>`;
         }
         function renderSeeAllPage(type, title) {
             renderHeader(title, true);
@@ -175,7 +152,7 @@
             let library = JSON.parse(localStorage.getItem('mobahi_library')) || [];
             const isSaved = library.includes(bookId);
             appContainer.innerHTML = `
-                <div class="page-view" style="padding-bottom: 100px;">
+                <div class="page-view" style="padding-bottom: 120px;">
                     <div class="details-cover-container"><img src="${book.coverUrl}" alt="${book.title}" class="details-cover"></div>
                     <div class="details-content">
                         <div class="details-section">
@@ -221,7 +198,7 @@
         const menuBtn = document.getElementById('menu-btn');
         const menuModal = document.getElementById('menu-modal');
         function renderMenu() {
-            menuModal.innerHTML = `<div class="menu-modal-content"><div class="menu-modal-header"><h2>Menu</h2><button class="close-menu-btn">×</button></div><div class="menu-section"><h3>Follow Me</h3><ul class="menu-list"><li><a href="https://www.instagram.com/sandeepbiswalg" target="_blank">Instagram</a></li></ul></div></div>`;
+            menuModal.innerHTML = `<div class="menu-modal-content"><div class="menu-modal-header"><h2>Menu</h2><button class="close-menu-btn">×</button></div><div class="menu-section"><h3>Follow Me</h3><ul class="menu-list"><li><a href="https://www.instagram.com/sandeepbiswalg" target="_blank">Instagram</a></li></ul></div><div class="menu-section"><h3>Pages</h3><ul class="menu-list"><li><a href="about.html">About Us</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div></div>`;
             document.querySelector('.close-menu-btn').addEventListener('click', () => menuModal.style.display = 'none');
         }
         menuBtn.addEventListener('click', () => { renderMenu(); menuModal.style.display = 'block'; });
