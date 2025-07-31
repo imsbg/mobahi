@@ -4,25 +4,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mobahi Reader</title>
+    <!-- We load the PDF.js library from a reliable CDN -->
+    <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #525659; }
-        #viewer-container { width: 100%; height: 100%; }
-        #pdf-viewer { border: 0; width: 100%; height: 100%; }
+        body, html { margin: 0; padding: 0; background-color: #333; }
+        #reader-container {
+            width: 100vw;
+            height: 100vh;
+            overflow: auto; /* Allow scrolling */
+            text-align: center; /* Center the canvas */
+        }
+        #pdf-canvas {
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .reader-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            border-radius: 20px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: white;
+            z-index: 100;
+        }
+        .reader-controls button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        #page-info { font-size: 16px; min-width: 50px; text-align: center; }
     </style>
 </head>
 <body>
-    <div id="viewer-container">
-        <iframe id="pdf-viewer" title="Book Reader"></iframe>
+
+    <div id="reader-container">
+        <canvas id="pdf-canvas"></canvas>
     </div>
-    
+
+    <div class="reader-controls">
+        <button id="prev-page"><</button>
+        <span id="page-info">...</span>
+        <button id="next-page">></button>
+    </div>
+
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const pdfUrl = decodeURIComponent(urlParams.get('file'));
 
-        // This path is crucial. It tells the browser where to find the viewer's main file.
-        // It assumes `reader.html` is at the root and the viewer is in `/pdfjs/web/`.
-        const viewerUrl = `pdfjs/web/viewer.html?file=../../${pdfUrl}`;
-        document.getElementById('pdf-viewer').src = viewerUrl;
+        // Set the workerSrc to the CDN path
+        const { pdfjsLib } = window;
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`;
+
+        const canvas = document.getElementById('pdf-canvas');
+        const ctx = canvas.getContext('2d');
+        const pageInfoSpan = document.getElementById('page-info');
+        const prevBtn = document.getElementById('prev-page');
+        const nextBtn = document.getElementById('next-page');
+
+        let pdfDoc = null;
+        let pageNum = 1;
+
+        async function renderPage(num) {
+            if (!pdfDoc) return;
+            const page = await pdfDoc.getPage(num);
+            const viewport = page.getViewport({ scale: 1.5 });
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            const renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+            await page.render(renderContext).promise;
+            pageInfoSpan.textContent = `${num} / ${pdfDoc.numPages}`;
+        }
+
+        function onPrevPage() {
+            if (pageNum <= 1) return;
+            pageNum--;
+            renderPage(pageNum);
+        }
+
+        function onNextPage() {
+            if (pageNum >= pdfDoc.numPages) return;
+            pageNum++;
+            renderPage(pageNum);
+        }
+        
+        prevBtn.addEventListener('click', onPrevPage);
+        nextBtn.addEventListener('click', onNextPage);
+
+        // Load the document from the URL
+        pdfjsLib.getDocument(pdfUrl).promise.then(doc => {
+            pdfDoc = doc;
+            document.title = "Reading - Mobahi";
+            renderPage(pageNum);
+        }).catch(err => {
+            console.error("Error loading PDF: ", err);
+            pageInfoSpan.textContent = "Error";
+            document.getElementById('reader-container').innerHTML = `<h1 style="color:white; text-align:center; margin-top: 50px;">Could not load book file.</h1>`;
+        });
     </script>
 </body>
 </html>
