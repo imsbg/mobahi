@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mo Bahi - Read Free Books</title>
-    <!-- Add your SEO and Open Graph meta tags here -->
+    <!-- Add your final SEO and Open Graph meta tags here -->
     
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -14,16 +14,16 @@
             --accent-blue: #3E64FF; --card-bg: #F5F5F5;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg-color); color: var(--primary-text); font-family: 'Poppins', sans-serif; padding-bottom: 80px; }
+        body { background-color: var(--bg-color); color: var(--primary-text); font-family: 'Poppins', sans-serif; padding-top: 50px; padding-bottom: 80px; }
         a { text-decoration: none; color: inherit; }
         .page-view { padding: 16px; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Header */
-        .app-header { padding: 16px; font-size: 24px; font-weight: 700; }
+        .app-header { position: fixed; top: 0; left: 0; right: 0; background-color: var(--bg-color); padding: 16px; font-size: 24px; font-weight: 700; z-index: 100; display: flex; align-items: center; }
+        .app-header .back-btn { font-size: 24px; cursor: pointer; margin-right: 16px; }
+        .app-header .header-title { margin: 0; font-size: 20px; }
 
-        /* Slider */
-        .slider-container { width: 100%; border-radius: 16px; overflow: hidden; position: relative; }
+        .slider-container { width: 100%; border-radius: 16px; overflow: hidden; position: relative; aspect-ratio: 16 / 9; }
         .swiper-slide { cursor: pointer; position: relative; }
         .swiper-slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
         .slider-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: white; }
@@ -31,22 +31,19 @@
         .slider-tagline { font-size: 12px; opacity: 0.9; margin-top: 4px; }
         .slider-author { font-size: 12px; opacity: 0.8; margin-top: 8px; }
         .slider-read-btn { position: absolute; bottom: 20px; right: 20px; background-color: var(--accent-blue); color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 500; }
-        .swiper-button-next, .swiper-button-prev { color: white !important; }
+        .swiper-button-next, .swiper-button-prev { color: white !important; transform: scale(0.7); }
         
-        /* Section Header */
         .section-header { display: flex; justify-content: space-between; align-items: center; margin: 24px 0 16px 0; }
         .section-title { font-size: 18px; font-weight: 600; }
         .see-all { font-size: 14px; color: var(--accent-blue); font-weight: 500; }
 
-        /* Categories */
-        .categories-carousel { display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none; }
+        .categories-carousel { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
         .categories-carousel::-webkit-scrollbar { display: none; }
         .category-item { text-align: center; flex-shrink: 0; }
-        .category-icon { width: 64px; height: 64px; border-radius: 50%; overflow: hidden; background-color: var(--card-bg); margin-bottom: 8px; }
+        .category-icon { width: 64px; height: 64px; border-radius: 50%; overflow: hidden; background-color: var(--card-bg); margin-bottom: 8px; border: 1px solid #eee; }
         .category-icon img { width: 100%; height: 100%; object-fit: cover; }
         .category-name { font-size: 14px; }
 
-        /* Book Card */
         .book-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
         .book-card { background-color: var(--card-bg); border-radius: 12px; overflow: hidden; position: relative; }
         .book-cover { width: 100%; height: 200px; object-fit: cover; }
@@ -57,36 +54,35 @@
         .book-price { font-size: 18px; font-weight: 700; color: var(--accent-blue); }
         .book-list-price { font-size: 12px; color: var(--secondary-text); text-decoration: line-through; }
         .heart-icon { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(5px); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .heart-icon svg { width: 18px; height: 18px; }
 
-        /* Book Details Page */
-        .details-header { display: flex; align-items: center; padding: 16px; position: sticky; top: 0; background: var(--bg-color); z-index: 10; }
-        .back-btn { font-size: 24px; cursor: pointer; }
-        .details-header-title { font-size: 18px; font-weight: 600; margin: 0 auto; }
-        .details-cover-container { padding: 0 16px; }
         .details-cover { width: 100%; border-radius: 16px; }
-        .details-content { padding: 24px 16px; }
+        .details-content { padding: 24px 0; }
         .details-section-header { display: flex; justify-content: space-between; align-items: center; }
         .details-section-title { font-size: 20px; font-weight: 600; }
         .details-section p { color: var(--secondary-text); margin-top: 8px; line-height: 1.7; }
         .details-buy-section { margin-top: 24px; }
         .price-info { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
         .price-label { color: var(--secondary-text); }
-        .details-action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; position: fixed; bottom: 0; left: 0; right: 0; padding: 16px; background-color: var(--bg-color); border-top: 1px solid #eee; }
+        .details-action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; position: fixed; bottom: 0; left: 0; right: 0; padding: 16px; background-color: var(--bg-color); border-top: 1px solid #eee; z-index: 100; }
         .btn { padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 600; text-align: center; cursor: pointer; border: none; }
         .btn-outline { background: transparent; border: 1px solid var(--primary-text); color: var(--primary-text); }
         .btn-solid { background: var(--primary-text); color: var(--bg-color); }
 
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--bg-color); display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #eee; }
+        .search-bar { margin-bottom: 24px; }
+        .search-bar input { width: 100%; padding: 14px; font-size: 16px; border-radius: 8px; border: 1px solid #ddd; }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--bg-color); display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #eee; z-index: 100;}
         .nav-item { flex: 1; text-align: center; color: var(--secondary-text); }
         .nav-item.active { color: var(--primary-text); }
         .nav-item svg { margin-bottom: 4px; }
+        /* Menu Modal styles here... */
     </style>
 </head>
 <body>
-    <main id="app-container">
-        <!-- SPA content is injected here -->
-    </main>
+    <header id="app-header" class="app-header"></header>
+    
+    <main id="app-container"></main>
 
     <nav class="bottom-nav">
         <a href="#home" class="nav-item active" data-nav="home"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.02 2.84L3.63 7.04C2.73 7.74 2 9.23 2 10.36V17C2 20 4 22 7 22H17C20 22 22 20 22 17V10.36C22 9.23 21.27 7.74 20.37 7.04L14.98 2.84C13.19 1.55 10.81 1.55 9.02 2.84Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div>Home</div></a>
@@ -95,35 +91,21 @@
         <div id="menu-btn" class="nav-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 7H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 12H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 17H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><div>Menu</div></div>
     </nav>
     
-    <div id="menu-modal" class="menu-modal-overlay" style="display:none;"> <!-- Menu Modal HTML Here --> </div>
+    <div id="menu-modal" class="menu-modal-overlay" style="display:none;"> <!-- Menu Modal HTML will be injected here --> </div>
 
     <script src="database.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
-        // --- GLOBAL STATE & UTILITIES ---
-        let lang = {};
         const appContainer = document.getElementById('app-container');
+        const header = document.getElementById('app-header');
 
-        // --- LANGUAGE SYSTEM ---
-        async function loadLanguage(langCode) {
-            try {
-                const response = await fetch(`languages/${langCode}.js`);
-                lang = await (new Function(`return (async () => { ${await response.text()}; return lang; })();`))();
-                localStorage.setItem('mobahi_lang', langCode);
-                document.documentElement.lang = langCode;
-                document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.langCode === langCode));
-                handleRouteChange();
-            } catch (error) {
-                console.error(`Failed to load ${langCode}, falling back to English.`, error);
-                if (langCode !== 'en') await loadLanguage('en');
-            }
-        }
-        
-        // --- RENDER FUNCTIONS ---
         function createBookCard(book) {
             return `
                 <a href="#book/${book.id}" class="book-card">
                     <img src="${book.coverUrl}" class="book-cover" alt="${book.title}">
+                    <div class="heart-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.62 20.81C12.28 20.93 11.72 20.93 11.38 20.81C8.48 19.82 2 15.69 2 8.69C2 5.6 4.49 3.1 7.56 3.1C9.38 3.1 10.99 3.98 12 5.31C13.01 3.98 14.63 3.1 16.44 3.1C19.51 3.1 22 5.6 22 8.69C22 15.69 15.52 19.82 12.62 20.81Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
                     <div class="book-info">
                         <div class="book-title">${book.title}</div>
                         <div class="book-author">${book.author}</div>
@@ -134,77 +116,84 @@
                     </div>
                 </a>`;
         }
-        
+
+        function renderHeader(title, showBackButton = false) {
+            header.innerHTML = `
+                ${showBackButton ? `<div class="back-btn" onclick="window.history.back()">←</div>` : ''}
+                <div class="header-title">${title}</div>`;
+        }
+
         function renderHomePage() {
+            renderHeader('Mo Bahi');
             const sliderBooks = booksDB.filter(b => b.isFeaturedInSlider);
-            const newArrivals = booksDB;
-            
             appContainer.innerHTML = `
-                <div class="app-header">Mo Bahi</div>
                 <div class="page-view">
                     <div class="slider-container swiper-container">
                         <div class="swiper-wrapper">
                             ${sliderBooks.map(book => `
                                 <div class="swiper-slide" data-id="${book.id}">
-                                    <img src="${book.coverUrl}" alt="${book.title}">
+                                    <img src="${book.sliderImageUrl}" alt="${book.title}">
                                     <div class="slider-overlay">
                                         <div class="slider-title">${book.title}</div>
                                         <div class="slider-tagline">${book.tagline}</div>
                                         <div class="slider-author">${book.author}</div>
                                     </div>
                                     <div class="slider-read-btn">Read Now</div>
-                                </div>
-                            `).join('')}
+                                </div>`).join('')}
                         </div>
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div><div class="swiper-button-prev"></div>
                     </div>
-
-                    <div class="section-header">
-                        <div class="section-title">Categories</div>
-                        <a href="#" class="see-all">See All</a>
-                    </div>
-                    <div class="categories-carousel">
-                        ${categoriesDB.map(cat => `
-                            <div class="category-item">
-                                <div class="category-icon"><img src="${cat.iconUrl}" alt="${cat.name}"></div>
-                                <div class="category-name">${cat.name}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-
-                    <div class="section-header">
-                        <div class="section-title">New Arrivals</div>
-                        <a href="#" class="see-all">See All</a>
-                    </div>
-                    <div class="book-grid">
-                        ${newArrivals.map(createBookCard).join('')}
-                    </div>
+                    <div class="section-header"><div class="section-title">Categories</div><a href="#section/categories" class="see-all">See All</a></div>
+                    <div class="categories-carousel">${categoriesDB.map(c => `<a href="#category/${c.name}" class="category-item"><div class="category-icon"><img src="${c.iconUrl}" alt="${c.name}"></div><div class="category-name">${c.name}</div></a>`).join('')}</div>
+                    <div class="section-header"><div class="section-title">New Arrivals</div><a href="#section/new-arrivals" class="see-all">See All</a></div>
+                    <div class="book-grid">${booksDB.map(createBookCard).join('')}</div>
                 </div>`;
-            
             new Swiper('.swiper-container', { navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }, loop: sliderBooks.length > 1 });
-            appContainer.querySelectorAll('.swiper-slide').forEach(slide => {
-                slide.addEventListener('click', () => window.location.hash = `#book/${slide.dataset.id}`);
+            appContainer.querySelectorAll('.swiper-slide').forEach(slide => slide.addEventListener('click', () => window.location.hash = `#book/${slide.dataset.id}`));
+        }
+
+        function renderExplorePage() {
+            renderHeader('Explore');
+            appContainer.innerHTML = `<div class="page-view"><div class="search-bar"><input type="search" id="search-input" placeholder="Search for books or authors..."></div><div class="book-grid" id="search-results"></div></div>`;
+            const searchInput = document.getElementById('search-input');
+            const resultsContainer = document.getElementById('search-results');
+            searchInput.addEventListener('input', e => {
+                const query = e.target.value.toLowerCase();
+                if (!query) { resultsContainer.innerHTML = ''; return; }
+                const filteredBooks = booksDB.filter(b => b.title.toLowerCase().includes(query) || b.author.toLowerCase().includes(query));
+                resultsContainer.innerHTML = filteredBooks.map(createBookCard).join('');
             });
         }
         
+        function renderLibraryPage() {
+            renderHeader('My Library');
+            const savedBookIds = JSON.parse(localStorage.getItem('mobahi_library')) || [];
+            const savedBooks = booksDB.filter(book => savedBookIds.includes(book.id));
+            appContainer.innerHTML = `<div class="page-view"><div class="book-grid">${savedBooks.length > 0 ? savedBooks.map(createBookCard).join('') : `<p>Your library is empty. Like a book to save it here.</p>`}</div></div>`;
+        }
+
+        function renderSeeAllPage(type, title) {
+            renderHeader(title, true);
+            let booksToShow = [];
+            if (type === 'new-arrivals') {
+                booksToShow = booksDB;
+            } else { // It's a category
+                booksToShow = booksDB.filter(b => b.category === type);
+            }
+            appContainer.innerHTML = `<div class="page-view"><div class="book-grid">${booksToShow.map(createBookCard).join('')}</div></div>`;
+        }
+
         function renderBookDetailsPage(bookId) {
             const book = booksDB.find(b => b.id === bookId);
-            if (!book) { appContainer.innerHTML = `<div class="page-view"><h1>Book not found</h1></div>`; return; }
+            if (!book) { renderHeader('Not Found', true); appContainer.innerHTML = `<div class="page-view"><h1>Book not found</h1></div>`; return; }
+            renderHeader(book.title, true);
             
-            document.title = `Mo Bahi - ${book.title}`;
             let library = JSON.parse(localStorage.getItem('mobahi_library')) || [];
             const isSaved = library.includes(bookId);
 
             appContainer.innerHTML = `
-                <div class="details-header">
-                    <div class="back-btn" onclick="window.history.back()">←</div>
-                    <div class="details-header-title">${book.title}</div>
-                </div>
-                <div class="page-view">
-                    <div class="details-cover-container">
-                        <img src="${book.coverUrl}" alt="${book.title}" class="details-cover">
-                    </div>
+                <div class="page-view" style="padding-bottom: 100px;">
+                    <div class="details-cover-container"><img src="${book.coverUrl}" alt="${book.title}" class="details-cover"></div>
                     <div class="details-content">
                         <div class="details-section">
                             <div class="details-section-header">
@@ -213,10 +202,7 @@
                             </div>
                             <p>${book.description}</p>
                         </div>
-                        <div class="details-section">
-                            <div class="details-section-title">Category</div>
-                            <p>${book.category}</p>
-                        </div>
+                        <div class="details-section"><div class="details-section-title">Category</div><p>${book.category}</p></div>
                         <div class="details-buy-section">
                              <div class="details-section-title">Buy the eBook</div>
                              <div class="price-info"><span class="price-label">List Price</span> <span>${book.listPrice}</span></div>
@@ -225,8 +211,8 @@
                     </div>
                 </div>
                 <div class="details-action-buttons">
-                    <a href="${book.fileUrl}" download class="btn btn-outline">Download</a>
-                    <a href="reader.html?file=${encodeURIComponent(book.fileUrl)}" target="_blank" class="btn btn-solid">Read</a>
+                    ${book.isDownloadable ? `<a href="${book.fileUrl}" download class="btn btn-outline">Download</a>` : ''}
+                    <a href="reader.html?file=${encodeURIComponent(book.fileUrl)}" target="_blank" class="btn btn-solid" style="grid-column: ${book.isDownloadable ? 'auto' : '1 / -1'};">Read</a>
                 </div>`;
             
             appContainer.querySelector('.heart-icon').addEventListener('click', function() {
@@ -241,32 +227,34 @@
                 localStorage.setItem('mobahi_library', JSON.stringify(currentLibrary));
             });
         }
-
-        // --- ROUTER & OTHER LOGIC --- (Simplified for brevity, use logic from previous answer for search, library, menu)
+        
         const routes = {
             '#home': renderHomePage,
-            '#explore': renderHomePage, // For now, explore shows the homepage
-            '#library': renderHomePage, // For now, library shows the homepage
+            '#explore': renderExplorePage,
+            '#library': renderLibraryPage,
         };
-        
+
         function handleRouteChange() {
             const hash = window.location.hash || '#home';
             document.querySelectorAll('.nav-item').forEach(item => item.classList.toggle('active', item.hash === hash));
-
+            
             const routeHandler = routes[hash];
             if (routeHandler) {
                 routeHandler();
             } else if (hash.startsWith('#book/')) {
                 renderBookDetailsPage(hash.substring(6));
+            } else if (hash.startsWith('#section/')) {
+                renderSeeAllPage(hash.substring(9), 'New Arrivals');
+            } else if (hash.startsWith('#category/')) {
+                const categoryName = decodeURIComponent(hash.substring(10));
+                renderSeeAllPage(categoryName, categoryName);
             } else {
                 renderHomePage();
             }
         }
         
         window.addEventListener('hashchange', handleRouteChange);
-        document.addEventListener('DOMContentLoaded', async () => {
-            await loadLanguage(localStorage.getItem('mobahi_lang') || 'en');
-        });
+        document.addEventListener('DOMContentLoaded', handleRouteChange);
     </script>
 </body>
 </html>
