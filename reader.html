@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mo Bahi - Book Reader</title>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Mo Bahi - Book Reader</title>
   <link href="https://cdn.jsdelivr.net/npm/dearflip-jquery/dist/dflip.min.css" rel="stylesheet" type="text/css">
   <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <style> body, html { margin: 0; padding: 0; height: 100%; width: 100%; background-color: #333; } </style>
@@ -17,15 +15,8 @@
       const urlParams = new URLSearchParams(window.location.search);
       const pdfUrl = decodeURIComponent(urlParams.get('file'));
       if (pdfUrl) {
-        $(".flipbook-container").flipBook({
-          pdfUrl: pdfUrl,
-          lightBox: false,
-          controlsPosition: "bottom",
-          controlsProps: { download: true }
-        });
-      } else {
-        document.body.innerHTML = '<h1 style="color:white; text-align:center; padding-top: 50px;">Error: No book file specified.</h1>';
-      }
+        $(".flipbook-container").flipBook({ pdfUrl: pdfUrl, lightBox: false, controlsPosition: "bottom", controlsProps: { download: true } });
+      } else { document.body.innerHTML = '<h1 style="color:white; text-align:center; padding-top: 50px;">Error: No book file specified.</h1>'; }
     });
   </script>
 </body>
