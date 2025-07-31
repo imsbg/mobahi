@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mobahi - Free Books to Read Online</title>
-    <!-- Add SEO and Open Graph tags from previous response -->
+    <meta name="description" content="Read 'The Whispering Kothi' and other exciting books for free on Mobahi. An online library for readers of Odia, English, Hindi and more.">
+    <meta name="keywords" content="free books, read online, the whispering kothi, horror books, mobahi, online library">
+    <link rel="canonical" href="https://your-username.github.io/mobahi-app/">
+    <meta property="og:title" content="Mobahi - Read 'The Whispering Kothi' for Free">
+    <meta property="og:description" content="A chilling horror story awaits. Discover and read free books online on Mobahi.">
+    <meta property="og:image" content="https://your-username.github.io/mobahi-app/assets/covers/the_whispering_kothi_cover.jpg">
+    <meta property="og:url" content="https://your-username.github.io/mobahi-app/">
+    <meta property="og:type" content="website">
+
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -14,59 +22,73 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--primary-bg); color: var(--text-primary); font-family: 'Inter', sans-serif; padding-bottom: 80px; }
-        .page { display: none; padding: 16px; }
-        .page.active { display: block; }
+        a { text-decoration: none; color: inherit; }
+        .page-view { padding: 16px; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
         .section-title { margin: 24px 0 16px 0; font-size: 20px; font-weight: 600; }
         .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; }
+
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--secondary-bg); border-top: 1px solid #333; display: flex; justify-content: space-around; padding: 10px 0; z-index: 1000; }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-secondary); cursor: pointer; font-size: 12px; flex: 1; text-align: center; }
         .nav-item.active { color: var(--accent-green); }
         .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; }
-
-        /* --- SLIDER FIX --- */
-        .hero-slider-container { width: 100%; height: 45vw; max-height: 220px; /* Max height for larger screens */ border-radius: 12px; overflow: hidden; margin-bottom: 24px; background-color: var(--card-bg); }
+        
+        .hero-slider-container { width: 100%; height: 45vw; max-height: 220px; border-radius: 12px; overflow: hidden; margin-bottom: 24px; background-color: var(--card-bg); }
         .swiper-slide { cursor: pointer; }
         .swiper-slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
         
         .book-carousel { display: flex; gap: 16px; overflow-x: auto; scrollbar-width: none; }
         .book-carousel::-webkit-scrollbar { display: none; }
         .book-card { flex-shrink: 0; width: 140px; }
-        .book-card-link { text-decoration: none; color: inherit; }
         .book-cover { width: 140px; height: 210px; border-radius: 8px; background-color: var(--card-bg); object-fit: cover; }
         .book-card h3 { font-size: 15px; margin-top: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .book-card p { font-size: 13px; color: var(--text-secondary); }
 
-        /* --- MENU MODAL --- (Same as before) */
+        .search-bar { position: sticky; top: 0; background-color: var(--primary-bg); padding-bottom: 16px; z-index: 10; }
+        .search-bar input { width: 100%; padding: 14px; font-size: 16px; border-radius: 8px; border: none; background-color: var(--secondary-bg); color: var(--text-primary); }
+
+        .details-header { text-align: center; margin-top: 20px; }
+        .details-cover { width: 180px; height: 270px; border-radius: 12px; object-fit: cover; box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+        .details-title { font-size: 28px; margin-top: 20px; }
+        .details-author { font-size: 18px; color: var(--text-secondary); margin-top: 8px; }
+        .action-buttons { display: flex; gap: 10px; justify-content: center; margin: 24px auto; }
+        .btn { display: inline-block; padding: 14px 24px; border-radius: 50px; text-decoration: none; font-weight: 600; text-align: center; border: none; cursor: pointer; }
+        .btn-primary { background-color: var(--accent-green); color: white; }
+        .btn-secondary { background-color: var(--card-bg); color: var(--text-secondary); border: 1px solid var(--text-secondary); }
+        .details-section { margin-top: 30px; }
+        .details-section h3 { color: var(--text-secondary); border-bottom: 1px solid #333; padding-bottom: 8px; margin-bottom: 12px; }
+        .details-section p { font-size: 16px; line-height: 1.6; }
+
         .menu-modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.6);backdrop-filter:blur(5px);display:none;z-index:2000}.menu-modal-content{position:fixed;bottom:0;left:0;right:0;background-color:var(--secondary-bg);border-top-left-radius:20px;border-top-right-radius:20px;padding:20px;animation:slideUp .3s ease-out;max-height:80vh;overflow-y:auto}@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}.menu-modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.menu-modal-header h2{border:none}.close-menu-btn{background:0 0;border:none;color:#fff;font-size:24px;cursor:pointer}.menu-section{margin-bottom:20px}.menu-section h3{color:var(--text-secondary);font-size:14px;margin-bottom:10px;text-transform:uppercase}.menu-list{list-style:none}.menu-list li a{color:var(--text-primary);text-decoration:none;display:block;padding:12px 0;font-size:16px;border-bottom:1px solid #333}.menu-list li:last-child a{border-bottom:none}.lang-switcher{display:flex;flex-wrap:wrap;gap:8px}.lang-switcher button{background-color:var(--card-bg);border:1px solid #444;color:#fff;padding:8px 12px;border-radius:8px;cursor:pointer}.lang-switcher button.active{background-color:var(--accent-green);border-color:var(--accent-green);font-weight:700}
     </style>
 </head>
 <body>
-    <main>
-        <!-- The content of these divs will be populated by JS -->
-        <div id="home-page" class="page active"></div>
-        <div id="library-page" class="page"></div>
+    <main id="app-container">
+        <!-- All dynamic content will be injected here by JavaScript -->
     </main>
 
     <nav class="bottom-nav">
-        <div class="nav-item active" data-page="home-page"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5z"/><path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6z"/></svg><span data-lang="home">Home</span></div>
-        <a href="search.html" class="nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg><span data-lang="search">Search</span></a>
-        <div class="nav-item" data-page="library-page"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5V4z"/></svg><span data-lang="library">Library</span></div>
+        <a href="#home" class="nav-item active" data-nav="home"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5z"/><path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6z"/></svg><span data-lang="home">Home</span></a>
+        <a href="#search" class="nav-item" data-nav="search"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg><span data-lang="search">Search</span></a>
+        <a href="#library" class="nav-item" data-nav="library"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5V4z"/></svg><span data-lang="library">Library</span></a>
         <div id="menu-btn" class="nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/></svg><span data-lang="menu">Menu</span></div>
     </nav>
     
-    <!-- Menu Modal HTML (same as before) -->
-    <div id="menu-modal" class="menu-modal-overlay"> ... </div>
-
+    <div id="menu-modal" class="menu-modal-overlay"><div class="menu-modal-content"><div class="menu-modal-header"><h2 data-lang="menuTitle">Menu</h2><button class="close-menu-btn">×</button></div><div class="menu-section"><h3 data-lang="language">Language</h3><div class="lang-switcher"><button onclick="loadLanguage('od')" class="lang-btn" data-lang-code="od">ଓଡ଼ିଆ</button><button onclick="loadLanguage('en')" class="lang-btn" data-lang-code="en">English</button><button onclick="loadLanguage('sa')" class="lang-btn" data-lang-code="sa">संस्कृतम्</button><button onclick="loadLanguage('ta')" class="lang-btn" data-lang-code="ta">தமிழ்</button><button onclick="loadLanguage('te')" class="lang-btn" data-lang-code="te">తెలుగు</button><button onclick="loadLanguage('kn')" class="lang-btn" data-lang-code="kn">ಕನ್ನಡ</button><button onclick="loadLanguage('ml')" class="lang-btn" data-lang-code="ml">മലയാളം</button><button onclick="loadLanguage('hi')" class="lang-btn" data-lang-code="hi">हिन्दी</button></div></div><div class="menu-section"><h3 data-lang="pages">Pages</h3><ul class="menu-list"><li><a href="about.html" data-lang="aboutUs">About Us</a></li><li><a href="privacy.html" data-lang="privacyPolicy">Privacy Policy</a></li><li><a href="terms.html" data-lang="termsAndConditions">Terms & Conditions</a></li></ul></div><div class="menu-section"><h3 data-lang="myApps">My Apps</h3><ul class="menu-list"><li><a href="#" target="_blank">My Odia Games</a></li><li><a href="#" target="_blank">SB Call</a></li><li><a href="#" target="_blank">SB SSTV Encoder</a></li></ul></div><div class="menu-section"><h3 data-lang="followMe">Follow Me</h3><ul class="menu-list"><li><a href="https://www.instagram.com/sandeepbiswalg" target="_blank">Instagram</a></li><li><a href="#" target="_blank">GitHub</a></li></ul></div></div></div>
+    
     <script src="database.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
-        // Global utility to get the currently selected language file object.
-        let lang = {};
+        // --- GLOBAL STATE & UTILITIES ---
+        let lang = {}; // Will be populated by the loaded language file
+        const appContainer = document.getElementById('app-container');
 
-        // --- LANGUAGE SYSTEM --- (Instant Switch)
+        // --- LANGUAGE SYSTEM (Instant Switch) ---
         async function loadLanguage(langCode) {
             try {
                 const response = await fetch(`languages/${langCode}.js`);
+                if (!response.ok) throw new Error('Network response was not ok');
                 const scriptText = await response.text();
                 // This executes the script text in the global scope, defining the `lang` object.
                 (new Function(scriptText))();
@@ -75,26 +97,27 @@
                 document.documentElement.lang = langCode;
                 document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.langCode === langCode));
                 
-                applyTranslations();
+                await applyTranslationsAndRender();
             } catch (error) {
                 console.error(`Failed to load language ${langCode}, falling back to English.`, error);
                 if (langCode !== 'en') await loadLanguage('en');
             }
         }
-
-        function applyTranslations() {
+        
+        async function applyTranslationsAndRender() {
+            // Translate static elements like nav and menu
             document.querySelectorAll('[data-lang]').forEach(el => {
                 const key = el.getAttribute('data-lang');
                 if (lang[key]) el.textContent = lang[key];
             });
-            renderActivePage();
+            // Re-render the current view with the new language
+            handleRouteChange();
         }
 
-        // --- PAGE RENDERING LOGIC ---
+        // --- VIEW RENDERING FUNCTIONS ---
         function createBookCard(book) {
             const cardLink = document.createElement('a');
-            cardLink.className = 'book-card-link';
-            cardLink.href = `book-details.html?id=${book.id}`;
+            cardLink.href = `#book/${book.id}`; // Use hash for SPA navigation
             cardLink.innerHTML = `
                 <div class="book-card">
                     <img src="${book.coverUrl}" alt="${book.title}" class="book-cover">
@@ -105,75 +128,165 @@
         }
 
         function renderHomePage() {
-            const container = document.getElementById('home-page');
-            container.innerHTML = `
-                <div id="hero-slider-container" class="swiper-container">
-                    <div class="swiper-wrapper"></div>
-                </div>
-                <div id="home-content"></div>`;
+            appContainer.innerHTML = `
+                <div class="page-view">
+                    <div class="hero-slider-container swiper-container">
+                        <div class="swiper-wrapper"></div>
+                    </div>
+                    <div id="home-content-sections"></div>
+                </div>`;
             
             const sliderBooks = booksDB.filter(b => b.isFeaturedInSlider);
-            const sliderWrapper = container.querySelector('.swiper-wrapper');
-            sliderBooks.forEach(book => sliderWrapper.appendChild(createBookCard(book)));
-            if (sliderBooks.length > 1) new Swiper('.swiper-container', { autoplay: { delay: 3000 }, loop: true });
-
-            const homeContent = container.querySelector('#home-content');
-            // Your other sections here...
-        }
-
-        function renderLibraryPage() {
-            const container = document.getElementById('library-page');
-            const savedBookIds = JSON.parse(localStorage.getItem('mobahi_library')) || [];
-            const readBookIds = JSON.parse(localStorage.getItem('mobahi_history')) || [];
-
-            const savedBooks = booksDB.filter(book => savedBookIds.includes(book.id));
-            const readBooks = booksDB.filter(book => readBookIds.includes(book.id));
-
-            container.innerHTML = `
-                <h1 class="section-title" data-lang="myLibraryTitle">${lang.myLibraryTitle || 'My Library'}</h1>
-                <div class="grid-container" id="saved-books-grid"></div>
-                <h2 class="section-title">Read History</h2>
-                <div class="grid-container" id="read-history-grid"></div>`;
-            
-            const savedGrid = container.querySelector('#saved-books-grid');
-            if (savedBooks.length > 0) {
-                savedBooks.forEach(book => savedGrid.appendChild(createBookCard(book)));
-            } else {
-                savedGrid.innerHTML = `<p data-lang="libraryEmpty">${lang.libraryEmpty || '...'}</p>`;
-            }
-            // Add read history rendering...
-        }
-
-        // --- NAVIGATION ---
-        const pageRenderers = {
-            'home-page': renderHomePage,
-            'library-page': renderLibraryPage,
-        };
-        
-        function renderActivePage() {
-            const activePageId = document.querySelector('.page.active')?.id;
-            if (activePageId && pageRenderers[activePageId]) {
-                pageRenderers[activePageId]();
-            }
-        }
-
-        document.querySelectorAll('.nav-item[data-page]').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                document.getElementById(item.dataset.page).classList.add('active');
-                document.querySelectorAll('.nav-item[data-page]').forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-                renderActivePage();
+            const sliderWrapper = appContainer.querySelector('.swiper-wrapper');
+            sliderBooks.forEach(book => {
+                const slide = createBookCard(book);
+                slide.className = 'swiper-slide';
+                sliderWrapper.appendChild(slide);
             });
-        });
+            if (sliderBooks.length > 0) new Swiper('.swiper-container', { autoplay: { delay: 3000 }, loop: sliderBooks.length > 1 });
 
-        // --- INITIAL LOAD ---
+            // Render other sections
+            // You can add more sections here (New Arrivals, Trending, etc.)
+        }
+
+        function renderSearchPage() {
+            appContainer.innerHTML = `
+                <div class="page-view">
+                    <div class="search-bar">
+                        <input type="search" id="search-input" placeholder="${lang.searchPlaceholder || 'Search...'}">
+                    </div>
+                    <h2 class="section-title">${lang.searchResults || 'Results'}</h2>
+                    <div class="grid-container" id="search-results"></div>
+                </div>`;
+
+            const searchInput = document.getElementById('search-input');
+            const resultsContainer = document.getElementById('search-results');
+            
+            function performSearch(query) {
+                resultsContainer.innerHTML = '';
+                const lowerQuery = query.toLowerCase();
+                if (!lowerQuery) return;
+
+                const filteredBooks = booksDB.filter(book => 
+                    book.title.toLowerCase().includes(lowerQuery) ||
+                    book.author.toLowerCase().includes(lowerQuery)
+                );
+                
+                if (filteredBooks.length > 0) {
+                    filteredBooks.forEach(book => resultsContainer.appendChild(createBookCard(book)));
+                } else {
+                    resultsContainer.innerHTML = `<p>${lang.noResultsFound || 'No results found.'}</p>`;
+                }
+            }
+            searchInput.addEventListener('input', (e) => performSearch(e.target.value));
+        }
+        
+        function renderLibraryPage() {
+            const savedBookIds = JSON.parse(localStorage.getItem('mobahi_library')) || [];
+            const savedBooks = booksDB.filter(book => savedBookIds.includes(book.id));
+            
+            appContainer.innerHTML = `
+                <div class="page-view">
+                    <h1 class="section-title">${lang.myLibraryTitle || 'My Library'}</h1>
+                    <div class="grid-container" id="saved-books-grid"></div>
+                </div>`;
+
+            const grid = document.getElementById('saved-books-grid');
+            if (savedBooks.length > 0) {
+                savedBooks.forEach(book => grid.appendChild(createBookCard(book)));
+            } else {
+                grid.innerHTML = `<p>${lang.libraryEmpty || 'Your library is empty.'}</p>`;
+            }
+        }
+        
+        function renderBookDetailsPage(bookId) {
+            const book = booksDB.find(b => b.id === bookId);
+            if (!book) {
+                appContainer.innerHTML = `<div class="page-view"><h1>Book not found</h1></div>`;
+                return;
+            }
+
+            document.title = `${book.title} - Mobahi`;
+            appContainer.innerHTML = `
+                <div class="page-view">
+                    <header class="details-header">
+                        <img src="${book.coverUrl}" alt="${book.title}" class="details-cover">
+                        <h1 class="details-title">${book.title}</h1>
+                        <p class="details-author">by ${book.author}</p>
+                    </header>
+                    <div class="action-buttons">
+                        <a href="reader.html?file=${encodeURIComponent(book.fileUrl)}" target="_blank" class="btn btn-primary">${lang.readNow || 'Read Now'}</a>
+                        <button id="save-library-btn" class="btn btn-secondary">${lang.saveToLibrary || 'Save'}</button>
+                    </div>
+                    <div class="details-section">
+                        <h3>${lang.description || 'Description'}</h3>
+                        <p>${book.description}</p>
+                    </div>
+                    <div class="details-section">
+                        <h3>${lang.category || 'Category'}</h3>
+                        <p>${book.category}</p>
+                    </div>
+                </div>`;
+            
+            const saveBtn = document.getElementById('save-library-btn');
+            let library = JSON.parse(localStorage.getItem('mobahi_library')) || [];
+            
+            function updateButtonState() {
+                if (library.includes(bookId)) {
+                    saveBtn.textContent = lang.saved || 'Saved ✔';
+                    saveBtn.classList.remove('btn-secondary');
+                    saveBtn.classList.add('btn-primary');
+                    saveBtn.disabled = true;
+                } else {
+                    saveBtn.textContent = lang.saveToLibrary || 'Save to Library';
+                }
+            }
+
+            saveBtn.addEventListener('click', () => {
+                if (!library.includes(bookId)) {
+                    library.push(bookId);
+                    localStorage.setItem('mobahi_library', JSON.stringify(library));
+                    updateButtonState();
+                }
+            });
+            updateButtonState(); // Initial check
+        }
+
+        // --- ROUTER & NAVIGATION ---
+        function handleRouteChange() {
+            const hash = window.location.hash || '#home';
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.toggle('active', item.hash === hash || (hash==='' && item.hash==='#home') );
+            });
+            
+            if (hash.startsWith('#book/')) {
+                const bookId = hash.substring(6);
+                renderBookDetailsPage(bookId);
+            } else if (hash === '#search') {
+                renderSearchPage();
+            } else if (hash === '#library') {
+                renderLibraryPage();
+            } else {
+                renderHomePage();
+            }
+        }
+        
+        window.addEventListener('hashchange', handleRouteChange);
+        
+        // --- MENU MODAL LOGIC ---
+        const menuBtn = document.getElementById('menu-btn');
+        const menuModal = document.getElementById('menu-modal');
+        const closeMenuBtn = document.querySelector('.close-menu-btn');
+        menuBtn.addEventListener('click', () => menuModal.style.display = 'block');
+        const closeMenu = () => menuModal.style.display = 'none';
+        closeMenuBtn.addEventListener('click', closeMenu);
+        menuModal.addEventListener('click', (e) => { if(e.target === menuModal) closeMenu(); });
+        
+        // --- INITIAL APP LOAD ---
         document.addEventListener('DOMContentLoaded', async () => {
             const savedLang = localStorage.getItem('mobahi_lang') || 'en';
-            await loadLanguage(savedLang);
+            await loadLanguage(savedLang); // This will also trigger the first render via handleRouteChange
         });
-        
-        // (Add menu button logic here as in previous answer)
     </script>
 </body>
 </html>
