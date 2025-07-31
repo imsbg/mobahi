@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mo Bahi - Read Free Books</title>
     <!-- Add your final SEO and Open Graph meta tags here -->
+    
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -99,12 +100,8 @@
         const appContainer = document.getElementById('app-container');
         const header = document.getElementById('app-header');
         
-        function createBookCard(book) {
-            return `<a href="#book/${book.id}" class="book-card"><img src="${book.coverUrl}" class="book-cover" alt="${book.title}"><div class="book-info"><div class="book-title">${book.title}</div><div class="book-author">${book.author}</div><div class="book-price-row"><div class="book-price">${book.yourPrice}</div><div class="book-list-price">${book.listPrice}</div></div></div></a>`;
-        }
-        function renderHeader(title, showBackButton = false) {
-            header.innerHTML = `${showBackButton ? `<div class="back-btn" onclick="window.history.back()">←</div>` : ''}<div class="header-title">${title}</div>`;
-        }
+        function createBookCard(book) { return `<a href="#book/${book.id}" class="book-card"><img src="${book.coverUrl}" class="book-cover" alt="${book.title}"><div class="book-info"><div class="book-title">${book.title}</div><div class="book-author">${book.author}</div><div class="book-price-row"><div class="book-price">${book.yourPrice}</div><div class="book-list-price">${book.listPrice}</div></div></div></a>`; }
+        function renderHeader(title, showBackButton = false) { header.innerHTML = `${showBackButton ? `<div class="back-btn" onclick="window.history.back()">←</div>` : ''}<div class="header-title">${title}</div>`; }
         function renderHomePage() {
             renderHeader('Mo Bahi');
             const sliderBooks = booksDB.filter(b => b.isFeaturedInSlider);
@@ -113,8 +110,7 @@
                     <div class="slider-container swiper-container">
                         <div class="swiper-wrapper">
                             ${sliderBooks.map(book => `<div class="swiper-slide" data-id="${book.id}"><img src="${book.sliderImageUrl}" alt="${book.title}"><div class="slider-overlay"><div class="slider-title">${book.title}</div><div class="slider-tagline">${book.tagline}</div><div class="slider-author">${book.author}</div></div><div class="slider-read-btn">Read Now</div></div>`).join('')}
-                        </div>
-                        <div class="swiper-button-next"></div><div class="swiper-button-prev"></div>
+                        </div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div>
                     </div>
                     <div class="section-header"><div class="section-title">Categories</div><a href="#section/categories" class="see-all">See All</a></div>
                     <div class="categories-carousel">${categoriesDB.map(c => `<a href="#category/${c.name}" class="category-item"><div class="category-icon"><img src="${c.iconUrl}" alt="${c.name}"></div><div class="category-name">${c.name}</div></a>`).join('')}</div>
@@ -138,7 +134,7 @@
             renderHeader('My Library');
             const savedBookIds = JSON.parse(localStorage.getItem('mobahi_library')) || [];
             const savedBooks = booksDB.filter(book => savedBookIds.includes(book.id));
-            appContainer.innerHTML = `<div class="page-view"><div class="book-grid">${savedBooks.length > 0 ? savedBooks.map(createBookСard).join('') : `<p>Your library is empty. Like a book to save it here.</p>`}</div></div>`;
+            appContainer.innerHTML = `<div class="page-view"><div class="book-grid">${savedBooks.length > 0 ? savedBooks.map(createBookCard).join('') : `<p>Your library is empty. Like a book to save it here.</p>`}</div></div>`;
         }
         function renderSeeAllPage(type, title) {
             renderHeader(title, true);
@@ -155,9 +151,7 @@
                 <div class="page-view" style="padding-bottom: 120px;">
                     <div class="details-cover-container"><img src="${book.coverUrl}" alt="${book.title}" class="details-cover"></div>
                     <div class="details-content">
-                        <div class="details-section">
-                            <div class="details-section-header"><div class="details-section-title">Description</div><div class="heart-icon" data-book-id="${book.id}">${isSaved ? '❤️' : '♡'}</div></div><p>${book.description}</p>
-                        </div>
+                        <div class="details-section"><div class="details-section-header"><div class="details-section-title">Description</div><div class="heart-icon" data-book-id="${book.id}">${isSaved ? '❤️' : '♡'}</div></div><p>${book.description}</p></div>
                         <div class="details-section"><div class="details-section-title">Category</div><p>${book.category}</p></div>
                         <div class="details-buy-section">
                              <div class="details-section-title">Buy the eBook</div>
@@ -174,8 +168,7 @@
                 let currentLibrary = JSON.parse(localStorage.getItem('mobahi_library')) || [];
                 const bookIdentifier = this.dataset.bookId;
                 if (currentLibrary.includes(bookIdentifier)) {
-                    currentLibrary = currentLibrary.filter(id => id !== bookIdentifier);
-                    this.innerHTML = '♡';
+                    currentLibrary = currentLibrary.filter(id => id !== bookIdentifier); this.innerHTML = '♡';
                 } else { currentLibrary.push(bookIdentifier); this.innerHTML = '❤️'; }
                 localStorage.setItem('mobahi_library', JSON.stringify(currentLibrary));
             });
@@ -198,8 +191,22 @@
         const menuBtn = document.getElementById('menu-btn');
         const menuModal = document.getElementById('menu-modal');
         function renderMenu() {
-            menuModal.innerHTML = `<div class="menu-modal-content"><div class="menu-modal-header"><h2>Menu</h2><button class="close-menu-btn">×</button></div><div class="menu-section"><h3>Follow Me</h3><ul class="menu-list"><li><a href="https://www.instagram.com/sandeepbiswalg" target="_blank">Instagram</a></li></ul></div><div class="menu-section"><h3>Pages</h3><ul class="menu-list"><li><a href="about.html">About Us</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div></div>`;
+            menuModal.innerHTML = `
+                <div class="menu-modal-content">
+                    <div class="menu-modal-header"><h2>Menu</h2><button class="close-menu-btn">×</button></div>
+                    <div class="menu-section"><h3>Language</h3><div class="lang-switcher">
+                        <button onclick="loadLanguage('od')" class="lang-btn" data-lang-code="od">ଓଡ଼ିଆ</button><button onclick="loadLanguage('en')" class="lang-btn" data-lang-code="en">English</button>
+                        <button onclick="loadLanguage('sa')" class="lang-btn" data-lang-code="sa">संस्कृतम्</button><button onclick="loadLanguage('ta')" class="lang-btn" data-lang-code="ta">தமிழ்</button>
+                        <button onclick="loadLanguage('te')" class="lang-btn" data-lang-code="te">తెలుగు</button><button onclick="loadLanguage('kn')" class="lang-btn" data-lang-code="kn">ಕನ್ನಡ</button>
+                        <button onclick="loadLanguage('ml')" class="lang-btn" data-lang-code="ml">മലയാളം</button><button onclick="loadLanguage('hi')" class="lang-btn" data-lang-code="hi">हिन्दी</button>
+                    </div></div>
+                    <div class="menu-section"><h3>My Apps</h3><ul class="menu-list"><li><a href="#">My Odia Games</a></li><li><a href="#">SB Call</a></li><li><a href="#">SB SSTV Encoder</a></li></ul></div>
+                    <div class="menu-section"><h3>Follow Me</h3><ul class="menu-list"><li><a href="https://www.instagram.com/sandeepbiswalg" target="_blank">Instagram</a></li></ul></div>
+                    <div class="menu-section"><h3>Pages</h3><ul class="menu-list"><li><a href="about.html">About Us</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms & Conditions</a></li></ul></div>
+                </div>`;
             document.querySelector('.close-menu-btn').addEventListener('click', () => menuModal.style.display = 'none');
+            const savedLang = localStorage.getItem('mobahi_lang') || 'en';
+            menuModal.querySelector(`.lang-btn[data-lang-code="${savedLang}"]`).classList.add('active');
         }
         menuBtn.addEventListener('click', () => { renderMenu(); menuModal.style.display = 'block'; });
         menuModal.addEventListener('click', (e) => { if(e.target === menuModal) menuModal.style.display = 'none'; });
