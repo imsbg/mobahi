@@ -1,4 +1,3 @@
-// database.js
 const booksDB = [
   {
     id: 'book_whisp_kothi_001',
@@ -11,11 +10,8 @@ const booksDB = [
     description: 'In the heart of a forgotten town stands a dilapidated mansion, the Kothi, which holds a chilling secret. Locals speak of whispers that echo through its empty halls at night, luring the curious to their doom. When a group of paranormal investigators decides to uncover the truth, they find themselves trapped in a nightmare woven from the mansion\'s dark past.',
     isFeaturedInSlider: true,
     isBestSeller: true,
-    readCount: 157, // I've added a number to demonstrate the trending sort
+    readCount: 157,
     createdAt: '2023-10-28T10:00:00Z',
   },
-  // To add a new book, copy the object above, change the details, and place it here.
-  // Make sure the `id` is unique.
 ];
-
 const languagesDB = [...new Set(booksDB.map(book => book.language))];
