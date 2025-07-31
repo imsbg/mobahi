@@ -15,12 +15,12 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: #f0f2f5; color: var(--primary-text); font-family: 'Poppins', sans-serif; }
-        .app-wrapper { max-width: 450px; margin: 0 auto; background-color: var(--bg-color); min-height: 100vh; position: relative; padding-top: 60px; padding-bottom: 80px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        .app-wrapper { max-width: 480px; margin: 0 auto; background-color: var(--bg-color); min-height: 100vh; position: relative; padding-top: 60px; padding-bottom: 80px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
         a { text-decoration: none; color: inherit; }
         .page-view { padding: 16px; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
-        .app-header { position: fixed; top: 0; left: 0; right: 0; background-color: var(--bg-color); height: 60px; max-width: 450px; margin: 0 auto; padding: 0 16px; z-index: 100; display: flex; align-items: center; border-bottom: 1px solid #eee; }
+        .app-header { position: fixed; top: 0; left: 0; right: 0; background-color: var(--bg-color); height: 60px; max-width: 480px; margin: 0 auto; padding: 0 16px; z-index: 100; display: flex; align-items: center; border-bottom: 1px solid #eee; }
         .app-header .back-btn { font-size: 28px; cursor: pointer; margin-right: 16px; line-height: 1; color: var(--primary-text); }
         .app-header .header-title { margin: 0; font-size: 20px; font-weight: 700; }
 
@@ -45,7 +45,8 @@
         .category-icon img { width: 100%; height: 100%; object-fit: cover; }
         .category-name { font-size: 14px; }
 
-        .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+        .book-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        @media (min-width: 768px) { .app-wrapper { max-width: 1024px; } .book-grid { grid-template-columns: repeat(4, 1fr); } }
         .book-card { background-color: var(--card-bg); border-radius: 12px; overflow: hidden; position: relative; }
         .book-cover { width: 100%; height: 220px; object-fit: cover; }
         .book-info { padding: 12px; }
@@ -57,15 +58,17 @@
         .heart-icon { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(5px); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .heart-icon svg { width: 18px; height: 18px; }
 
+        .details-view-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+        @media (min-width: 768px) { .details-view-grid { grid-template-columns: 300px 1fr; } }
         .details-cover { width: 100%; border-radius: 16px; }
-        .details-content { padding: 24px 0; }
+        .details-content { padding: 16px 0; }
         .details-section-header { display: flex; justify-content: space-between; align-items: center; }
         .details-section-title { font-size: 20px; font-weight: 600; }
         .details-section p { color: var(--secondary-text); margin-top: 8px; line-height: 1.7; }
         .details-buy-section { margin-top: 24px; }
         .price-info { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
         .price-label { color: var(--secondary-text); }
-        .details-action-buttons { display: grid; grid-auto-flow: column; gap: 16px; position: fixed; bottom: 0; left: 0; right: 0; padding: 16px; background-color: var(--bg-color); border-top: 1px solid #eee; z-index: 100; max-width: 450px; margin: 0 auto; }
+        .details-action-buttons { display: grid; grid-auto-flow: column; gap: 16px; position: fixed; bottom: 0; left: 0; right: 0; padding: 16px; background-color: var(--bg-color); border-top: 1px solid #eee; z-index: 100; max-width: 480px; margin: 0 auto; }
         .btn { padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 600; text-align: center; cursor: pointer; border: none; }
         .btn-outline { background: transparent; border: 1px solid var(--primary-text); color: var(--primary-text); }
         .btn-solid { background: var(--primary-text); color: var(--bg-color); }
@@ -73,12 +76,12 @@
         .search-bar { margin-bottom: 24px; }
         .search-bar input { width: 100%; padding: 14px; font-size: 16px; border-radius: 8px; border: 1px solid #ddd; }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--bg-color); display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #eee; z-index: 100; max-width: 450px; margin: 0 auto;}
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--bg-color); display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #eee; z-index: 100; max-width: 480px; margin: 0 auto;}
         .nav-item { flex: 1; text-align: center; color: var(--secondary-text); }
         .nav-item.active { color: var(--primary-text); }
         .nav-item svg { margin-bottom: 4px; }
         
-        .menu-modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.6);backdrop-filter:blur(5px);display:none;z-index:2000}.menu-modal-content{position:fixed;bottom:0;left:0;right:0;max-width:450px;margin:0 auto;background-color:var(--bg-color);border-top-left-radius:20px;border-top-right-radius:20px;padding:20px;animation:slideUp .3s ease-out;max-height:80vh;overflow-y:auto}@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}.menu-modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.menu-modal-header h2{border:none;font-size:20px;}.close-menu-btn{background:0 0;border:none;color:var(--primary-text);font-size:24px;cursor:pointer}.menu-section{margin-bottom:20px}.menu-section h3{color:var(--secondary-text);font-size:14px;margin-bottom:10px;text-transform:uppercase}.menu-list{list-style:none;padding:0;}.menu-list li a{color:var(--primary-text);text-decoration:none;display:block;padding:12px 0;font-size:16px;border-bottom:1px solid #eee}.menu-list li:last-child a{border-bottom:none}.lang-switcher{display:flex;flex-wrap:wrap;gap:8px}.lang-switcher button{background-color:var(--card-bg);border:1px solid #ddd;color:var(--primary-text);padding:8px 12px;border-radius:8px;cursor:pointer}.lang-switcher button.active{background-color:var(--accent-blue);border-color:var(--accent-blue);color:white;font-weight:700}
+        .menu-modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.6);backdrop-filter:blur(5px);display:none;z-index:2000}.menu-modal-content{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background-color:var(--bg-color);border-top-left-radius:20px;border-top-right-radius:20px;padding:20px;animation:slideUp .3s ease-out;max-height:80vh;overflow-y:auto}@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}.menu-modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.menu-modal-header h2{border:none;font-size:20px;}.close-menu-btn{background:0 0;border:none;color:var(--primary-text);font-size:24px;cursor:pointer}.menu-section{margin-bottom:20px}.menu-section h3{color:var(--secondary-text);font-size:14px;margin-bottom:10px;text-transform:uppercase}.menu-list{list-style:none;padding:0;}.menu-list li a{color:var(--primary-text);text-decoration:none;display:block;padding:12px 0;font-size:16px;border-bottom:1px solid #eee}.menu-list li:last-child a{border-bottom:none}.lang-switcher{display:flex;flex-wrap:wrap;gap:8px}.lang-switcher button{background-color:var(--card-bg);border:1px solid #ddd;color:var(--primary-text);padding:8px 12px;border-radius:8px;cursor:pointer}.lang-switcher button.active{background-color:var(--accent-blue);border-color:var(--accent-blue);color:white;font-weight:700}
     </style>
 </head>
 <body>
@@ -149,14 +152,18 @@
             const isSaved = library.includes(bookId);
             appContainer.innerHTML = `
                 <div class="page-view" style="padding-bottom: 120px;">
-                    <div class="details-cover-container"><img src="${book.coverUrl}" alt="${book.title}" class="details-cover"></div>
-                    <div class="details-content">
-                        <div class="details-section"><div class="details-section-header"><div class="details-section-title">Description</div><div class="heart-icon" data-book-id="${book.id}">${isSaved ? '❤️' : '♡'}</div></div><p>${book.description}</p></div>
-                        <div class="details-section"><div class="details-section-title">Category</div><p>${book.category}</p></div>
-                        <div class="details-buy-section">
-                             <div class="details-section-title">Buy the eBook</div>
-                             <div class="price-info"><span class="price-label">List Price</span> <span>${book.listPrice}</span></div>
-                             <div class="price-info"><span class="price-label">Your price</span> <span class="book-price">${book.yourPrice}</span></div>
+                    <div class="details-view-grid">
+                        <div class="details-cover-container"><img src="${book.coverUrl}" alt="${book.title}" class="details-cover"></div>
+                        <div class="details-content">
+                            <div class="details-section">
+                                <div class="details-section-header"><div class="details-section-title">Description</div><div class="heart-icon" data-book-id="${book.id}">${isSaved ? '❤️' : '♡'}</div></div><p>${book.description}</p>
+                            </div>
+                            <div class="details-section"><div class="details-section-title">Category</div><p>${book.category}</p></div>
+                            <div class="details-buy-section">
+                                 <div class="details-section-title">Buy the eBook</div>
+                                 <div class="price-info"><span class="price-label">List Price</span> <span>${book.listPrice}</span></div>
+                                 <div class="price-info"><span class="price-label">Your price</span> <span class="book-price">${book.yourPrice}</span></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -195,18 +202,17 @@
                 <div class="menu-modal-content">
                     <div class="menu-modal-header"><h2>Menu</h2><button class="close-menu-btn">×</button></div>
                     <div class="menu-section"><h3>Language</h3><div class="lang-switcher">
-                        <button onclick="loadLanguage('od')" class="lang-btn" data-lang-code="od">ଓଡ଼ିଆ</button><button onclick="loadLanguage('en')" class="lang-btn" data-lang-code="en">English</button>
-                        <button onclick="loadLanguage('sa')" class="lang-btn" data-lang-code="sa">संस्कृतम्</button><button onclick="loadLanguage('ta')" class="lang-btn" data-lang-code="ta">தமிழ்</button>
-                        <button onclick="loadLanguage('te')" class="lang-btn" data-lang-code="te">తెలుగు</button><button onclick="loadLanguage('kn')" class="lang-btn" data-lang-code="kn">ಕನ್ನಡ</button>
-                        <button onclick="loadLanguage('ml')" class="lang-btn" data-lang-code="ml">മലയാളം</button><button onclick="loadLanguage('hi')" class="lang-btn" data-lang-code="hi">हिन्दी</button>
+                        <button class="lang-btn" data-lang-code="od">ଓଡ଼ିଆ</button><button class="lang-btn" data-lang-code="en">English</button>
+                        <button class="lang-btn" data-lang-code="sa">संस्कृतम्</button><button class="lang-btn" data-lang-code="ta">தமிழ்</button>
+                        <button class="lang-btn" data-lang-code="te">తెలుగు</button><button class="lang-btn" data-lang-code="kn">ಕನ್ನಡ</button>
+                        <button class="lang-btn" data-lang-code="ml">മലയാളം</button><button class="lang-btn" data-lang-code="hi">हिन्दी</button>
                     </div></div>
                     <div class="menu-section"><h3>My Apps</h3><ul class="menu-list"><li><a href="#">My Odia Games</a></li><li><a href="#">SB Call</a></li><li><a href="#">SB SSTV Encoder</a></li></ul></div>
                     <div class="menu-section"><h3>Follow Me</h3><ul class="menu-list"><li><a href="https://www.instagram.com/sandeepbiswalg" target="_blank">Instagram</a></li></ul></div>
                     <div class="menu-section"><h3>Pages</h3><ul class="menu-list"><li><a href="about.html">About Us</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms & Conditions</a></li></ul></div>
                 </div>`;
             document.querySelector('.close-menu-btn').addEventListener('click', () => menuModal.style.display = 'none');
-            const savedLang = localStorage.getItem('mobahi_lang') || 'en';
-            menuModal.querySelector(`.lang-btn[data-lang-code="${savedLang}"]`).classList.add('active');
+            // Language switcher logic will be handled elsewhere or added here
         }
         menuBtn.addEventListener('click', () => { renderMenu(); menuModal.style.display = 'block'; });
         menuModal.addEventListener('click', (e) => { if(e.target === menuModal) menuModal.style.display = 'none'; });
