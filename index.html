@@ -47,10 +47,11 @@
 
         .search-bar { position: sticky; top: 0; background-color: var(--primary-bg); padding-bottom: 16px; z-index: 10; }
         .search-bar input { width: 100%; padding: 14px; font-size: 16px; border-radius: 8px; border: none; background-color: var(--secondary-bg); color: var(--text-primary); }
-
+        
+        .details-back-btn { position: absolute; top: 20px; left: 16px; background: rgba(0,0,0,0.5); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; z-index: 10; backdrop-filter: blur(5px); }
         .details-header { text-align: center; margin-top: 20px; }
         .details-cover { width: 180px; height: 270px; border-radius: 12px; object-fit: cover; box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
-        .details-title { font-size: 28px; margin-top: 20px; }
+        .details-title { font-size: 28px; margin-top: 20px; padding: 0 16px; }
         .details-author { font-size: 18px; color: var(--text-secondary); margin-top: 8px; }
         .action-buttons { display: flex; gap: 10px; justify-content: center; margin: 24px auto; }
         .btn { display: inline-block; padding: 14px 24px; border-radius: 50px; text-decoration: none; font-weight: 600; text-align: center; border: none; cursor: pointer; }
@@ -65,7 +66,7 @@
 </head>
 <body>
     <main id="app-container">
-        <!-- All dynamic content will be injected here by JavaScript -->
+        <!-- All dynamic content is injected here by JavaScript -->
     </main>
 
     <nav class="bottom-nav">
@@ -80,81 +81,78 @@
     <script src="database.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
-        // --- GLOBAL STATE & UTILITIES ---
-        let lang = {}; // Will be populated by the loaded language file
+        let lang = {};
         const appContainer = document.getElementById('app-container');
 
-        // --- LANGUAGE SYSTEM (Instant Switch) ---
         async function loadLanguage(langCode) {
             try {
                 const response = await fetch(`languages/${langCode}.js`);
-                if (!response.ok) throw new Error('Network response was not ok');
+                if (!response.ok) throw new Error('Network error');
                 const scriptText = await response.text();
-                // This executes the script text in the global scope, defining the `lang` object.
-                (new Function(scriptText))();
-                
+                lang = (new Function(scriptText + '; return lang;'))();
                 localStorage.setItem('mobahi_lang', langCode);
                 document.documentElement.lang = langCode;
                 document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.langCode === langCode));
-                
                 await applyTranslationsAndRender();
             } catch (error) {
-                console.error(`Failed to load language ${langCode}, falling back to English.`, error);
+                console.error(`Failed to load ${langCode}, falling back to English.`, error);
                 if (langCode !== 'en') await loadLanguage('en');
             }
         }
         
         async function applyTranslationsAndRender() {
-            // Translate static elements like nav and menu
             document.querySelectorAll('[data-lang]').forEach(el => {
                 const key = el.getAttribute('data-lang');
                 if (lang[key]) el.textContent = lang[key];
             });
-            // Re-render the current view with the new language
             handleRouteChange();
         }
 
-        // --- VIEW RENDERING FUNCTIONS ---
         function createBookCard(book) {
             const cardLink = document.createElement('a');
-            cardLink.href = `#book/${book.id}`; // Use hash for SPA navigation
-            cardLink.innerHTML = `
-                <div class="book-card">
-                    <img src="${book.coverUrl}" alt="${book.title}" class="book-cover">
-                    <h3>${book.title}</h3>
-                    <p>${book.author}</p>
-                </div>`;
+            cardLink.href = `#book/${book.id}`;
+            cardLink.innerHTML = `<div class="book-card"><img src="${book.coverUrl}" alt="${book.title}" class="book-cover"><h3>${book.title}</h3><p>${book.author}</p></div>`;
             return cardLink;
+        }
+        
+        function renderSection(title, books) {
+            if (books.length === 0) return '';
+            return `
+                <div class="section-title">${title}</div>
+                <div class="book-carousel">
+                    ${books.map(createBookCard).join('')}
+                </div>`;
         }
 
         function renderHomePage() {
+            const sliderBooks = booksDB.filter(b => b.isFeaturedInSlider);
+            const newArrivals = [...booksDB].sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 10);
+            const trending = [...booksDB].sort((a, b) => b.readCount - a.readCount).slice(0, 10);
+            
             appContainer.innerHTML = `
                 <div class="page-view">
                     <div class="hero-slider-container swiper-container">
-                        <div class="swiper-wrapper"></div>
+                        <div class="swiper-wrapper">
+                            ${sliderBooks.map(book => `<div class="swiper-slide">${createBookCard(book).innerHTML}</div>`).join('')}
+                        </div>
                     </div>
-                    <div id="home-content-sections"></div>
+                    <div id="home-content-sections">
+                        ${renderSection(lang.newArrivals, newArrivals)}
+                        ${renderSection(lang.nowTrending, trending)}
+                    </div>
                 </div>`;
-            
-            const sliderBooks = booksDB.filter(b => b.isFeaturedInSlider);
-            const sliderWrapper = appContainer.querySelector('.swiper-wrapper');
-            sliderBooks.forEach(book => {
-                const slide = createBookCard(book);
-                slide.className = 'swiper-slide';
-                sliderWrapper.appendChild(slide);
-            });
-            if (sliderBooks.length > 0) new Swiper('.swiper-container', { autoplay: { delay: 3000 }, loop: sliderBooks.length > 1 });
 
-            // Render other sections
-            // You can add more sections here (New Arrivals, Trending, etc.)
+            if (sliderBooks.length > 0) new Swiper('.swiper-container', { autoplay: { delay: 3000 }, loop: sliderBooks.length > 1 });
+            // Add click listeners to swiper slides
+            appContainer.querySelectorAll('.swiper-slide').forEach((slide, index) => {
+                slide.addEventListener('click', () => window.location.hash = `#book/${sliderBooks[index].id}`);
+            });
         }
 
         function renderSearchPage() {
             appContainer.innerHTML = `
                 <div class="page-view">
-                    <div class="search-bar">
-                        <input type="search" id="search-input" placeholder="${lang.searchPlaceholder || 'Search...'}">
-                    </div>
+                    <div class="search-bar"><input type="search" id="search-input" placeholder="${lang.searchPlaceholder || 'Search...'}"></div>
                     <h2 class="section-title">${lang.searchResults || 'Results'}</h2>
                     <div class="grid-container" id="search-results"></div>
                 </div>`;
@@ -164,14 +162,9 @@
             
             function performSearch(query) {
                 resultsContainer.innerHTML = '';
+                if (!query) return;
                 const lowerQuery = query.toLowerCase();
-                if (!lowerQuery) return;
-
-                const filteredBooks = booksDB.filter(book => 
-                    book.title.toLowerCase().includes(lowerQuery) ||
-                    book.author.toLowerCase().includes(lowerQuery)
-                );
-                
+                const filteredBooks = booksDB.filter(book => book.title.toLowerCase().includes(lowerQuery) || book.author.toLowerCase().includes(lowerQuery));
                 if (filteredBooks.length > 0) {
                     filteredBooks.forEach(book => resultsContainer.appendChild(createBookCard(book)));
                 } else {
@@ -184,64 +177,43 @@
         function renderLibraryPage() {
             const savedBookIds = JSON.parse(localStorage.getItem('mobahi_library')) || [];
             const savedBooks = booksDB.filter(book => savedBookIds.includes(book.id));
-            
             appContainer.innerHTML = `
                 <div class="page-view">
                     <h1 class="section-title">${lang.myLibraryTitle || 'My Library'}</h1>
-                    <div class="grid-container" id="saved-books-grid"></div>
+                    <div class="grid-container" id="saved-books-grid">
+                        ${savedBooks.length > 0 ? savedBooks.map(createBookCard).join('') : `<p>${lang.libraryEmpty}</p>`}
+                    </div>
                 </div>`;
-
-            const grid = document.getElementById('saved-books-grid');
-            if (savedBooks.length > 0) {
-                savedBooks.forEach(book => grid.appendChild(createBookCard(book)));
-            } else {
-                grid.innerHTML = `<p>${lang.libraryEmpty || 'Your library is empty.'}</p>`;
-            }
         }
         
         function renderBookDetailsPage(bookId) {
             const book = booksDB.find(b => b.id === bookId);
-            if (!book) {
-                appContainer.innerHTML = `<div class="page-view"><h1>Book not found</h1></div>`;
-                return;
-            }
-
+            if (!book) { appContainer.innerHTML = `<div class="page-view"><h1>Book not found</h1><a href="#home">Go Home</a></div>`; return; }
             document.title = `${book.title} - Mobahi`;
             appContainer.innerHTML = `
                 <div class="page-view">
+                    <button class="details-back-btn" onclick="window.history.back()">←</button>
                     <header class="details-header">
                         <img src="${book.coverUrl}" alt="${book.title}" class="details-cover">
                         <h1 class="details-title">${book.title}</h1>
                         <p class="details-author">by ${book.author}</p>
                     </header>
                     <div class="action-buttons">
-                        <a href="reader.html?file=${encodeURIComponent(book.fileUrl)}" target="_blank" class="btn btn-primary">${lang.readNow || 'Read Now'}</a>
-                        <button id="save-library-btn" class="btn btn-secondary">${lang.saveToLibrary || 'Save'}</button>
+                        <a href="reader.html?file=${encodeURIComponent(book.fileUrl)}" target="_blank" class="btn btn-primary">${lang.readNow}</a>
+                        <button id="save-library-btn" class="btn btn-secondary">${lang.saveToLibrary}</button>
                     </div>
-                    <div class="details-section">
-                        <h3>${lang.description || 'Description'}</h3>
-                        <p>${book.description}</p>
-                    </div>
-                    <div class="details-section">
-                        <h3>${lang.category || 'Category'}</h3>
-                        <p>${book.category}</p>
-                    </div>
+                    <div class="details-section"><h3>${lang.description}</h3><p>${book.description}</p></div>
+                    <div class="details-section"><h3>${lang.category}</h3><p>${book.category}</p></div>
                 </div>`;
             
             const saveBtn = document.getElementById('save-library-btn');
             let library = JSON.parse(localStorage.getItem('mobahi_library')) || [];
-            
-            function updateButtonState() {
+            const updateButtonState = () => {
                 if (library.includes(bookId)) {
-                    saveBtn.textContent = lang.saved || 'Saved ✔';
-                    saveBtn.classList.remove('btn-secondary');
-                    saveBtn.classList.add('btn-primary');
+                    saveBtn.textContent = lang.saved;
                     saveBtn.disabled = true;
-                } else {
-                    saveBtn.textContent = lang.saveToLibrary || 'Save to Library';
                 }
-            }
-
+            };
             saveBtn.addEventListener('click', () => {
                 if (!library.includes(bookId)) {
                     library.push(bookId);
@@ -249,43 +221,42 @@
                     updateButtonState();
                 }
             });
-            updateButtonState(); // Initial check
+            updateButtonState();
         }
 
-        // --- ROUTER & NAVIGATION ---
+        const routes = {
+            '#home': renderHomePage,
+            '#search': renderSearchPage,
+            '#library': renderLibraryPage,
+        };
+
         function handleRouteChange() {
             const hash = window.location.hash || '#home';
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.toggle('active', item.hash === hash || (hash==='' && item.hash==='#home') );
-            });
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.toggle('active', item.hash === hash));
             
-            if (hash.startsWith('#book/')) {
+            const routeHandler = routes[hash];
+            if (routeHandler) {
+                routeHandler();
+            } else if (hash.startsWith('#book/')) {
                 const bookId = hash.substring(6);
                 renderBookDetailsPage(bookId);
-            } else if (hash === '#search') {
-                renderSearchPage();
-            } else if (hash === '#library') {
-                renderLibraryPage();
             } else {
-                renderHomePage();
+                renderHomePage(); // Fallback
             }
         }
         
         window.addEventListener('hashchange', handleRouteChange);
         
-        // --- MENU MODAL LOGIC ---
         const menuBtn = document.getElementById('menu-btn');
         const menuModal = document.getElementById('menu-modal');
-        const closeMenuBtn = document.querySelector('.close-menu-btn');
         menuBtn.addEventListener('click', () => menuModal.style.display = 'block');
         const closeMenu = () => menuModal.style.display = 'none';
-        closeMenuBtn.addEventListener('click', closeMenu);
+        document.querySelector('.close-menu-btn').addEventListener('click', closeMenu);
         menuModal.addEventListener('click', (e) => { if(e.target === menuModal) closeMenu(); });
         
-        // --- INITIAL APP LOAD ---
         document.addEventListener('DOMContentLoaded', async () => {
             const savedLang = localStorage.getItem('mobahi_lang') || 'en';
-            await loadLanguage(savedLang); // This will also trigger the first render via handleRouteChange
+            await loadLanguage(savedLang);
         });
     </script>
 </body>
