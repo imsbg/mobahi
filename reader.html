@@ -1,124 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobahi Reader</title>
-    <!-- We load the PDF.js library from a reliable CDN -->
-    <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
-    <style>
-        body, html { margin: 0; padding: 0; background-color: #333; }
-        #reader-container {
-            width: 100vw;
-            height: 100vh;
-            overflow: auto; /* Allow scrolling for the whole page */
-            text-align: center; /* Center the canvas */
-        }
-        #pdf-canvas {
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
-            margin-top: 20px;
-            margin-bottom: 80px; /* Space for controls */
-        }
-        .reader-controls {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            border-radius: 20px;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            color: white;
-            z-index: 100;
-            backdrop-filter: blur(5px);
-        }
-        .reader-controls button {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        #page-info { font-size: 16px; min-width: 50px; text-align: center; font-family: sans-serif; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobahi - Book Reader</title>
+
+  <!-- DearFlip CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/dearflip-jquery/dist/dflip.min.css" rel="stylesheet" type="text/css">
+  
+  <!-- Icons (for the flipbook UI) -->
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <style>
+    body, html { margin: 0; padding: 0; height: 100%; width: 100%; background-color: #333; }
+  </style>
 </head>
 <body>
 
-    <div id="reader-container">
-        <canvas id="pdf-canvas"></canvas>
-    </div>
+  <!-- This container will be transformed into the flipbook -->
+  <div class="flipbook-container"></div>
 
-    <div class="reader-controls">
-        <button id="prev-page"><</button>
-        <span id="page-info">...</span>
-        <button id="next-page">></button>
-    </div>
+  <!-- JQuery is required by DearFlip -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  
+  <!-- DearFlip JS -->
+  <script src="https://cdn.jsdelivr.net/npm/dearflip-jquery/dist/dflip.min.js" type="text/javascript"></script>
 
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        // The file path is relative to the root of your site (e.g., "assets/books/book.pdf")
-        const pdfUrl = decodeURIComponent(urlParams.get('file'));
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const pdfUrl = decodeURIComponent(urlParams.get('file'));
 
-        // Set the workerSrc to the CDN path. This is a required step.
-        const { pdfjsLib } = window;
-        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`;
-
-        const canvas = document.getElementById('pdf-canvas');
-        const ctx = canvas.getContext('2d');
-        const pageInfoSpan = document.getElementById('page-info');
-        const prevBtn = document.getElementById('prev-page');
-        const nextBtn = document.getElementById('next-page');
-
-        let pdfDoc = null;
-        let pageNum = 1;
-
-        async function renderPage(num) {
-            if (!pdfDoc) return;
-            const page = await pdfDoc.getPage(num);
-            
-            // Adjust scale for better quality on different devices
-            const scale = window.devicePixelRatio || 1;
-            const viewport = page.getViewport({ scale: scale * 1.5 });
-            
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-            canvas.style.width = `${viewport.width / scale}px`;
-            canvas.style.height = `${viewport.height / scale}px`;
-
-            const renderContext = {
-                canvasContext: ctx,
-                viewport: viewport
-            };
-            await page.render(renderContext).promise;
-            pageInfoSpan.textContent = `${num} / ${pdfDoc.numPages}`;
-        }
-
-        function onPrevPage() {
-            if (pageNum <= 1) return;
-            pageNum--;
-            renderPage(pageNum);
-        }
-
-        function onNextPage() {
-            if (pageNum >= pdfDoc.numPages) return;
-            pageNum++;
-            renderPage(pageNum);
-        }
-        
-        prevBtn.addEventListener('click', onPrevPage);
-        nextBtn.addEventListener('click', onNextPage);
-
-        pdfjsLib.getDocument(pdfUrl).promise.then(doc => {
-            pdfDoc = doc;
-            document.title = "Reading - Mobahi";
-            renderPage(pageNum);
-        }).catch(err => {
-            console.error("Error loading PDF: ", err);
-            pageInfoSpan.textContent = "Error";
-            document.getElementById('reader-container').innerHTML = `<h1 style="color:white; text-align:center; margin-top: 50px;">Could not load book file. Check the file path in database.js.</h1>`;
+      if (pdfUrl) {
+        // Initialize the DearFlip viewer
+        var flipbook = $(".flipbook-container").flipBook({
+          pdfUrl: pdfUrl,
+          lightBox: false, // Display directly on the page, not in a popup
+          // You can customize many options here
+          controlsPosition: "bottom",
+          controlsProps: {
+            // Customize which buttons to show
+            download: true
+          }
         });
-    </script>
+      } else {
+        document.body.innerHTML = '<h1 style="color:white; text-align:center; padding-top: 50px;">Error: No book file specified.</h1>';
+      }
+    });
+  </script>
+
 </body>
 </html>
