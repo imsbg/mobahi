@@ -11,13 +11,13 @@
         #reader-container {
             width: 100vw;
             height: 100vh;
-            overflow: auto; /* Allow scrolling */
+            overflow: auto; /* Allow scrolling for the whole page */
             text-align: center; /* Center the canvas */
         }
         #pdf-canvas {
             box-shadow: 0 0 15px rgba(0,0,0,0.5);
             margin-top: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 80px; /* Space for controls */
         }
         .reader-controls {
             position: fixed;
@@ -32,6 +32,7 @@
             gap: 20px;
             color: white;
             z-index: 100;
+            backdrop-filter: blur(5px);
         }
         .reader-controls button {
             background: none;
@@ -40,7 +41,7 @@
             font-size: 24px;
             cursor: pointer;
         }
-        #page-info { font-size: 16px; min-width: 50px; text-align: center; }
+        #page-info { font-size: 16px; min-width: 50px; text-align: center; font-family: sans-serif; }
     </style>
 </head>
 <body>
@@ -57,9 +58,10 @@
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
+        // The file path is relative to the root of your site (e.g., "assets/books/book.pdf")
         const pdfUrl = decodeURIComponent(urlParams.get('file'));
 
-        // Set the workerSrc to the CDN path
+        // Set the workerSrc to the CDN path. This is a required step.
         const { pdfjsLib } = window;
         pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`;
 
@@ -75,9 +77,15 @@
         async function renderPage(num) {
             if (!pdfDoc) return;
             const page = await pdfDoc.getPage(num);
-            const viewport = page.getViewport({ scale: 1.5 });
+            
+            // Adjust scale for better quality on different devices
+            const scale = window.devicePixelRatio || 1;
+            const viewport = page.getViewport({ scale: scale * 1.5 });
+            
             canvas.height = viewport.height;
             canvas.width = viewport.width;
+            canvas.style.width = `${viewport.width / scale}px`;
+            canvas.style.height = `${viewport.height / scale}px`;
 
             const renderContext = {
                 canvasContext: ctx,
@@ -102,7 +110,6 @@
         prevBtn.addEventListener('click', onPrevPage);
         nextBtn.addEventListener('click', onNextPage);
 
-        // Load the document from the URL
         pdfjsLib.getDocument(pdfUrl).promise.then(doc => {
             pdfDoc = doc;
             document.title = "Reading - Mobahi";
@@ -110,7 +117,7 @@
         }).catch(err => {
             console.error("Error loading PDF: ", err);
             pageInfoSpan.textContent = "Error";
-            document.getElementById('reader-container').innerHTML = `<h1 style="color:white; text-align:center; margin-top: 50px;">Could not load book file.</h1>`;
+            document.getElementById('reader-container').innerHTML = `<h1 style="color:white; text-align:center; margin-top: 50px;">Could not load book file. Check the file path in database.js.</h1>`;
         });
     </script>
 </body>
