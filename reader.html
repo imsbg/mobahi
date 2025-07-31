@@ -16,13 +16,13 @@
     </div>
     
     <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const pdfUrl = decodeURIComponent(urlParams.get('file'));
+        const urlParams = new URLSearchParams(window.location.search);
+        const pdfUrl = decodeURIComponent(urlParams.get('file'));
 
-    // Use the advanced PDF.js web viewer. 
-    // The path must be correct relative to your project structure.
-    const viewerUrl = `pdfjs/web/viewer.html?file=../../${pdfUrl}`;
-    document.getElementById('pdf-viewer').src = viewerUrl;
+        // This path is crucial. It tells the browser where to find the viewer's main file.
+        // It assumes `reader.html` is at the root and the viewer is in `/pdfjs/web/`.
+        const viewerUrl = `pdfjs/web/viewer.html?file=../../${pdfUrl}`;
+        document.getElementById('pdf-viewer').src = viewerUrl;
     </script>
 </body>
 </html>
