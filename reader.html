@@ -3,51 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mobahi - Book Reader</title>
-
-  <!-- DearFlip CSS -->
+  <title>Mo Bahi - Book Reader</title>
   <link href="https://cdn.jsdelivr.net/npm/dearflip-jquery/dist/dflip.min.css" rel="stylesheet" type="text/css">
-  
-  <!-- Icons (for the flipbook UI) -->
   <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-  <style>
-    body, html { margin: 0; padding: 0; height: 100%; width: 100%; background-color: #333; }
-  </style>
+  <style> body, html { margin: 0; padding: 0; height: 100%; width: 100%; background-color: #333; } </style>
 </head>
 <body>
-
-  <!-- This container will be transformed into the flipbook -->
   <div class="flipbook-container"></div>
-
-  <!-- JQuery is required by DearFlip -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-  
-  <!-- DearFlip JS -->
   <script src="https://cdn.jsdelivr.net/npm/dearflip-jquery/dist/dflip.min.js" type="text/javascript"></script>
-
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       const urlParams = new URLSearchParams(window.location.search);
       const pdfUrl = decodeURIComponent(urlParams.get('file'));
-
       if (pdfUrl) {
-        // Initialize the DearFlip viewer
-        var flipbook = $(".flipbook-container").flipBook({
+        $(".flipbook-container").flipBook({
           pdfUrl: pdfUrl,
-          lightBox: false, // Display directly on the page, not in a popup
-          // You can customize many options here
+          lightBox: false,
           controlsPosition: "bottom",
-          controlsProps: {
-            // Customize which buttons to show
-            download: true
-          }
+          controlsProps: { download: true }
         });
       } else {
         document.body.innerHTML = '<h1 style="color:white; text-align:center; padding-top: 50px;">Error: No book file specified.</h1>';
       }
     });
   </script>
-
 </body>
 </html>
