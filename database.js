@@ -10,7 +10,7 @@ const booksDB = [
     fileUrl: 'assets/books/the_whispering_kothi.pdf',
     language: 'English',
     category: 'Horror',
-    isDownloadable: true, // Set to `false` to hide the download button
+    isDownloadable: true,
     listPrice: '99₹',
     yourPrice: 'Free',
     description: 'In the heart of a forgotten town stands a dilapidated mansion, the Kothi, which holds a chilling secret...',
@@ -25,7 +25,7 @@ const booksDB = [
     fileUrl: 'assets/books/unknown_camp.pdf',
     language: 'English',
     category: 'Thriller',
-    isDownloadable: false, // This book's download button will be hidden
+    isDownloadable: false,
     listPrice: '199₹',
     yourPrice: 'Free',
     description: 'A weekend camping trip turns into a desperate struggle for survival when friends stumble upon a deserted campsite...',
