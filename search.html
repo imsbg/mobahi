@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search - Mobahi</title>
+    <!-- Paste the <style> block from index.html here for consistent styling -->
+    <style>/* PASTE CSS HERE */</style>
+    <style>
+        .search-bar { position: sticky; top: 0; background-color: var(--primary-bg); padding: 16px 0; z-index: 10; }
+        .search-bar input { width: 100%; padding: 14px; font-size: 16px; border-radius: 8px; border: none; background-color: var(--secondary-bg); color: var(--text-primary); }
+    </style>
+</head>
+<body>
+    <div class="container" style="padding: 16px;">
+        <a href="index.html" style="color:white; text-decoration: none; display:inline-block; margin-bottom: 16px;">← Back to Home</a>
+        <div class="search-bar">
+            <input type="search" id="search-input" data-lang-placeholder="searchPlaceholder" placeholder="Search for books or authors...">
+        </div>
+        <h2 class="section-title" data-lang="searchResults">Search Results</h2>
+        <div class="grid-container" id="search-results"></div>
+    </div>
+
+    <script src="database.js"></script>
+    <script>
+        let lang = {};
+        const searchInput = document.getElementById('search-input');
+        const resultsContainer = document.getElementById('search-results');
+        
+        // --- LANGUAGE (Simplified for search page) ---
+        async function loadLanguage(langCode) {
+            // Same instant load function as index.html
+        }
+
+        function createBookCard(book) {
+            // Same function as index.html
+        }
+        
+        function renderResults(query) {
+            resultsContainer.innerHTML = '';
+            const lowerQuery = query.toLowerCase();
+            const filteredBooks = booksDB.filter(book => 
+                book.title.toLowerCase().includes(lowerQuery) ||
+                book.author.toLowerCase().includes(lowerQuery)
+            );
+            
+            if (filteredBooks.length > 0) {
+                filteredBooks.forEach(book => resultsContainer.appendChild(createBookCard(book)));
+            } else {
+                resultsContainer.innerHTML = `<p data-lang="noResultsFound">${lang.noResultsFound || 'No books found...'}</p>`;
+            }
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            renderResults(e.target.value);
+        });
+
+        // Initial Load
+        document.addEventListener('DOMContentLoaded', async () => {
+            const savedLang = localStorage.getItem('mobahi_lang') || 'en';
+            await loadLanguage(savedLang, () => {
+                // Initial render with empty query to show nothing at first
+                renderResults('');
+            });
+        });
+    </script>
+</body>
+</html>
