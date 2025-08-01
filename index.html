@@ -2,220 +2,1523 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mo Bahi - Read Free Books</title>
-    <!-- Add your final SEO and Open Graph meta tags here -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Mo Bahi - Digital Books</title>
     
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
     <style>
-        :root {
-            --bg-color: #FFFFFF; --primary-text: #111111; --secondary-text: #888888;
-            --accent-blue: #3E64FF; --card-bg: #F5F5F5;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: #f0f2f5; color: var(--primary-text); font-family: 'Poppins', sans-serif; }
-        .app-wrapper { max-width: 480px; margin: 0 auto; background-color: var(--bg-color); min-height: 100vh; position: relative; padding-top: 60px; padding-bottom: 80px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
-        a { text-decoration: none; color: inherit; }
-        .page-view { padding: 16px; animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
-        .app-header { position: fixed; top: 0; left: 0; right: 0; background-color: var(--bg-color); height: 60px; max-width: 480px; margin: 0 auto; padding: 0 16px; z-index: 100; display: flex; align-items: center; border-bottom: 1px solid #eee; }
-        .app-header .back-btn { font-size: 28px; cursor: pointer; margin-right: 16px; line-height: 1; color: var(--primary-text); }
-        .app-header .header-title { margin: 0; font-size: 20px; font-weight: 700; }
-
-        .slider-container { width: 100%; border-radius: 16px; overflow: hidden; position: relative; aspect-ratio: 16 / 9; }
-        .swiper-slide { cursor: pointer; position: relative; }
-        .swiper-slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
-        .slider-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: white; }
-        .slider-title { font-size: 18px; font-weight: 600; }
-        .slider-tagline { font-size: 12px; opacity: 0.9; margin-top: 4px; }
-        .slider-author { font-size: 12px; opacity: 0.8; margin-top: 8px; }
-        .slider-read-btn { position: absolute; bottom: 20px; right: 20px; background-color: var(--accent-blue); color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 500; }
-        .swiper-button-next, .swiper-button-prev { color: white !important; transform: scale(0.7); }
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --background: #ffffff;
+            --surface: #f9fafb;
+            --border: #e5e7eb;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
         
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin: 24px 0 16px 0; }
-        .section-title { font-size: 18px; font-weight: 600; }
-        .see-all { font-size: 14px; color: var(--accent-blue); font-weight: 500; }
-
-        .categories-carousel { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
-        .categories-carousel::-webkit-scrollbar { display: none; }
-        .category-item { text-align: center; flex-shrink: 0; }
-        .category-icon { width: 64px; height: 64px; border-radius: 50%; overflow: hidden; background-color: var(--card-bg); margin-bottom: 8px; border: 1px solid #eee; }
-        .category-icon img { width: 100%; height: 100%; object-fit: cover; }
-        .category-name { font-size: 14px; }
-
-        .book-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-        @media (min-width: 768px) { .app-wrapper { max-width: 1024px; } .book-grid { grid-template-columns: repeat(4, 1fr); } }
-        .book-card { background-color: var(--card-bg); border-radius: 12px; overflow: hidden; position: relative; }
-        .book-cover { width: 100%; height: 220px; object-fit: cover; }
-        .book-info { padding: 12px; }
-        .book-title { font-size: 16px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .book-author { font-size: 12px; color: var(--secondary-text); }
-        .book-price-row { display: flex; align-items: baseline; gap: 8px; margin-top: 8px; }
-        .book-price { font-size: 18px; font-weight: 700; color: var(--accent-blue); }
-        .book-list-price { font-size: 12px; color: var(--secondary-text); text-decoration: line-through; }
-        .heart-icon { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(5px); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .heart-icon svg { width: 18px; height: 18px; }
-
-        .details-view-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-        @media (min-width: 768px) { .details-view-grid { grid-template-columns: 300px 1fr; } }
-        .details-cover { width: 100%; border-radius: 16px; }
-        .details-content { padding: 16px 0; }
-        .details-section-header { display: flex; justify-content: space-between; align-items: center; }
-        .details-section-title { font-size: 20px; font-weight: 600; }
-        .details-section p { color: var(--secondary-text); margin-top: 8px; line-height: 1.7; }
-        .details-buy-section { margin-top: 24px; }
-        .price-info { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
-        .price-label { color: var(--secondary-text); }
-        .details-action-buttons { display: grid; grid-auto-flow: column; gap: 16px; position: fixed; bottom: 0; left: 0; right: 0; padding: 16px; background-color: var(--bg-color); border-top: 1px solid #eee; z-index: 100; max-width: 480px; margin: 0 auto; }
-        .btn { padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 600; text-align: center; cursor: pointer; border: none; }
-        .btn-outline { background: transparent; border: 1px solid var(--primary-text); color: var(--primary-text); }
-        .btn-solid { background: var(--primary-text); color: var(--bg-color); }
-
-        .search-bar { margin-bottom: 24px; }
-        .search-bar input { width: 100%; padding: 14px; font-size: 16px; border-radius: 8px; border: 1px solid #ddd; }
-
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--bg-color); display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #eee; z-index: 100; max-width: 480px; margin: 0 auto;}
-        .nav-item { flex: 1; text-align: center; color: var(--secondary-text); }
-        .nav-item.active { color: var(--primary-text); }
-        .nav-item svg { margin-bottom: 4px; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding-top: 60px;
+            padding-bottom: 80px;
+        }
         
-        .menu-modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.6);backdrop-filter:blur(5px);display:none;z-index:2000}.menu-modal-content{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background-color:var(--bg-color);border-top-left-radius:20px;border-top-right-radius:20px;padding:20px;animation:slideUp .3s ease-out;max-height:80vh;overflow-y:auto}@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}.menu-modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.menu-modal-header h2{border:none;font-size:20px;}.close-menu-btn{background:0 0;border:none;color:var(--primary-text);font-size:24px;cursor:pointer}.menu-section{margin-bottom:20px}.menu-section h3{color:var(--secondary-text);font-size:14px;margin-bottom:10px;text-transform:uppercase}.menu-list{list-style:none;padding:0;}.menu-list li a{color:var(--primary-text);text-decoration:none;display:block;padding:12px 0;font-size:16px;border-bottom:1px solid #eee}.menu-list li:last-child a{border-bottom:none}.lang-switcher{display:flex;flex-wrap:wrap;gap:8px}.lang-switcher button{background-color:var(--card-bg);border:1px solid #ddd;color:var(--primary-text);padding:8px 12px;border-radius:8px;cursor:pointer}.lang-switcher button.active{background-color:var(--accent-blue);border-color:var(--accent-blue);color:white;font-weight:700}
+        /* App Wrapper for Responsive Design */
+        .app-wrapper {
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--background);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        @media (min-width: 768px) {
+            .app-wrapper {
+                max-width: 1024px;
+            }
+            
+            body {
+                background-color: var(--surface);
+            }
+        }
+        
+        /* SVG Icons */
+        .svg-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .svg-icon-large {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .svg-icon-small {
+            width: 16px;
+            height: 16px;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--background);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 480px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+        }
+        
+        @media (min-width: 768px) {
+            .header-content {
+                max-width: 1024px;
+            }
+        }
+        
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            margin-right: 12px;
+            border-radius: 8px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .back-btn:hover {
+            background-color: var(--surface);
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        /* Main Content */
+        main {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+        
+        @media (min-width: 768px) {
+            main {
+                max-width: 1024px;
+                padding: 24px;
+            }
+        }
+        
+        /* Bottom Navigation */
+        nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: var(--background);
+            border-top: 1px solid var(--border);
+            z-index: 100;
+        }
+        
+        .nav-content {
+            max-width: 480px;
+            height: 100%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+        
+        @media (min-width: 768px) {
+            .nav-content {
+                max-width: 1024px;
+            }
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+        
+        .nav-item:hover {
+            background-color: var(--surface);
+        }
+        
+        .nav-icon {
+            margin-bottom: 4px;
+        }
+        
+        /* Slider */
+        .slider-section {
+            margin-bottom: 32px;
+        }
+        
+        .swiper {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .slider-slide {
+            position: relative;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            color: white;
+            overflow: hidden;
+        }
+        
+        @media (min-width: 768px) {
+            .slider-slide {
+                height: 300px;
+            }
+        }
+        
+        .slider-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+        }
+        
+        .slider-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            width: 100%;
+        }
+        
+        .slider-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .slider-tagline {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+        
+        .slider-author {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 12px;
+        }
+        
+        .read-now-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .read-now-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .see-all-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .see-all-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Categories */
+        .categories-section {
+            margin-bottom: 32px;
+        }
+        
+        .categories-scroll {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+        
+        .categories-scroll::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        .categories-scroll::-webkit-scrollbar-track {
+            background: var(--surface);
+            border-radius: 2px;
+        }
+        
+        .categories-scroll::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 2px;
+        }
+        
+        .category-item {
+            flex-shrink: 0;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            margin-bottom: 8px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .category-name {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        /* Book Grid */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        
+        @media (min-width: 768px) {
+            .books-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+        }
+        
+        .book-card {
+            text-decoration: none;
+            color: var(--text-primary);
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--background);
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        
+        .book-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .book-cover {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .book-info {
+            padding: 12px;
+        }
+        
+        .book-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .book-author {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .book-category {
+            font-size: 11px;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .book-price {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        
+        .price-current {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .price-original {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-decoration: line-through;
+        }
+        
+        .like-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #6b7280;
+        }
+        
+        .like-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+        
+        .like-btn.liked {
+            color: #ef4444;
+        }
+        
+        /* Book Details Page */
+        .book-details {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .book-hero {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        
+        @media (max-width: 480px) {
+            .book-hero {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+        
+        .book-cover-large {
+            width: 160px;
+            height: 240px;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            box-shadow: var(--shadow-lg);
+            flex-shrink: 0;
+        }
+        
+        .book-meta {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+        }
+        
+        .book-title-large {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .book-author-large {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+        
+        .book-category-large {
+            display: inline-block;
+            background: var(--surface);
+            color: var(--primary-color);
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        
+        .book-pricing {
+            background: var(--surface);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .pricing-header {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .pricing-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .pricing-row:last-child {
+            margin-bottom: 0;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--primary-color);
+        }
+        
+        .book-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--surface);
+        }
+        
+        .book-description {
+            margin-bottom: 24px;
+        }
+        
+        .description-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .description-text {
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+        
+        /* Search Page */
+        .search-container {
+            margin-bottom: 24px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            background: var(--background);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .search-results {
+            margin-top: 20px;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+        
+        .no-results-icon {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+        
+        /* Library Page */
+        .empty-library {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .empty-library-icon {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+        
+        .empty-library-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .empty-library-desc {
+            color: var(--text-secondary);
+        }
+        
+        /* Menu Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .menu-modal {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--background);
+            border-radius: 16px 16px 0 0;
+            padding: 24px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .menu-modal.active {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .menu-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        .menu-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        
+        .menu-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .menu-item {
+            padding: 12px 0;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .menu-item:hover {
+            color: var(--primary-color);
+        }
+        
+        .language-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        
+        .language-btn {
+            padding: 12px;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        
+        .language-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .language-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+        
+        /* Icons */
+        .icon {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+        }
     </style>
 </head>
 <body>
-<div class="app-wrapper">
-    <header id="app-header" class="app-header"></header>
-    <main id="app-container"></main>
-    <nav class="bottom-nav">
-        <a href="#home" class="nav-item active" data-nav="home"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.02 2.84L3.63 7.04C2.73 7.74 2 9.23 2 10.36V17C2 20 4 22 7 22H17C20 22 22 20 22 17V10.36C22 9.23 21.27 7.74 20.37 7.04L14.98 2.84C13.19 1.55 10.81 1.55 9.02 2.84Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div>Home</div></a>
-        <a href="#explore" class="nav-item" data-nav="explore"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 22L20 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div>Explore</div></a>
-        <a href="#library" class="nav-item" data-nav="library"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 14.24V5.24C22 3.24 21 2.24 19 2.24H13.25C13.06 2.24 12.87 2.3 12.7 2.42L10.2 4.42C10.03 4.54 9.84 4.6 9.65 4.6H5C3 4.6 2 5.6 2 7.6V17.6C2 19.6 3 20.6 5 20.6H19C21 20.6 22 19.6 22 17.6V16.24" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></svg><div>Library</div></a>
-        <div id="menu-btn" class="nav-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 7H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 12H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 17H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><div>Menu</div></div>
-    </nav>
-    <div id="menu-modal" class="menu-modal-overlay"></div>
-</div>
+    <div class="app-wrapper">
+        <!-- SVG Icon Definitions -->
+        <svg style="display: none;">
+            <defs>
+                <!-- Home Icon -->
+                <symbol id="home-icon" viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </symbol>
+                
+                <!-- Search Icon -->
+                <symbol id="search-icon" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </symbol>
+                
+                <!-- Library Icon -->
+                <symbol id="library-icon" viewBox="0 0 24 24">
+                    <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/>
+                </symbol>
+                
+                <!-- Menu Icon -->
+                <symbol id="menu-icon" viewBox="0 0 24 24">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                </symbol>
+                
+                <!-- Heart Icon (Empty) -->
+                <symbol id="heart-empty-icon" viewBox="0 0 24 24">
+                    <path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/>
+                </symbol>
+                
+                <!-- Heart Icon (Filled) -->
+                <symbol id="heart-filled-icon" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </symbol>
+                
+                <!-- Download Icon -->
+                <symbol id="download-icon" viewBox="0 0 24 24">
+                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                </symbol>
+                
+                <!-- Read/Book Icon -->
+                <symbol id="book-icon" viewBox="0 0 24 24">
+                    <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 2 2h12c1.11 0 2-.9 2-2V4c0-1.1-.89-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/>
+                </symbol>
+                
+                <!-- Back Arrow Icon -->
+                <symbol id="back-arrow-icon" viewBox="0 0 24 24">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.42-1.41L7.83 13H20v-2z"/>
+                </symbol>
+                
+                <!-- Close Icon -->
+                <symbol id="close-icon" viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </symbol>
+                
+                <!-- Empty Library Icon -->
+                <symbol id="empty-library-icon" viewBox="0 0 24 24">
+                    <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/>
+                </symbol>
+            </defs>
+        </svg>
 
-    <script src="database.js"></script>
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script>
-        const appContainer = document.getElementById('app-container');
-        const header = document.getElementById('app-header');
-        
-        function createBookCard(book) { return `<a href="#book/${book.id}" class="book-card"><img src="${book.coverUrl}" class="book-cover" alt="${book.title}"><div class="book-info"><div class="book-title">${book.title}</div><div class="book-author">${book.author}</div><div class="book-price-row"><div class="book-price">${book.yourPrice}</div><div class="book-list-price">${book.listPrice}</div></div></div></a>`; }
-        function renderHeader(title, showBackButton = false) { header.innerHTML = `${showBackButton ? `<div class="back-btn" onclick="window.history.back()">←</div>` : ''}<div class="header-title">${title}</div>`; }
-        function renderHomePage() {
-            renderHeader('Mo Bahi');
-            const sliderBooks = booksDB.filter(b => b.isFeaturedInSlider);
-            appContainer.innerHTML = `
-                <div class="page-view">
-                    <div class="slider-container swiper-container">
-                        <div class="swiper-wrapper">
-                            ${sliderBooks.map(book => `<div class="swiper-slide" data-id="${book.id}"><img src="${book.sliderImageUrl}" alt="${book.title}"><div class="slider-overlay"><div class="slider-title">${book.title}</div><div class="slider-tagline">${book.tagline}</div><div class="slider-author">${book.author}</div></div><div class="slider-read-btn">Read Now</div></div>`).join('')}
-                        </div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div>
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <button class="back-btn hidden" id="backBtn">
+                    <svg class="svg-icon">
+                        <use href="#back-arrow-icon"></use>
+                    </svg>
+                </button>
+                <h1 class="header-title" id="headerTitle">Mo Bahi</h1>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main id="app-container">
+            <!-- Content will be dynamically loaded here -->
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav>
+            <div class="nav-content">
+                <a href="#home" class="nav-item" data-tab="home">
+                    <div class="nav-icon">
+                        <svg class="svg-icon">
+                            <use href="#home-icon"></use>
+                        </svg>
                     </div>
-                    <div class="section-header"><div class="section-title">Categories</div><a href="#section/categories" class="see-all">See All</a></div>
-                    <div class="categories-carousel">${categoriesDB.map(c => `<a href="#category/${c.name}" class="category-item"><div class="category-icon"><img src="${c.iconUrl}" alt="${c.name}"></div><div class="category-name">${c.name}</div></a>`).join('')}</div>
-                    <div class="section-header"><div class="section-title">New Arrivals</div><a href="#section/new-arrivals" class="see-all">See All</a></div>
-                    <div class="book-grid">${booksDB.map(createBookCard).join('')}</div>
-                </div>`;
-            new Swiper('.swiper-container', { navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }, loop: sliderBooks.length > 1 });
-            appContainer.querySelectorAll('.swiper-slide').forEach(slide => slide.addEventListener('click', () => window.location.hash = `#book/${slide.dataset.id}`));
-        }
-        function renderExplorePage() {
-            renderHeader('Explore');
-            appContainer.innerHTML = `<div class="page-view"><div class="search-bar"><input type="search" id="search-input" placeholder="Search for books or authors..."></div><div class="book-grid" id="search-results"></div></div>`;
-            const searchInput = document.getElementById('search-input');
-            const resultsContainer = document.getElementById('search-results');
-            searchInput.addEventListener('input', e => {
-                const query = e.target.value.toLowerCase();
-                resultsContainer.innerHTML = !query ? '' : booksDB.filter(b => b.title.toLowerCase().includes(query) || b.author.toLowerCase().includes(query)).map(createBookCard).join('');
-            });
-        }
-        function renderLibraryPage() {
-            renderHeader('My Library');
-            const savedBookIds = JSON.parse(localStorage.getItem('mobahi_library')) || [];
-            const savedBooks = booksDB.filter(book => savedBookIds.includes(book.id));
-            appContainer.innerHTML = `<div class="page-view"><div class="book-grid">${savedBooks.length > 0 ? savedBooks.map(createBookCard).join('') : `<p>Your library is empty. Like a book to save it here.</p>`}</div></div>`;
-        }
-        function renderSeeAllPage(type, title) {
-            renderHeader(title, true);
-            const booksToShow = type === 'new-arrivals' ? booksDB : booksDB.filter(b => b.category === type);
-            appContainer.innerHTML = `<div class="page-view"><div class="book-grid">${booksToShow.map(createBookCard).join('')}</div></div>`;
-        }
-        function renderBookDetailsPage(bookId) {
-            const book = booksDB.find(b => b.id === bookId);
-            if (!book) { renderHeader('Not Found', true); appContainer.innerHTML = `<div class="page-view"><h1>Book not found</h1></div>`; return; }
-            renderHeader(book.title, true);
-            let library = JSON.parse(localStorage.getItem('mobahi_library')) || [];
-            const isSaved = library.includes(bookId);
-            appContainer.innerHTML = `
-                <div class="page-view" style="padding-bottom: 120px;">
-                    <div class="details-view-grid">
-                        <div class="details-cover-container"><img src="${book.coverUrl}" alt="${book.title}" class="details-cover"></div>
-                        <div class="details-content">
-                            <div class="details-section">
-                                <div class="details-section-header"><div class="details-section-title">Description</div><div class="heart-icon" data-book-id="${book.id}">${isSaved ? '❤️' : '♡'}</div></div><p>${book.description}</p>
-                            </div>
-                            <div class="details-section"><div class="details-section-title">Category</div><p>${book.category}</p></div>
-                            <div class="details-buy-section">
-                                 <div class="details-section-title">Buy the eBook</div>
-                                 <div class="price-info"><span class="price-label">List Price</span> <span>${book.listPrice}</span></div>
-                                 <div class="price-info"><span class="price-label">Your price</span> <span class="book-price">${book.yourPrice}</span></div>
-                            </div>
+                    <span id="navHome">Home</span>
+                </a>
+                <a href="#explore" class="nav-item" data-tab="explore">
+                    <div class="nav-icon">
+                        <svg class="svg-icon">
+                            <use href="#search-icon"></use>
+                        </svg>
+                    </div>
+                    <span id="navExplore">Explore</span>
+                </a>
+                <a href="#library" class="nav-item" data-tab="library">
+                    <div class="nav-icon">
+                        <svg class="svg-icon">
+                            <use href="#library-icon"></use>
+                        </svg>
+                    </div>
+                    <span id="navLibrary">Library</span>
+                </a>
+                <a href="#menu" class="nav-item" data-tab="menu">
+                    <div class="nav-icon">
+                        <svg class="svg-icon">
+                            <use href="#menu-icon"></use>
+                        </svg>
+                    </div>
+                    <span id="navMenu">Menu</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Menu Modal -->
+        <div class="modal-overlay" id="menuOverlay">
+            <div class="menu-modal" id="menuModal">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="menuTitle">Menu</h2>
+                    <button class="close-btn" id="closeMenuBtn">
+                        <svg class="svg-icon">
+                            <use href="#close-icon"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="menu-sections">
+                    <div class="menu-section">
+                        <h3 id="languageTitle">Language</h3>
+                        <div class="language-grid" id="languageGrid">
+                            <!-- Language buttons will be populated here -->
+                        </div>
+                    </div>
+                    <div class="menu-section">
+                        <h3 id="myAppsTitle">My Apps</h3>
+                        <div class="menu-items">
+                            <a href="#" class="menu-item" id="myOdiaGamesLink">My Odia Games</a>
+                            <a href="#" class="menu-item" id="sbCallLink">SB Call</a>
+                            <a href="#" class="menu-item" id="sbSstvLink">SB SSTV Encoder</a>
+                        </div>
+                    </div>
+                    <div class="menu-section">
+                        <h3 id="followMeTitle">Follow Me</h3>
+                        <div class="menu-items">
+                            <a href="https://instagram.com" class="menu-item" target="_blank">Instagram</a>
+                        </div>
+                    </div>
+                    <div class="menu-section">
+                        <h3 id="pagesTitle">Pages</h3>
+                        <div class="menu-items">
+                            <a href="about.html" class="menu-item" id="aboutLink">About</a>
+                            <a href="privacy.html" class="menu-item" id="privacyLink">Privacy Policy</a>
+                            <a href="terms.html" class="menu-item" id="termsLink">Terms of Service</a>
                         </div>
                     </div>
                 </div>
-                <div class="details-action-buttons">
-                    ${book.isDownloadable ? `<a href="${book.fileUrl}" download class="btn btn-outline">Download</a>` : ''}
-                    <a href="reader.html?file=${encodeURIComponent(book.fileUrl)}" target="_blank" class="btn btn-solid" style="grid-column: ${book.isDownloadable ? 'auto' : '1 / -1'};">Read</a>
-                </div>`;
-            appContainer.querySelector('.heart-icon').addEventListener('click', function() {
-                let currentLibrary = JSON.parse(localStorage.getItem('mobahi_library')) || [];
-                const bookIdentifier = this.dataset.bookId;
-                if (currentLibrary.includes(bookIdentifier)) {
-                    currentLibrary = currentLibrary.filter(id => id !== bookIdentifier); this.innerHTML = '♡';
-                } else { currentLibrary.push(bookIdentifier); this.innerHTML = '❤️'; }
-                localStorage.setItem('mobahi_library', JSON.stringify(currentLibrary));
-            });
-        }
-        const routes = { '#home': renderHomePage, '#explore': renderExplorePage, '#library': renderLibraryPage };
-        function handleRouteChange() {
-            const hash = window.location.hash || '#home';
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.toggle('active', item.hash === hash));
-            const routeHandler = routes[hash];
-            if (routeHandler) routeHandler();
-            else if (hash.startsWith('#book/')) renderBookDetailsPage(hash.substring(6));
-            else if (hash.startsWith('#section/')) renderSeeAllPage(hash.substring(9), 'New Arrivals');
-            else if (hash.startsWith('#category/')) renderSeeAllPage(decodeURIComponent(hash.substring(10)), decodeURIComponent(hash.substring(10)));
-            else renderHomePage();
-        }
-        window.addEventListener('hashchange', handleRouteChange);
-        document.addEventListener('DOMContentLoaded', handleRouteChange);
+            </div>
+        </div>
+    </div>
 
-        // Menu Logic
-        const menuBtn = document.getElementById('menu-btn');
-        const menuModal = document.getElementById('menu-modal');
-        function renderMenu() {
-            menuModal.innerHTML = `
-                <div class="menu-modal-content">
-                    <div class="menu-modal-header"><h2>Menu</h2><button class="close-menu-btn">×</button></div>
-                    <div class="menu-section"><h3>Language</h3><div class="lang-switcher">
-                        <button class="lang-btn" data-lang-code="od">ଓଡ଼ିଆ</button><button class="lang-btn" data-lang-code="en">English</button>
-                        <button class="lang-btn" data-lang-code="sa">संस्कृतम्</button><button class="lang-btn" data-lang-code="ta">தமிழ்</button>
-                        <button class="lang-btn" data-lang-code="te">తెలుగు</button><button class="lang-btn" data-lang-code="kn">ಕನ್ನಡ</button>
-                        <button class="lang-btn" data-lang-code="ml">മലയാളം</button><button class="lang-btn" data-lang-code="hi">हिन्दी</button>
-                    </div></div>
-                    <div class="menu-section"><h3>My Apps</h3><ul class="menu-list"><li><a href="#">My Odia Games</a></li><li><a href="#">SB Call</a></li><li><a href="#">SB SSTV Encoder</a></li></ul></div>
-                    <div class="menu-section"><h3>Follow Me</h3><ul class="menu-list"><li><a href="https://www.instagram.com/sandeepbiswalg" target="_blank">Instagram</a></li></ul></div>
-                    <div class="menu-section"><h3>Pages</h3><ul class="menu-list"><li><a href="about.html">About Us</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms & Conditions</a></li></ul></div>
-                </div>`;
-            document.querySelector('.close-menu-btn').addEventListener('click', () => menuModal.style.display = 'none');
-            // Language switcher logic will be handled elsewhere or added here
+    <!-- Database and Language Scripts -->
+    <script src="database.js"></script>
+    <script src="languages/en.js"></script>
+
+    <script>
+        // Global App State
+        const AppState = {
+            currentRoute: 'home',
+            currentLanguage: 'en',
+            savedBooks: JSON.parse(localStorage.getItem('savedBooks') || '[]'),
+            searchQuery: '',
+            swiper: null
+        };
+
+        // Language Management
+        class LanguageManager {
+            static availableLanguages = {
+                'en': 'English',
+                'od': 'ओड़िया',
+                'sa': 'संस्कृत',
+                'ta': 'தமிழ்',
+                'te': 'తెలుగు',
+                'kn': 'ಕನ್ನಡ',
+                'ml': 'മലയാളം',
+                'hi': 'हिन्दी'
+            };
+
+            static async loadLanguage(langCode) {
+                if (langCode === AppState.currentLanguage) return;
+                
+                try {
+                    // Remove previous language script
+                    const existingScript = document.querySelector(`script[src*="languages/"]`);
+                    if (existingScript) {
+                        existingScript.remove();
+                    }
+                    
+                    // Load new language script
+                    const script = document.createElement('script');
+                    script.src = `languages/${langCode}.js`;
+                    script.onload = () => {
+                        AppState.currentLanguage = langCode;
+                        localStorage.setItem('selectedLanguage', langCode);
+                        this.updateUI();
+                        // Re-render current page with new language
+                        Router.navigate(AppState.currentRoute, true);
+                    };
+                    document.head.appendChild(script);
+                } catch (error) {
+                    console.error('Failed to load language:', error);
+                }
+            }
+
+            static updateUI() {
+                // Update all translatable elements
+                const elements = {
+                    'navHome': lang.home,
+                    'navExplore': lang.explore,
+                    'navLibrary': lang.library,
+                    'navMenu': lang.menu,
+                    'menuTitle': lang.menu,
+                    'languageTitle': lang.language,
+                    'myAppsTitle': lang.myApps,
+                    'followMeTitle': lang.followMe,
+                    'pagesTitle': lang.pages,
+                    'myOdiaGamesLink': lang.myOdiaGames,
+                    'sbCallLink': lang.sbCall,
+                    'sbSstvLink': lang.sbSstvEncoder,
+                    'aboutLink': lang.about,
+                    'privacyLink': lang.privacy,
+                    'termsLink': lang.terms
+                };
+
+                Object.entries(elements).forEach(([id, text]) => {
+                    const element = document.getElementById(id);
+                    if (element) element.textContent = text;
+                });
+
+                // Update language buttons
+                this.renderLanguageButtons();
+            }
+
+            static renderLanguageButtons() {
+                const languageGrid = document.getElementById('languageGrid');
+                if (!languageGrid) return;
+
+                languageGrid.innerHTML = Object.entries(this.availableLanguages)
+                    .map(([code, name]) => `
+                        <button class="language-btn ${code === AppState.currentLanguage ? 'active' : ''}" 
+                                onclick="LanguageManager.loadLanguage('${code}')">
+                            ${name}
+                        </button>
+                    `).join('');
+            }
+
+            static init() {
+                const savedLang = localStorage.getItem('selectedLanguage') || 'en';
+                if (savedLang !== 'en') {
+                    this.loadLanguage(savedLang);
+                } else {
+                    this.updateUI();
+                }
+            }
         }
-        menuBtn.addEventListener('click', () => { renderMenu(); menuModal.style.display = 'block'; });
-        menuModal.addEventListener('click', (e) => { if(e.target === menuModal) menuModal.style.display = 'none'; });
+
+        // Router
+        class Router {
+            static init() {
+                window.addEventListener('hashchange', this.handleRoute.bind(this));
+                this.handleRoute();
+            }
+
+            static handleRoute() {
+                const hash = window.location.hash.slice(1) || 'home';
+                const [route, ...params] = hash.split('/');
+                this.navigate(route, false, params);
+            }
+
+            static navigate(route, pushState = true, params = []) {
+                if (pushState) {
+                    const newHash = params.length ? `${route}/${params.join('/')}` : route;
+                    window.location.hash = newHash;
+                    return;
+                }
+
+                AppState.currentRoute = route;
+                this.updateHeader(route);
+                this.updateNavigation(route);
+                this.renderPage(route, params);
+            }
+
+            static updateHeader(route) {
+                const backBtn = document.getElementById('backBtn');
+                const headerTitle = document.getElementById('headerTitle');
+
+                if (route === 'home') {
+                    backBtn.classList.add('hidden');
+                    headerTitle.textContent = lang.appName;
+                } else {
+                    backBtn.classList.remove('hidden');
+                    
+                    const titles = {
+                        'explore': lang.explore,
+                        'library': lang.library,
+                        'book': '',
+                        'category': '',
+                        'section': ''
+                    };
+                    
+                    headerTitle.textContent = titles[route] || lang.appName;
+                }
+            }
+
+            static updateNavigation(route) {
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                const activeTab = document.querySelector(`[data-tab="${route}"]`);
+                if (activeTab) {
+                    activeTab.classList.add('active');
+                }
+            }
+
+            static renderPage(route, params) {
+                const container = document.getElementById('app-container');
+                
+                switch (route) {
+                    case 'home':
+                        container.innerHTML = PageRenderer.renderHomePage();
+                        this.initSwiper();
+                        break;
+                    case 'explore':
+                        container.innerHTML = PageRenderer.renderExplorePage();
+                        this.initSearch();
+                        break;
+                    case 'library':
+                        container.innerHTML = PageRenderer.renderLibraryPage();
+                        break;
+                    case 'book':
+                        if (params[0]) {
+                            container.innerHTML = PageRenderer.renderBookDetailsPage(params[0]);
+                        }
+                        break;
+                    case 'category':
+                        if (params[0]) {
+                            container.innerHTML = PageRenderer.renderCategoryPage(params[0]);
+                        }
+                        break;
+                    case 'section':
+                        if (params[0]) {
+                            container.innerHTML = PageRenderer.renderSectionPage(params[0]);
+                        }
+                        break;
+                    case 'menu':
+                        MenuModal.show();
+                        break;
+                    default:
+                        this.navigate('home');
+                }
+            }
+
+            static initSwiper() {
+                setTimeout(() => {
+                    if (AppState.swiper) {
+                        AppState.swiper.destroy();
+                    }
+                    
+                    AppState.swiper = new Swiper('.swiper', {
+                        slidesPerView: 1,
+                        spaceBetween: 0,
+                        autoplay: {
+                            delay: 5000,
+                            disableOnInteraction: false,
+                        },
+                        loop: true,
+                        pagination: {
+                            el: '.swiper-pagination',
+                            clickable: true,
+                        }
+                    });
+                }, 100);
+            }
+
+            static initSearch() {
+                const searchInput = document.getElementById('searchInput');
+                if (searchInput) {
+                    searchInput.addEventListener('input', (e) => {
+                        AppState.searchQuery = e.target.value;
+                        this.performSearch();
+                    });
+                    
+                    searchInput.focus();
+                }
+            }
+
+            static performSearch() {
+                const query = AppState.searchQuery.toLowerCase();
+                const results = booksDB.filter(book => 
+                    book.title.toLowerCase().includes(query) ||
+                    book.author.toLowerCase().includes(query) ||
+                    book.category.toLowerCase().includes(query)
+                );
+
+                const resultsContainer = document.getElementById('searchResults');
+                if (resultsContainer) {
+                    if (results.length === 0) {
+                        resultsContainer.innerHTML = `
+                            <div class="no-results">
+                                <div class="no-results-icon">
+                                    <svg class="svg-icon" style="width: 64px; height: 64px;">
+                                        <use href="#library-icon"></use>
+                                    </svg>
+                                </div>
+                                <p>${lang.noResults}</p>
+                            </div>
+                        `;
+                    } else {
+                        resultsContainer.innerHTML = `
+                            <div class="books-grid">
+                                ${results.map(book => PageRenderer.renderBookCard(book)).join('')}
+                            </div>
+                        `;
+                    }
+                }
+            }
+        }
+
+        // Page Renderer
+        class PageRenderer {
+            static renderHomePage() {
+                const featuredBooks = booksDB.filter(book => book.isFeaturedInSlider);
+                const newArrivals = booksDB.slice(0, 6);
+
+                return `
+                    <div class="slider-section">
+                        <div class="swiper">
+                            <div class="swiper-wrapper">
+                                ${featuredBooks.map(book => `
+                                    <div class="swiper-slide slider-slide" 
+                                         style="background-image: url('${book.sliderImageUrl}')">
+                                        <div class="slider-overlay"></div>
+                                        <div class="slider-content">
+                                            <div class="slider-title">${book.title}</div>
+                                            <div class="slider-tagline">${book.tagline}</div>
+                                            <div class="slider-author">${lang.by || 'by'} ${book.author}</div>
+                                            <button class="read-now-btn" onclick="Router.navigate('book', true, ['${book.id}'])">
+                                                ${lang.readNow}
+                                            </button>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="swiper-pagination"></div>
+                        </div>
+                    </div>
+
+                    <div class="categories-section">
+                        <div class="section-header">
+                            <h2 class="section-title">${lang.categories}</h2>
+                            <a href="#category/all" class="see-all-link">${lang.seeAll}</a>
+                        </div>
+                        <div class="categories-scroll">
+                            ${categoriesDB.map(category => `
+                                <a href="#category/${encodeURIComponent(category.name)}" class="category-item">
+                                    <div class="category-icon" style="background-image: url('${category.iconUrl}')"></div>
+                                    <div class="category-name">${category.name}</div>
+                                </a>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="new-arrivals-section">
+                        <div class="section-header">
+                            <h2 class="section-title">${lang.newArrivals}</h2>
+                            <a href="#section/new-arrivals" class="see-all-link">${lang.seeAll}</a>
+                        </div>
+                        <div class="books-grid">
+                            ${newArrivals.map(book => this.renderBookCard(book)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            static renderExplorePage() {
+                return `
+                    <div class="search-container">
+                        <input type="text" 
+                               class="search-input" 
+                               id="searchInput"
+                               placeholder="${lang.searchPlaceholder}"
+                               value="${AppState.searchQuery}">
+                    </div>
+                    <div id="searchResults" class="search-results">
+                        ${AppState.searchQuery ? '' : `
+                            <div class="books-grid">
+                                ${booksDB.map(book => this.renderBookCard(book)).join('')}
+                            </div>
+                        `}
+                    </div>
+                `;
+            }
+
+            static renderLibraryPage() {
+                const savedBooks = booksDB.filter(book => AppState.savedBooks.includes(book.id));
+
+                if (savedBooks.length === 0) {
+                    return `
+                        <div class="empty-library">
+                            <div class="empty-library-icon">
+                                <svg class="svg-icon" style="width: 64px; height: 64px;">
+                                    <use href="#empty-library-icon"></use>
+                                </svg>
+                            </div>
+                            <h2 class="empty-library-title">${lang.emptyLibrary}</h2>
+                            <p class="empty-library-desc">${lang.emptyLibraryDesc}</p>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="books-grid">
+                        ${savedBooks.map(book => this.renderBookCard(book)).join('')}
+                    </div>
+                `;
+            }
+
+            static renderBookDetailsPage(bookId) {
+                const book = booksDB.find(b => b.id === bookId);
+                if (!book) return '<div class="loading">Book not found</div>';
+
+                const isLiked = AppState.savedBooks.includes(book.id);
+
+                return `
+                    <div class="book-details">
+                        <div class="book-hero">
+                            <div class="book-cover-large" style="background-image: url('${book.coverUrl}')"></div>
+                            <div class="book-meta">
+                                <h1 class="book-title-large">${book.title}</h1>
+                                <p class="book-author-large">${book.author}</p>
+                                <span class="book-category-large">${book.category}</span>
+                                <button class="like-btn ${isLiked ? 'liked' : ''}" 
+                                        onclick="BookManager.toggleSave('${book.id}')">
+                                    <svg class="svg-icon svg-icon-small">
+                                        <use href="#${isLiked ? 'heart-filled-icon' : 'heart-empty-icon'}"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="book-pricing">
+                            <h3 class="pricing-header">${lang.buyTheEbook}</h3>
+                            <div class="pricing-row">
+                                <span>${lang.listPrice}</span>
+                                <span>${book.listPrice}</span>
+                            </div>
+                            <div class="pricing-row">
+                                <span>${lang.yourPrice}</span>
+                                <span>${book.yourPrice}</span>
+                            </div>
+                        </div>
+
+                        <div class="book-actions">
+                            ${book.isDownloadable ? `
+                                <a href="${book.fileUrl}" 
+                                   class="action-btn btn-secondary" 
+                                   download="${book.title}.pdf">
+                                    <svg class="svg-icon svg-icon-small">
+                                        <use href="#download-icon"></use>
+                                    </svg>
+                                    ${lang.download}
+                                </a>
+                            ` : ''}
+                            <a href="reader.html?file=${encodeURIComponent(book.fileUrl)}&title=${encodeURIComponent(book.title)}" 
+                               class="action-btn btn-primary" 
+                               target="_blank">
+                                <svg class="svg-icon svg-icon-small">
+                                    <use href="#book-icon"></use>
+                                </svg>
+                                ${lang.read}
+                            </a>
+                        </div>
+
+                        <div class="book-description">
+                            <h3 class="description-title">${lang.description}</h3>
+                            <p class="description-text">${book.description}</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            static renderCategoryPage(categoryName) {
+                const decodedCategory = decodeURIComponent(categoryName);
+                const books = decodedCategory === 'all' ? 
+                    booksDB : 
+                    booksDB.filter(book => book.category === decodedCategory);
+
+                document.getElementById('headerTitle').textContent = 
+                    decodedCategory === 'all' ? lang.categories : decodedCategory;
+
+                return `
+                    <div class="books-grid">
+                        ${books.map(book => this.renderBookCard(book)).join('')}
+                    </div>
+                `;
+            }
+
+            static renderSectionPage(sectionName) {
+                let books = [];
+                let title = '';
+
+                switch (sectionName) {
+                    case 'new-arrivals':
+                        books = booksDB;
+                        title = lang.newArrivals;
+                        break;
+                    default:
+                        books = booksDB;
+                        title = lang.seeAll;
+                }
+
+                document.getElementById('headerTitle').textContent = title;
+
+                return `
+                    <div class="books-grid">
+                        ${books.map(book => this.renderBookCard(book)).join('')}
+                    </div>
+                `;
+            }
+
+            static renderBookCard(book) {
+                const isLiked = AppState.savedBooks.includes(book.id);
+                
+                return `
+                    <div class="book-card" onclick="Router.navigate('book', true, ['${book.id}'])">
+                        <div class="book-cover" style="background-image: url('${book.coverUrl}')">
+                            <button class="like-btn ${isLiked ? 'liked' : ''}" 
+                                    onclick="event.stopPropagation(); BookManager.toggleSave('${book.id}')">
+                                <svg class="svg-icon svg-icon-small">
+                                    <use href="#${isLiked ? 'heart-filled-icon' : 'heart-empty-icon'}"></use>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="book-info">
+                            <h3 class="book-title">${book.title}</h3>
+                            <p class="book-author">${book.author}</p>
+                            <p class="book-category">${book.category}</p>
+                            <div class="book-price">
+                                <span class="price-current">${book.yourPrice}</span>
+                                ${book.yourPrice !== book.listPrice ? `
+                                    <span class="price-original">${book.listPrice}</span>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Book Manager
+        class BookManager {
+            static toggleSave(bookId) {
+                const index = AppState.savedBooks.indexOf(bookId);
+                
+                if (index === -1) {
+                    AppState.savedBooks.push(bookId);
+                } else {
+                    AppState.savedBooks.splice(index, 1);
+                }
+
+                localStorage.setItem('savedBooks', JSON.stringify(AppState.savedBooks));
+                
+                // Update all like buttons for this book
+                document.querySelectorAll(`[onclick*="${bookId}"]`).forEach(btn => {
+                    const isLiked = AppState.savedBooks.includes(bookId);
+                    btn.classList.toggle('liked', isLiked);
+                    const useElement = btn.querySelector('use');
+                    if (useElement) {
+                        useElement.setAttribute('href', `#${isLiked ? 'heart-filled-icon' : 'heart-empty-icon'}`);
+                    }
+                });
+
+                // Re-render library page if currently viewing
+                if (AppState.currentRoute === 'library') {
+                    Router.renderPage('library');
+                }
+            }
+        }
+
+        // Menu Modal
+        class MenuModal {
+            static init() {
+                const overlay = document.getElementById('menuOverlay');
+                const closeBtn = document.getElementById('closeMenuBtn');
+
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) {
+                        this.hide();
+                    }
+                });
+
+                closeBtn.addEventListener('click', () => this.hide());
+            }
+
+            static show() {
+                const overlay = document.getElementById('menuOverlay');
+                const modal = document.getElementById('menuModal');
+                
+                overlay.classList.add('active');
+                modal.classList.add('active');
+                
+                // Navigate back to previous route
+                history.back();
+            }
+
+            static hide() {
+                const overlay = document.getElementById('menuOverlay');
+                const modal = document.getElementById('menuModal');
+                
+                overlay.classList.remove('active');
+                modal.classList.remove('active');
+            }
+        }
+
+        // App Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize back button
+            document.getElementById('backBtn').addEventListener('click', () => {
+                window.history.back();
+            });
+
+            // Initialize components
+            LanguageManager.init();
+            MenuModal.init();
+            Router.init();
+        });
     </script>
 </body>
 </html>
