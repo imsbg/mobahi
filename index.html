@@ -45,11 +45,15 @@
             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             color: var(--text-primary);
             line-height: 1.6;
-            padding-top: 70px;
-            padding-bottom: 90px;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
+        }
+        
+        /* Mobile First Approach */
+        body {
+            padding-top: 70px;
+            padding-bottom: 90px;
         }
         
         /* App Wrapper for Responsive Design */
@@ -63,38 +67,75 @@
             transition: var(--transition);
         }
         
-        /* Responsive Breakpoints */
-        @media (min-width: 480px) {
-            .app-wrapper {
-                max-width: 480px;
-            }
-        }
-        
+        /* Tablet Layout */
         @media (min-width: 768px) {
             body {
-                padding-top: 40px;
-                padding-bottom: 40px;
+                padding: 20px;
+                background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
             }
             
             .app-wrapper {
                 max-width: 768px;
-                margin-top: 20px;
-                margin-bottom: 20px;
-                min-height: calc(100vh - 80px);
+                min-height: calc(100vh - 40px);
                 border-radius: var(--radius-lg);
                 overflow: hidden;
             }
         }
         
+        /* Desktop Layout */
         @media (min-width: 1024px) {
+            body {
+                padding: 40px;
+            }
+            
             .app-wrapper {
-                max-width: 1024px;
+                max-width: 1200px;
+                display: flex;
+                flex-direction: column;
+                min-height: calc(100vh - 80px);
+            }
+            
+            .desktop-layout {
+                display: flex;
+                flex: 1;
+            }
+            
+            .sidebar {
+                width: 280px;
+                background: var(--surface);
+                border-right: 1px solid var(--border);
+                padding: 32px 24px;
+                display: flex;
+                flex-direction: column;
+                gap: 32px;
+            }
+            
+            .main-content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .content-area {
+                flex: 1;
+                padding: 32px;
+                overflow-y: auto;
             }
         }
         
-        @media (min-width: 1200px) {
+        /* Ultra-wide Layout */
+        @media (min-width: 1440px) {
             .app-wrapper {
-                max-width: 1200px;
+                max-width: 1400px;
+            }
+            
+            .sidebar {
+                width: 320px;
+                padding: 40px 32px;
+            }
+            
+            .content-area {
+                padding: 40px 48px;
             }
         }
         
@@ -208,30 +249,32 @@
             transition: var(--transition);
         }
         
-        @media (min-width: 480px) {
-            header {
-                max-width: 480px;
-            }
-        }
-        
         @media (min-width: 768px) {
             header {
                 max-width: 768px;
-                position: absolute;
-                top: 0;
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
                 border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            }
+            
+            body {
+                padding-top: 20px;
             }
         }
         
         @media (min-width: 1024px) {
             header {
-                max-width: 1024px;
+                max-width: none;
+                width: 100%;
+                border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+                height: 80px;
+                padding: 0 32px;
             }
-        }
-        
-        @media (min-width: 1200px) {
-            header {
-                max-width: 1200px;
+            
+            body {
+                padding-top: 40px;
             }
         }
         
@@ -272,6 +315,62 @@
             letter-spacing: -0.5px;
         }
         
+        @media (min-width: 1024px) {
+            .header-title {
+                font-size: 28px;
+            }
+        }
+        
+        /* Sidebar Navigation (Desktop) */
+        .sidebar-nav {
+            display: none;
+        }
+        
+        @media (min-width: 1024px) {
+            .sidebar-nav {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .sidebar-nav-item {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 16px 20px;
+                border-radius: 12px;
+                text-decoration: none;
+                color: var(--text-secondary);
+                font-weight: 600;
+                transition: var(--transition);
+                position: relative;
+            }
+            
+            .sidebar-nav-item:hover {
+                background: var(--surface-dark);
+                color: var(--text-primary);
+                transform: translateX(4px);
+            }
+            
+            .sidebar-nav-item.active {
+                background: var(--primary-color);
+                color: white;
+                box-shadow: var(--shadow-md);
+            }
+            
+            .sidebar-nav-item.active::before {
+                content: '';
+                position: absolute;
+                left: -24px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 4px;
+                height: 32px;
+                background: var(--primary-color);
+                border-radius: 2px;
+            }
+        }
+        
         /* Main Content */
         main {
             padding: 24px;
@@ -287,11 +386,12 @@
         
         @media (min-width: 1024px) {
             main {
-                padding: 40px;
+                padding: 0;
+                min-height: auto;
             }
         }
         
-        /* Bottom Navigation */
+        /* Bottom Navigation (Mobile/Tablet only) */
         nav {
             position: fixed;
             bottom: 0;
@@ -307,30 +407,28 @@
             transition: var(--transition);
         }
         
-        @media (min-width: 480px) {
-            nav {
-                max-width: 480px;
-            }
-        }
-        
         @media (min-width: 768px) {
             nav {
                 max-width: 768px;
-                position: absolute;
-                bottom: 0;
+                position: relative;
+                bottom: auto;
+                left: auto;
+                transform: none;
                 border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            }
+            
+            body {
+                padding-bottom: 20px;
             }
         }
         
         @media (min-width: 1024px) {
             nav {
-                max-width: 1024px;
+                display: none;
             }
-        }
-        
-        @media (min-width: 1200px) {
-            nav {
-                max-width: 1200px;
+            
+            body {
+                padding-bottom: 40px;
             }
         }
         
@@ -419,7 +517,7 @@
         
         @media (min-width: 1024px) {
             .slider-slide {
-                height: 360px;
+                height: 400px;
             }
         }
         
@@ -437,12 +535,24 @@
             animation: slideInLeft 0.8s ease-out;
         }
         
+        @media (min-width: 1024px) {
+            .slider-content {
+                padding: 48px;
+            }
+        }
+        
         .slider-title {
             font-size: 26px;
             font-weight: 800;
             margin-bottom: 8px;
             text-shadow: 0 2px 8px rgba(0,0,0,0.5);
             letter-spacing: -0.5px;
+        }
+        
+        @media (min-width: 1024px) {
+            .slider-title {
+                font-size: 36px;
+            }
         }
         
         .slider-tagline {
@@ -452,11 +562,24 @@
             text-shadow: 0 1px 4px rgba(0,0,0,0.5);
         }
         
+        @media (min-width: 1024px) {
+            .slider-tagline {
+                font-size: 18px;
+            }
+        }
+        
         .slider-author {
             font-size: 14px;
             opacity: 0.85;
             margin-bottom: 20px;
             text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        }
+        
+        @media (min-width: 1024px) {
+            .slider-author {
+                font-size: 16px;
+                margin-bottom: 24px;
+            }
         }
         
         .read-now-btn {
@@ -472,6 +595,13 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
             position: relative;
             overflow: hidden;
+        }
+        
+        @media (min-width: 1024px) {
+            .read-now-btn {
+                padding: 16px 32px;
+                font-size: 18px;
+            }
         }
         
         .read-now-btn::before {
@@ -514,6 +644,12 @@
             letter-spacing: -0.5px;
         }
         
+        @media (min-width: 1024px) {
+            .section-title {
+                font-size: 28px;
+            }
+        }
+        
         .see-all-link {
             color: var(--primary-color);
             text-decoration: none;
@@ -548,6 +684,16 @@
             display: none;
         }
         
+        @media (min-width: 1024px) {
+            .categories-scroll {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 32px;
+                overflow: visible;
+                padding: 20px 0;
+            }
+        }
+        
         .category-item {
             flex-shrink: 0;
             text-align: center;
@@ -573,6 +719,13 @@
             box-shadow: var(--shadow-md);
             transition: var(--transition);
             position: relative;
+        }
+        
+        @media (min-width: 1024px) {
+            .category-icon {
+                width: 100px;
+                height: 100px;
+            }
         }
         
         .category-icon::after {
@@ -603,6 +756,12 @@
             transition: var(--transition);
         }
         
+        @media (min-width: 1024px) {
+            .category-name {
+                font-size: 15px;
+            }
+        }
+        
         .category-item:hover .category-name {
             color: var(--primary-color);
         }
@@ -615,7 +774,7 @@
             margin-bottom: 32px;
         }
         
-        @media (min-width: 768px) {
+        @media (min-width: 640px) {
             .books-grid {
                 grid-template-columns: repeat(3, 1fr);
                 gap: 24px;
@@ -632,6 +791,13 @@
         @media (min-width: 1200px) {
             .books-grid {
                 grid-template-columns: repeat(5, 1fr);
+                gap: 32px;
+            }
+        }
+        
+        @media (min-width: 1440px) {
+            .books-grid {
+                grid-template-columns: repeat(6, 1fr);
             }
         }
         
@@ -777,6 +943,16 @@
             animation: fadeIn 0.8s ease-out;
         }
         
+        @media (min-width: 1024px) {
+            .book-details {
+                max-width: none;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 48px;
+                align-items: start;
+            }
+        }
+        
         .book-hero {
             display: flex;
             gap: 32px;
@@ -793,6 +969,14 @@
             }
         }
         
+        @media (min-width: 1024px) {
+            .book-hero {
+                flex-direction: column;
+                text-align: center;
+                margin-bottom: 0;
+            }
+        }
+        
         .book-cover-large {
             width: 200px;
             height: 300px;
@@ -804,6 +988,14 @@
             flex-shrink: 0;
             position: relative;
             overflow: hidden;
+        }
+        
+        @media (min-width: 1024px) {
+            .book-cover-large {
+                width: 300px;
+                height: 450px;
+                margin: 0 auto 32px;
+            }
         }
         
         .book-cover-large::after {
@@ -833,6 +1025,12 @@
             }
         }
         
+        @media (min-width: 1024px) {
+            .book-title-large {
+                font-size: 36px;
+            }
+        }
+        
         .book-author-large {
             font-size: 20px;
             color: var(--text-secondary);
@@ -854,6 +1052,10 @@
             border: 2px solid rgba(37, 99, 235, 0.2);
         }
         
+        .book-details-content {
+            animation: slideInLeft 0.6s ease-out 0.2s both;
+        }
+        
         .book-pricing {
             background: linear-gradient(135deg, var(--surface) 0%, var(--surface-dark) 100%);
             padding: 24px;
@@ -861,7 +1063,6 @@
             margin-bottom: 32px;
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
-            animation: slideInLeft 0.6s ease-out 0.2s both;
         }
         
         .pricing-header {
@@ -1081,15 +1282,22 @@
             box-shadow: var(--shadow-xl);
         }
         
-        @media (min-width: 480px) {
-            .menu-modal {
-                max-width: 480px;
-            }
-        }
-        
         @media (min-width: 768px) {
             .menu-modal {
                 max-width: 768px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .menu-modal {
+                max-width: 600px;
+                bottom: 50%;
+                transform: translateX(-50%) translateY(50%) translateY(100%);
+                border-radius: 24px;
+            }
+            
+            .menu-modal.active {
+                transform: translateX(-50%) translateY(50%);
             }
         }
         
@@ -1341,60 +1549,87 @@
             </defs>
         </svg>
 
-        <!-- Header -->
-        <header>
-            <div class="header-content">
-                <button class="back-btn hidden" id="backBtn">
-                    <svg class="svg-icon">
-                        <use href="#back-arrow-icon"></use>
-                    </svg>
-                </button>
-                <h1 class="header-title" id="headerTitle">Mo Bahi</h1>
+        <!-- Desktop Layout Structure -->
+        <div class="desktop-layout" style="display: none;">
+            <div class="sidebar">
+                <div class="sidebar-nav" id="sidebarNav">
+                    <!-- Sidebar navigation will be populated here -->
+                </div>
             </div>
-        </header>
-
-        <!-- Main Content -->
-        <main id="app-container">
-            <!-- Content will be dynamically loaded here -->
-        </main>
-
-        <!-- Bottom Navigation -->
-        <nav>
-            <div class="nav-content">
-                <a href="#home" class="nav-item" data-tab="home">
-                    <div class="nav-icon">
-                        <svg class="svg-icon">
-                            <use href="#home-icon"></use>
-                        </svg>
+            <div class="main-content">
+                <header>
+                    <div class="header-content">
+                        <button class="back-btn hidden" id="backBtn">
+                            <svg class="svg-icon">
+                                <use href="#back-arrow-icon"></use>
+                            </svg>
+                        </button>
+                        <h1 class="header-title" id="headerTitle">Mo Bahi</h1>
                     </div>
-                    <span id="navHome">Home</span>
-                </a>
-                <a href="#explore" class="nav-item" data-tab="explore">
-                    <div class="nav-icon">
-                        <svg class="svg-icon">
-                            <use href="#search-icon"></use>
-                        </svg>
-                    </div>
-                    <span id="navExplore">Explore</span>
-                </a>
-                <a href="#library" class="nav-item" data-tab="library">
-                    <div class="nav-icon">
-                        <svg class="svg-icon">
-                            <use href="#library-icon"></use>
-                        </svg>
-                    </div>
-                    <span id="navLibrary">Library</span>
-                </a>
-                <a href="#menu" class="nav-item" data-tab="menu">
-                    <div class="nav-icon">
-                        <svg class="svg-icon">
-                            <use href="#menu-icon"></use>
-                        </svg>
-                    </div>
-                    <span id="navMenu">Menu</span>
-                </a>
+                </header>
+                <div class="content-area" id="app-container">
+                    <!-- Content will be dynamically loaded here -->
+                </div>
             </div>
-        </nav>
+        </div>
+
+        <!-- Mobile/Tablet Layout Structure -->
+        <div class="mobile-layout">
+            <!-- Header -->
+            <header>
+                <div class="header-content">
+                    <button class="back-btn hidden" id="backBtnMobile">
+                        <svg class="svg-icon">
+                            <use href="#back-arrow-icon"></use>
+                        </svg>
+                    </button>
+                    <h1 class="header-title" id="headerTitleMobile">Mo Bahi</h1>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main id="app-container-mobile">
+                <!-- Content will be dynamically loaded here -->
+            </main>
+
+            <!-- Bottom Navigation -->
+            <nav>
+                <div class="nav-content">
+                    <a href="#home" class="nav-item" data-tab="home">
+                        <div class="nav-icon">
+                            <svg class="svg-icon">
+                                <use href="#home-icon"></use>
+                            </svg>
+                        </div>
+                        <span id="navHome">Home</span>
+                    </a>
+                    <a href="#explore" class="nav-item" data-tab="explore">
+                        <div class="nav-icon">
+                            <svg class="svg-icon">
+                                <use href="#search-icon"></use>
+                            </svg>
+                        </div>
+                        <span id="navExplore">Explore</span>
+                    </a>
+                    <a href="#library" class="nav-item" data-tab="library">
+                        <div class="nav-icon">
+                            <svg class="svg-icon">
+                                <use href="#library-icon"></use>
+                            </svg>
+                        </div>
+                        <span id="navLibrary">Library</span>
+                    </a>
+                    <a href="#menu" class="nav-item" data-tab="menu">
+                        <div class="nav-icon">
+                            <svg class="svg-icon">
+                                <use href="#menu-icon"></use>
+                            </svg>
+                        </div>
+                        <span id="navMenu">Menu</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
 
         <!-- Menu Modal -->
         <div class="modal-overlay" id="menuOverlay">
@@ -1452,7 +1687,8 @@
             currentLanguage: 'en',
             savedBooks: JSON.parse(localStorage.getItem('savedBooks') || '[]'),
             searchQuery: '',
-            swiper: null
+            swiper: null,
+            isDesktop: window.innerWidth >= 1024
         };
 
         // Utility function to check if file exists
@@ -1462,6 +1698,81 @@
                 return response.ok;
             } catch {
                 return false;
+            }
+        }
+
+        // Layout Manager
+        class LayoutManager {
+            static init() {
+                this.updateLayout();
+                window.addEventListener('resize', () => {
+                    this.updateLayout();
+                });
+            }
+
+            static updateLayout() {
+                const isDesktop = window.innerWidth >= 1024;
+                AppState.isDesktop = isDesktop;
+                
+                const desktopLayout = document.querySelector('.desktop-layout');
+                const mobileLayout = document.querySelector('.mobile-layout');
+                
+                if (isDesktop) {
+                    desktopLayout.style.display = 'flex';
+                    mobileLayout.style.display = 'none';
+                    this.setupDesktopNavigation();
+                } else {
+                    desktopLayout.style.display = 'none';
+                    mobileLayout.style.display = 'block';
+                }
+            }
+
+            static setupDesktopNavigation() {
+                const sidebarNav = document.getElementById('sidebarNav');
+                sidebarNav.innerHTML = `
+                    <a href="#home" class="sidebar-nav-item" data-tab="home">
+                        <svg class="svg-icon">
+                            <use href="#home-icon"></use>
+                        </svg>
+                        <span>Home</span>
+                    </a>
+                    <a href="#explore" class="sidebar-nav-item" data-tab="explore">
+                        <svg class="svg-icon">
+                            <use href="#search-icon"></use>
+                        </svg>
+                        <span>Explore</span>
+                    </a>
+                    <a href="#library" class="sidebar-nav-item" data-tab="library">
+                        <svg class="svg-icon">
+                            <use href="#library-icon"></use>
+                        </svg>
+                        <span>Library</span>
+                    </a>
+                    <a href="#menu" class="sidebar-nav-item" data-tab="menu">
+                        <svg class="svg-icon">
+                            <use href="#menu-icon"></use>
+                        </svg>
+                        <span>Menu</span>
+                    </a>
+                `;
+            }
+
+            static getContainer() {
+                return AppState.isDesktop ? 
+                    document.getElementById('app-container') : 
+                    document.getElementById('app-container-mobile');
+            }
+
+            static getBackBtn() {
+                return AppState.isDesktop ? 
+                    document.getElementById('backBtn') : 
+                    document.getElementById('backBtnMobile');
+            }
+
+            static getHeaderTitle() {
+                return AppState.isDesktop ? 
+                    document.getElementById('headerTitle') : 
+                    document.getElementById('headerTitleMobile');
             }
         }
 
@@ -1532,6 +1843,11 @@
                     if (element) element.textContent = text;
                 });
 
+                // Update sidebar navigation
+                if (AppState.isDesktop) {
+                    LayoutManager.setupDesktopNavigation();
+                }
+
                 // Update language buttons
                 this.renderLanguageButtons();
             }
@@ -1586,8 +1902,8 @@
             }
 
             static updateHeader(route) {
-                const backBtn = document.getElementById('backBtn');
-                const headerTitle = document.getElementById('headerTitle');
+                const backBtn = LayoutManager.getBackBtn();
+                const headerTitle = LayoutManager.getHeaderTitle();
 
                 if (route === 'home') {
                     backBtn.classList.add('hidden');
@@ -1608,7 +1924,8 @@
             }
 
             static updateNavigation(route) {
-                document.querySelectorAll('.nav-item').forEach(item => {
+                // Update both mobile and desktop navigation
+                document.querySelectorAll('.nav-item, .sidebar-nav-item').forEach(item => {
                     item.classList.remove('active');
                 });
 
@@ -1616,10 +1933,15 @@
                 if (activeTab) {
                     activeTab.classList.add('active');
                 }
+                
+                // Update all instances of the active tab
+                document.querySelectorAll(`[data-tab="${route}"]`).forEach(item => {
+                    item.classList.add('active');
+                });
             }
 
             static renderPage(route, params) {
-                const container = document.getElementById('app-container');
+                const container = LayoutManager.getContainer();
                 
                 switch (route) {
                     case 'home':
@@ -1738,7 +2060,7 @@
         class PageRenderer {
             static renderHomePage() {
                 const featuredBooks = booksDB.filter(book => book.isFeaturedInSlider);
-                const newArrivals = booksDB.slice(0, 6);
+                const newArrivals = booksDB.slice(0, AppState.isDesktop ? 12 : 6);
 
                 return `
                     <div class="slider-section fade-in">
@@ -1839,65 +2161,120 @@
 
                 const isLiked = AppState.savedBooks.includes(book.id);
                 
-                // Check if book file exists (simplified for demo)
-                let errorMessage = '';
-                
-                return `
-                    <div class="book-details">
-                        ${errorMessage}
-                        <div class="book-hero">
-                            <div class="book-cover-large" style="background-image: url('${book.coverUrl}')"></div>
-                            <div class="book-meta">
-                                <h1 class="book-title-large">${book.title}</h1>
-                                <p class="book-author-large">${book.author}</p>
-                                <span class="book-category-large">${book.category}</span>
-                                <button class="like-btn ${isLiked ? 'liked' : ''}" 
-                                        onclick="BookManager.toggleSave('${book.id}')">
+                if (AppState.isDesktop) {
+                    return `
+                        <div class="book-details">
+                            <div class="book-hero">
+                                <div class="book-cover-large" style="background-image: url('${book.coverUrl}')"></div>
+                                <div class="book-meta">
+                                    <h1 class="book-title-large">${book.title}</h1>
+                                    <p class="book-author-large">${book.author}</p>
+                                    <span class="book-category-large">${book.category}</span>
+                                    <button class="like-btn ${isLiked ? 'liked' : ''}" 
+                                            onclick="BookManager.toggleSave('${book.id}')">
+                                        <svg class="svg-icon svg-icon-small">
+                                            <use href="#${isLiked ? 'heart-filled-icon' : 'heart-empty-icon'}"></use>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="book-details-content">
+                                <div class="book-pricing">
+                                    <h3 class="pricing-header">${lang.buyTheEbook}</h3>
+                                    <div class="pricing-row">
+                                        <span>${lang.listPrice}</span>
+                                        <span>${book.listPrice}</span>
+                                    </div>
+                                    <div class="pricing-row">
+                                        <span>${lang.yourPrice}</span>
+                                        <span>${book.yourPrice}</span>
+                                    </div>
+                                </div>
+
+                                <div class="book-actions">
+                                    ${book.isDownloadable ? `
+                                        <a href="${book.fileUrl}" 
+                                           class="action-btn btn-secondary" 
+                                           download="${book.title}.pdf">
+                                            <svg class="svg-icon svg-icon-small">
+                                                <use href="#download-icon"></use>
+                                            </svg>
+                                            ${lang.download}
+                                        </a>
+                                    ` : ''}
+                                    <button class="action-btn btn-primary" 
+                                            onclick="BookManager.openReader('${book.id}')">
+                                        <svg class="svg-icon svg-icon-small">
+                                            <use href="#book-icon"></use>
+                                        </svg>
+                                        ${lang.read}
+                                    </button>
+                                </div>
+
+                                <div class="book-description">
+                                    <h3 class="description-title">${lang.description}</h3>
+                                    <p class="description-text">${book.description}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="book-details">
+                            <div class="book-hero">
+                                <div class="book-cover-large" style="background-image: url('${book.coverUrl}')"></div>
+                                <div class="book-meta">
+                                    <h1 class="book-title-large">${book.title}</h1>
+                                    <p class="book-author-large">${book.author}</p>
+                                    <span class="book-category-large">${book.category}</span>
+                                    <button class="like-btn ${isLiked ? 'liked' : ''}" 
+                                            onclick="BookManager.toggleSave('${book.id}')">
+                                        <svg class="svg-icon svg-icon-small">
+                                            <use href="#${isLiked ? 'heart-filled-icon' : 'heart-empty-icon'}"></use>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="book-pricing">
+                                <h3 class="pricing-header">${lang.buyTheEbook}</h3>
+                                <div class="pricing-row">
+                                    <span>${lang.listPrice}</span>
+                                    <span>${book.listPrice}</span>
+                                </div>
+                                <div class="pricing-row">
+                                    <span>${lang.yourPrice}</span>
+                                    <span>${book.yourPrice}</span>
+                                </div>
+                            </div>
+
+                            <div class="book-actions">
+                                ${book.isDownloadable ? `
+                                    <a href="${book.fileUrl}" 
+                                       class="action-btn btn-secondary" 
+                                       download="${book.title}.pdf">
+                                        <svg class="svg-icon svg-icon-small">
+                                            <use href="#download-icon"></use>
+                                        </svg>
+                                        ${lang.download}
+                                    </a>
+                                ` : ''}
+                                <button class="action-btn btn-primary" 
+                                        onclick="BookManager.openReader('${book.id}')">
                                     <svg class="svg-icon svg-icon-small">
-                                        <use href="#${isLiked ? 'heart-filled-icon' : 'heart-empty-icon'}"></use>
+                                        <use href="#book-icon"></use>
                                     </svg>
+                                    ${lang.read}
                                 </button>
                             </div>
-                        </div>
 
-                        <div class="book-pricing">
-                            <h3 class="pricing-header">${lang.buyTheEbook}</h3>
-                            <div class="pricing-row">
-                                <span>${lang.listPrice}</span>
-                                <span>${book.listPrice}</span>
-                            </div>
-                            <div class="pricing-row">
-                                <span>${lang.yourPrice}</span>
-                                <span>${book.yourPrice}</span>
+                            <div class="book-description">
+                                <h3 class="description-title">${lang.description}</h3>
+                                <p class="description-text">${book.description}</p>
                             </div>
                         </div>
-
-                        <div class="book-actions">
-                            ${book.isDownloadable ? `
-                                <a href="${book.fileUrl}" 
-                                   class="action-btn btn-secondary" 
-                                   download="${book.title}.pdf">
-                                    <svg class="svg-icon svg-icon-small">
-                                        <use href="#download-icon"></use>
-                                    </svg>
-                                    ${lang.download}
-                                </a>
-                            ` : ''}
-                            <button class="action-btn btn-primary" 
-                                    onclick="BookManager.openReader('${book.id}')">
-                                <svg class="svg-icon svg-icon-small">
-                                    <use href="#book-icon"></use>
-                                </svg>
-                                ${lang.read}
-                            </button>
-                        </div>
-
-                        <div class="book-description">
-                            <h3 class="description-title">${lang.description}</h3>
-                            <p class="description-text">${book.description}</p>
-                        </div>
-                    </div>
-                `;
+                    `;
+                }
             }
 
             static renderCategoryPage(categoryName) {
@@ -1906,8 +2283,8 @@
                     booksDB : 
                     booksDB.filter(book => book.category === decodedCategory);
 
-                document.getElementById('headerTitle').textContent = 
-                    decodedCategory === 'all' ? lang.categories : decodedCategory;
+                const headerTitle = LayoutManager.getHeaderTitle();
+                headerTitle.textContent = decodedCategory === 'all' ? lang.categories : decodedCategory;
 
                 return `
                     <div class="books-grid">
@@ -1930,137 +2307,148 @@
                         title = lang.seeAll;
                 }
 
-                document.getElementById('headerTitle').textContent = title;
+                const headerTitle = LayoutManager.getHeaderTitle();
+                headerTitle.textContent = title;
 
                 return `
                     <div class="books-grid">
-                        ${books.map((book, index) => this.renderBookCard(book, index * 0.05)).join('')}
-                    </div>
-                `;
-            }
-
-            static renderBookCard(book, animationDelay = 0) {
-                const isLiked = AppState.savedBooks.includes(book.id);
-                
-                return `
-                    <div class="book-card" onclick="Router.navigate('book', true, ['${book.id}'])" 
-                         style="animation-delay: ${animationDelay}s">
-                        <div class="book-cover" style="background-image: url('${book.coverUrl}')">
-                            <button class="like-btn ${isLiked ? 'liked' : ''}" 
-                                    onclick="event.stopPropagation(); BookManager.toggleSave('${book.id}')">
-                                <svg class="svg-icon svg-icon-small">
-                                    <use href="#${isLiked ? 'heart-filled-icon' : 'heart-empty-icon'}"></use>
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="book-info">
-                            <h3 class="book-title">${book.title}</h3>
-                            <p class="book-author">${book.author}</p>
-                            <p class="book-category">${book.category}</p>
-                            <div class="book-price">
-                                <span class="price-current">${book.yourPrice}</span>
-                                ${book.yourPrice !== book.listPrice ? `
-                                    <span class="price-original">${book.listPrice}</span>
-                                ` : ''}
+                        ${books.map((book, index) => this.renderBookCard(book, index * 0.05
+                        return `
+                            <div class="books-grid">
+                                ${books.map((book, index) => this.renderBookCard(book, index * 0.05)).join('')}
                             </div>
-                        </div>
-                    </div>
-                `;
-            }
-        }
-
-        // Book Manager
-        class BookManager {
-            static toggleSave(bookId) {
-                const index = AppState.savedBooks.indexOf(bookId);
-                
-                if (index === -1) {
-                    AppState.savedBooks.push(bookId);
-                } else {
-                    AppState.savedBooks.splice(index, 1);
-                }
-
-                localStorage.setItem('savedBooks', JSON.stringify(AppState.savedBooks));
-                
-                // Update all like buttons for this book
-                document.querySelectorAll(`[onclick*="${bookId}"]`).forEach(btn => {
-                    const isLiked = AppState.savedBooks.includes(bookId);
-                    btn.classList.toggle('liked', isLiked);
-                    const useElement = btn.querySelector('use');
-                    if (useElement) {
-                        useElement.setAttribute('href', `#${isLiked ? 'heart-filled-icon' : 'heart-empty-icon'}`);
+                        `;
                     }
-                });
 
-                // Re-render library page if currently viewing
-                if (AppState.currentRoute === 'library') {
-                    Router.renderPage('library');
-                }
-            }
-            
-            static async openReader(bookId) {
-                const book = booksDB.find(b => b.id === bookId);
-                if (!book) return;
-                
-                // Check if file exists before opening reader
-                const fileExists = await checkFileExists(book.fileUrl);
-                if (!fileExists) {
-                    alert(`Error: Book file "${book.fileUrl}" not found. Please make sure the PDF file exists in the correct location.`);
-                    return;
-                }
-                
-                const readerUrl = `reader.html?file=${encodeURIComponent(book.fileUrl)}&title=${encodeURIComponent(book.title)}`;
-                window.open(readerUrl, '_blank');
-            }
-        }
-
-        // Menu Modal
-        class MenuModal {
-            static init() {
-                const overlay = document.getElementById('menuOverlay');
-                const closeBtn = document.getElementById('closeMenuBtn');
-
-                overlay.addEventListener('click', (e) => {
-                    if (e.target === overlay) {
-                        this.hide();
+                    static renderBookCard(book, animationDelay = 0) {
+                        const isLiked = AppState.savedBooks.includes(book.id);
+                        
+                        return `
+                            <div class="book-card" onclick="Router.navigate('book', true, ['${book.id}'])" 
+                                 style="animation-delay: ${animationDelay}s">
+                                <div class="book-cover" style="background-image: url('${book.coverUrl}')">
+                                    <button class="like-btn ${isLiked ? 'liked' : ''}" 
+                                            onclick="event.stopPropagation(); BookManager.toggleSave('${book.id}')">
+                                        <svg class="svg-icon svg-icon-small">
+                                            <use href="#${isLiked ? 'heart-filled-icon' : 'heart-empty-icon'}"></use>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="book-info">
+                                    <h3 class="book-title">${book.title}</h3>
+                                    <p class="book-author">${book.author}</p>
+                                    <p class="book-category">${book.category}</p>
+                                    <div class="book-price">
+                                        <span class="price-current">${book.yourPrice}</span>
+                                        ${book.yourPrice !== book.listPrice ? `
+                                            <span class="price-original">${book.listPrice}</span>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
                     }
+                }
+                class BookManager {
+                    static toggleSave(bookId) {
+                        const index = AppState.savedBooks.indexOf(bookId);
+                        
+                        if (index === -1) {
+                            AppState.savedBooks.push(bookId);
+                        } else {
+                            AppState.savedBooks.splice(index, 1);
+                        }
+
+                        localStorage.setItem('savedBooks', JSON.stringify(AppState.savedBooks));
+                        
+                    
+                        document.querySelectorAll(`[onclick*="${bookId}"]`).forEach(btn => {
+                            const isLiked = AppState.savedBooks.includes(bookId);
+                            btn.classList.toggle('liked', isLiked);
+                            const useElement = btn.querySelector('use');
+                            if (useElement) {
+                                useElement.setAttribute('href', `#${isLiked ? 'heart-filled-icon' : 'heart-empty-icon'}`);
+                            }
+                        });
+
+                        // Re-render library page if currently viewing
+                        if (AppState.currentRoute === 'library') {
+                            Router.renderPage('library');
+                        }
+                    }
+                    
+                    static async openReader(bookId) {
+                        const book = booksDB.find(b => b.id === bookId);
+                        if (!book) return;
+                        
+                        console.log('Opening reader for book:', book.title, 'File:', book.fileUrl);
+                        
+                        // Check if file exists before opening reader
+                        const fileExists = await checkFileExists(book.fileUrl);
+                        if (!fileExists) {
+                            alert(`Error: Book file "${book.fileUrl}" not found. Please make sure the PDF file exists in the correct location.`);
+                            return;
+                        }
+                        
+                        const readerUrl = `reader.html?file=${encodeURIComponent(book.fileUrl)}&title=${encodeURIComponent(book.title)}`;
+                        window.open(readerUrl, '_blank', 'width=1200,height=800');
+                    }
+                }
+
+                // Menu Modal
+                class MenuModal {
+                    static init() {
+                        const overlay = document.getElementById('menuOverlay');
+                        const closeBtn = document.getElementById('closeMenuBtn');
+
+                        overlay.addEventListener('click', (e) => {
+                            if (e.target === overlay) {
+                                this.hide();
+                            }
+                        });
+
+                        closeBtn.addEventListener('click', () => this.hide());
+                    }
+
+                    static show() {
+                        const overlay = document.getElementById('menuOverlay');
+                        const modal = document.getElementById('menuModal');
+                        
+                        overlay.classList.add('active');
+                        modal.classList.add('active');
+                        
+                        // Navigate back to previous route
+                        history.back();
+                    }
+
+                    static hide() {
+                        const overlay = document.getElementById('menuOverlay');
+                        const modal = document.getElementById('menuModal');
+                        
+                        overlay.classList.remove('active');
+                        modal.classList.remove('active');
+                    }
+                }
+
+                // App Initialization
+                document.addEventListener('DOMContentLoaded', () => {
+                    // Initialize layout manager
+                    LayoutManager.init();
+                    
+                    // Initialize back buttons
+                    document.getElementById('backBtn').addEventListener('click', () => {
+                        window.history.back();
+                    });
+                    
+                    document.getElementById('backBtnMobile').addEventListener('click', () => {
+                        window.history.back();
+                    });
+
+                    // Initialize components
+                    LanguageManager.init();
+                    MenuModal.init();
+                    Router.init();
                 });
-
-                closeBtn.addEventListener('click', () => this.hide());
-            }
-
-            static show() {
-                const overlay = document.getElementById('menuOverlay');
-                const modal = document.getElementById('menuModal');
-                
-                overlay.classList.add('active');
-                modal.classList.add('active');
-                
-                // Navigate back to previous route
-                history.back();
-            }
-
-            static hide() {
-                const overlay = document.getElementById('menuOverlay');
-                const modal = document.getElementById('menuModal');
-                
-                overlay.classList.remove('active');
-                modal.classList.remove('active');
-            }
-        }
-
-        // App Initialization
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize back button
-            document.getElementById('backBtn').addEventListener('click', () => {
-                window.history.back();
-            });
-
-            // Initialize components
-            LanguageManager.init();
-            MenuModal.init();
-            Router.init();
-        });
-    </script>
-</body>
-</html>
+            </script>
+        </body>
+        </html>
