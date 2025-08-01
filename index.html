@@ -1676,62 +1676,48 @@
         </div>
     </div>
 
-    <!-- Database and Language Scripts -->
-    <script src="database.js"></script>
-    <script src="languages/en.js"></script>
-
     <script>
-        // Global App State
-        const AppState = {
-            currentRoute: 'home',
-            currentLanguage: 'en',
-            savedBooks: JSON.parse(localStorage.getItem('savedBooks') || '[]'),
-            searchQuery: '',
-            swiper: null,
-            isDesktop: window.innerWidth >= 1024
-        };
-
-        // Database (embedded for standalone version)
+        // Database and Language Data (Embedded)
         const booksDB = [
             {
                 id: 'whispering_kothi_001',
                 title: 'The Whispering Kothi',
                 author: 'Sandeep Biswal G',
                 tagline: 'A haunting tale that will keep you awake',
-                coverUrl: 'assets/covers/the_whispering_kothi_cover.jpg',
-                sliderImageUrl: 'assets/covers/the_whispering_kothi_slider.jpg',
+                coverUrl: 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+                sliderImageUrl: 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                 fileUrl: 'assets/books/the_whispering_kothi.pdf',
                 category: 'Horror',
                 isDownloadable: true,
                 isFeaturedInSlider: true,
                 listPrice: '99₹',
                 yourPrice: 'Free',
-                description: 'In the heart of a forgotten town stands a dilapidated mansion, the Kothi, which holds a chilling secret. Locals speak of whispers that echo through its empty halls at night, luring the curious to their doom. When a group of paranormal investigators decides to uncover the truth, they find themselves trapped in a nightmare woven from the mansion\'s dark past.'
+                description: 'In the heart of a forgotten town stands a dilapidated mansion, the Kothi, which holds a chilling secret. Locals speak of whispers that echo through its empty halls at night, luring the curious to their doom.'
             },
             {
                 id: 'unknown_camp_002',
                 title: 'An Unknown Camp',
                 author: 'Sandeep Biswal G',
                 tagline: 'Mystery awaits in the wilderness',
-                coverUrl: 'assets/covers/unknown_camp_cover.jpg',
-                sliderImageUrl: 'assets/covers/unknown_camp_slider.jpg',
+                coverUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+                sliderImageUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                 fileUrl: 'assets/books/an_unknown_camp.pdf',
                 category: 'Thriller',
                 isDownloadable: true,
                 isFeaturedInSlider: true,
                 listPrice: '109₹',
                 yourPrice: 'Free',
-                description: 'Deep in the wilderness, a group of hikers stumbles upon an abandoned campsite that shouldn\'t exist on any map. As they investigate, they realize they\'ve walked into something far more sinister than they could have imagined. Time is running out, and escape seems impossible.'
+                description: 'Deep in the wilderness, a group of hikers stumbles upon an abandoned campsite that shouldn\'t exist on any map. As they investigate, they realize they\'ve walked into something far more sinister.'
             },
             {
                 id: 'space_odyssey_003',
                 title: 'Cosmic Journey',
                 author: 'Alex Johnson',
                 tagline: 'Explore the infinite cosmos',
-                coverUrl: 'assets/covers/cosmic_journey_cover.jpg',
-                sliderImageUrl: 'assets/covers/cosmic_journey_slider.jpg',
+                coverUrl: 'https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+                sliderImageUrl: 'https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                 fileUrl: 'assets/books/cosmic_journey.pdf',
-                category: 'Science fiction',
+                category: 'Science Fiction',
                 isDownloadable: false,
                 isFeaturedInSlider: false,
                 listPrice: '149₹',
@@ -1743,8 +1729,8 @@
                 title: 'Little Adventures',
                 author: 'Emma Wilson',
                 tagline: 'Fun stories for curious minds',
-                coverUrl: 'assets/covers/little_adventures_cover.jpg',
-                sliderImageUrl: 'assets/covers/little_adventures_slider.jpg',
+                coverUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+                sliderImageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                 fileUrl: 'assets/books/little_adventures.pdf',
                 category: 'Kids',
                 isDownloadable: true,
@@ -1758,27 +1744,27 @@
         const categoriesDB = [
             {
                 name: 'Thriller',
-                iconUrl: 'assets/covers/category_thriller_icon.jpg'
+                iconUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
             },
             {
-                name: 'Science fiction',
-                iconUrl: 'assets/covers/category_scifi_icon.jpg'
+                name: 'Science Fiction',
+                iconUrl: 'https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
             },
             {
                 name: 'Horror',
-                iconUrl: 'assets/covers/category_horror_icon.jpg'
+                iconUrl: 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
             },
             {
                 name: 'Kids',
-                iconUrl: 'assets/covers/category_kids_icon.jpg'
+                iconUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
             },
             {
                 name: 'Romance',
-                iconUrl: 'assets/covers/category_romance_icon.jpg'
+                iconUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
             }
         ];
 
-        // Language data (embedded)
+        // Language data
         const lang = {
             // Header & Navigation
             appName: 'Mo Bahi',
@@ -1818,16 +1804,6 @@
             privacy: 'Privacy Policy',
             terms: 'Terms of Service',
             
-            // Languages
-            english: 'English',
-            odia: 'ओड़िया',
-            sanskrit: 'संस्कृत',
-            tamil: 'தமிழ்',
-            telugu: 'తెలుగు',
-            kannada: 'ಕನ್ನಡ',
-            malayalam: 'മലയാളം',
-            hindi: 'हिन्दी',
-            
             // Apps
             myOdiaGames: 'My Odia Games',
             sbCall: 'SB Call',
@@ -1837,6 +1813,16 @@
             free: 'Free',
             loading: 'Loading...',
             error: 'Something went wrong'
+        };
+
+        // Global App State
+        const AppState = {
+            currentRoute: 'home',
+            currentLanguage: 'en',
+            savedBooks: JSON.parse(localStorage.getItem('savedBooks') || '[]'),
+            searchQuery: '',
+            swiper: null,
+            isDesktop: window.innerWidth >= 1024
         };
 
         // Utility function to check if file exists
@@ -1928,13 +1914,13 @@
         class LanguageManager {
             static availableLanguages = {
                 'en': 'English',
+                'hi': 'हिन्दी',
                 'od': 'ओड़िया',
                 'sa': 'संस्कृत',
                 'ta': 'தமிழ்',
                 'te': 'తెలుగు',
                 'kn': 'ಕನ್ನಡ',
-                'ml': 'മലയാളം',
-                'hi': 'हिन्दी'
+                'ml': 'മലയാളം'
             };
 
             static updateUI() {
@@ -1978,7 +1964,7 @@
                 languageGrid.innerHTML = Object.entries(this.availableLanguages)
                     .map(([code, name]) => `
                         <button class="language-btn ${code === AppState.currentLanguage ? 'active' : ''}" 
-                                onclick="alert('Language switching will be available with language files.')">
+                                onclick="alert('Language switching feature will be available with additional language files.')">
                             ${name}
                         </button>
                     `).join('');
@@ -2043,11 +2029,6 @@
                     item.classList.remove('active');
                 });
 
-                const activeTab = document.querySelector(`[data-tab="${route}"]`);
-                if (activeTab) {
-                    activeTab.classList.add('active');
-                }
-                
                 // Update all instances of the active tab
                 document.querySelectorAll(`[data-tab="${route}"]`).forEach(item => {
                     item.classList.add('active');
@@ -2071,11 +2052,10 @@
                         break;
                     case 'book':
                         if (params[0]) {
-                            // Show loading first, then render book details
                             container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><div class="loading-text">Loading book details...</div></div>';
                             setTimeout(() => {
                                 container.innerHTML = PageRenderer.renderBookDetailsPage(params[0]);
-                            }, 300); // Small delay for smooth transition
+                            }, 300);
                         }
                         break;
                     case 'category':
@@ -2097,29 +2077,37 @@
             }
 
             static initSwiper() {
-                setTimeout(() => {
-                    if (AppState.swiper) {
-                        AppState.swiper.destroy();
+                // Wait for Swiper library to load
+                const initSwiperWhenReady = () => {
+                    if (typeof Swiper !== 'undefined') {
+                        setTimeout(() => {
+                            if (AppState.swiper) {
+                                AppState.swiper.destroy();
+                            }
+                            
+                            AppState.swiper = new Swiper('.swiper', {
+                                slidesPerView: 1,
+                                spaceBetween: 0,
+                                autoplay: {
+                                    delay: 5000,
+                                    disableOnInteraction: false,
+                                },
+                                loop: true,
+                                pagination: {
+                                    el: '.swiper-pagination',
+                                    clickable: true,
+                                },
+                                effect: 'fade',
+                                fadeEffect: {
+                                    crossFade: true
+                                }
+                            });
+                        }, 100);
+                    } else {
+                        setTimeout(initSwiperWhenReady, 100);
                     }
-                    
-                    AppState.swiper = new Swiper('.swiper', {
-                        slidesPerView: 1,
-                        spaceBetween: 0,
-                        autoplay: {
-                            delay: 5000,
-                            disableOnInteraction: false,
-                        },
-                        loop: true,
-                        pagination: {
-                            el: '.swiper-pagination',
-                            clickable: true,
-                        },
-                        effect: 'fade',
-                        fadeEffect: {
-                            crossFade: true
-                        }
-                    });
-                }, 100);
+                };
+                initSwiperWhenReady();
             }
 
             static initSearch() {
@@ -2159,7 +2147,6 @@
                         resultsContainer.innerHTML = `
                             <div class="books-grid">
                                 ${results.map((book, index) => {
-                                    // Add staggered animation delay
                                     const delay = (index % 8) * 0.1;
                                     return PageRenderer.renderBookCard(book, delay);
                                 }).join('')}
@@ -2499,7 +2486,7 @@
                 // Check if file exists before opening reader
                 const fileExists = await checkFileExists(book.fileUrl);
                 if (!fileExists) {
-                    alert(`Error: Book file "${book.fileUrl}" not found. Please make sure the PDF file exists in the correct location.`);
+                    alert(`Error: Book file "${book.fileUrl}" not found. Please make sure the PDF file exists in the correct location.\n\nFor demo purposes, you can add your PDF files to the assets/books/ folder.`);
                     return;
                 }
                 
