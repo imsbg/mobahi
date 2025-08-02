@@ -5,14 +5,11 @@ const lang = {
     explore: 'Explore',
     library: 'Library',
     menu: 'Menu',
-    back: 'Back',
     categories: 'Categories',
     newArrivals: 'New Arrivals',
     seeAll: 'See All',
     readNow: 'Read Now',
     description: 'Description',
-    category: 'Category',
-    buyTheEbook: 'Buy the eBook',
     listPrice: 'List Price',
     yourPrice: 'Your price',
     download: 'Download',
@@ -29,9 +26,6 @@ const lang = {
     privacy: 'Privacy Policy',
     terms: 'Terms of Service',
     myOdiaGames: 'My Odia Games',
-    sbCall: 'SB Call',
-    sbSstvEncoder: 'SB SSTV Encoder',
     free: 'Free',
-    loading: 'Loading...',
-    error: 'Something went wrong'
+    // ... other translations
 };
