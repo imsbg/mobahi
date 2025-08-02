@@ -12,10 +12,6 @@
     <!-- Google Fonts for better typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- App Data and Default Language -->
-    <script src="database.js"></script>
-    <script src="languages/en.js"></script>
-
     <!-- YOUR ORIGINAL, BEAUTIFUL CSS -->
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -31,7 +27,7 @@
         .svg-icon { width: 20px; height: 20px; fill: currentColor; display: inline-block; vertical-align: middle; flex-shrink: 0; transition: var(--transition-fast); }
         header { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 428px; height: 70px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-light); display: flex; align-items: center; padding: 0 24px; z-index: 100; transition: var(--transition); }
         @media (min-width: 768px) { header { max-width: 768px; position: relative; top: auto; left: auto; transform: none; border-radius: var(--radius-lg) var(--radius-lg) 0 0; height: 80px; } body { padding-top: 24px; } }
-        @media (min-width: 1024px) { header { max-width: none; width: 100%; border-radius: 0; height: 90px; padding: 0 40px; } body { padding-top: 40px; } }
+        @media (min-width: 1024px) { header { max-width: none; width: 100%; border-radius: 0; height: 90px; padding: 0 40px; background: var(--background) !important; position:relative !important; transform: none !important; left:auto !important; top:auto !important; border-bottom: 1px solid var(--border); } body { padding-top: 40px; } }
         .header-content { width: 100%; display: flex; align-items: center; }
         .back-btn { background: linear-gradient(135deg, var(--surface) 0%, var(--surface-dark) 100%); border: none; cursor: pointer; padding: 14px; margin-right: 20px; border-radius: 14px; color: var(--text-primary); display: flex; align-items: center; justify-content: center; transition: var(--transition); }
         .back-btn:hover { transform: translateX(-3px) scale(1.05); }
@@ -54,7 +50,7 @@
         .slider-content { position: relative; z-index: 3; padding: 40px; } .slider-title { font-size: 28px; font-weight: 900; } .read-now-btn { background: var(--primary-color); color: white; border: none; padding: 16px 32px; border-radius: 14px; cursor: pointer; }
         .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid var(--border-light); } .section-title { font-size: 26px; font-weight: 900; }
         .categories-scroll { display: flex; gap: 24px; overflow-x: auto; scrollbar-width: none; } .categories-scroll::-webkit-scrollbar { display: none; } @media (min-width: 1024px) { .categories-scroll { display: grid; grid-template-columns: repeat(5, 1fr); gap: 40px; } }
-        .category-item { flex-shrink: 0; text-align: center; text-decoration: none; } .category-icon { width: 90px; height: 90px; border-radius: 50%; background: var(--surface); border: 3px solid var(--border); margin-bottom: 16px; } .category-name { font-size: 14px; font-weight: 700; }
+        .category-item { flex-shrink: 0; text-align: center; text-decoration: none; } .category-icon { width: 90px; height: 90px; border-radius: 50%; background-size: cover; background-position: center; border: 3px solid var(--border); margin-bottom: 16px; } .category-name { font-size: 14px; font-weight: 700; }
         .books-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; } @media (min-width: 640px) { .books-grid { grid-template-columns: repeat(3, 1fr); } } @media (min-width: 1024px) { .books-grid { grid-template-columns: repeat(4, 1fr); } }
         .book-card { text-decoration: none; color: var(--text-primary); border-radius: var(--radius); background: var(--background); box-shadow: var(--shadow); cursor: pointer; } .book-cover { width: 100%; aspect-ratio: 3/4; background-size: cover; background-position: center; } .book-info { padding: 24px; } .book-title { font-size: 16px; font-weight: 800; }
         .book-details { max-width: 800px; margin: 0 auto; } @media (min-width: 1024px) { .book-details { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; } } .book-hero { display: flex; flex-direction: column; align-items: center; gap: 32px; margin-bottom: 48px; } .book-cover-large { width: 220px; height: 330px; border-radius: var(--radius); background-size: cover; background-position: center; box-shadow: var(--shadow-xl); } .book-title-large { font-size: 36px; }
@@ -62,10 +58,11 @@
         .btn-primary { background: var(--primary-color); color: white; }
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.5s var(--ease-out-quart); backdrop-filter: blur(12px); } .modal-overlay.active { opacity: 1; pointer-events: all; }
         .menu-modal { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%); width: 100%; max-width: 428px; background: var(--background); border-radius: 28px 28px 0 0; padding: 40px; transition: transform 0.5s var(--bounce); z-index: 1001; } .menu-modal.active { transform: translateX(-50%) translateY(0); }
-        .close-btn { background: var(--surface); border: none; width: 48px; height: 48px; border-radius: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; float: right; }
-        .menu-sections { display: flex; flex-direction: column; gap: 20px; padding-top:20px; } .menu-section h3 { font-size: 24px; margin-bottom: 12px; }
-        .menu-items { display: flex; flex-direction: column; gap: 8px; } .menu-item { color: var(--text-secondary); text-decoration: none; font-size: 18px; }
-        .language-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; } .language-btn { padding: 15px; border: 2px solid var(--border); border-radius: 16px; cursor: pointer; font-size: 18px; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; } .modal-title { font-size: 32px; font-weight: 800; }
+        .close-btn { background: var(--surface); border: none; width: 48px; height: 48px; border-radius: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .menu-sections { display: flex; flex-direction: column; gap: 40px; } .menu-section h3 { font-size: 24px; margin-bottom: 24px; }
+        .menu-items { display: flex; flex-direction: column; gap: 12px; } .menu-item { color: var(--text-secondary); text-decoration: none; font-size: 18px; }
+        .language-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; } .language-btn { padding: 20px; border: 2px solid var(--border); border-radius: 16px; cursor: pointer; font-size: 18px; }
         .language-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
         .loading { text-align: center; padding: 100px; color: var(--text-secondary); } .hidden { display: none !important; }
     </style>
@@ -75,23 +72,25 @@
         <!-- ALL YOUR SVG ICONS FROM ORIGINAL FILE -->
         <svg style="display: none;"><defs><symbol id="home-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></symbol><symbol id="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></symbol><symbol id="library-icon" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></symbol><symbol id="menu-icon" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></symbol><symbol id="back-arrow-icon" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></symbol><symbol id="close-icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></symbol></defs></svg>
 
-        <!-- Desktop Layout ( initially hidden) -->
+        <!-- Desktop Layout -->
         <div class="desktop-layout" style="display:none;">
-            <div class="sidebar"><div class="sidebar-nav" id="sidebarNav"></div></div>
+            <div class="sidebar">
+                <div class="sidebar-nav" id="sidebarNav"></div>
+            </div>
             <div class="main-content">
                 <header><div class="header-content"><button class="back-btn hidden" id="backBtn"><svg class="svg-icon"><use href="#back-arrow-icon"></use></svg></button><h1 class="header-title" id="headerTitle"></h1></div></header>
                 <div class="content-area" id="app-container"></div>
             </div>
         </div>
 
-        <!-- Mobile/Tablet Layout (initially visible) -->
+        <!-- Mobile/Tablet Layout -->
         <div class="mobile-layout">
             <header><div class="header-content"><button class="back-btn hidden" id="backBtnMobile"><svg class="svg-icon"><use href="#back-arrow-icon"></use></svg></button><h1 class="header-title" id="headerTitleMobile"></h1></div></header>
             <main id="app-container-mobile"></main>
             <nav><div class="nav-content"><a href="#home" class="nav-item" data-tab="home"><div class="nav-icon"><svg class="svg-icon"><use href="#home-icon"></use></svg></div><span id="navHome"></span></a><a href="#explore" class="nav-item" data-tab="explore"><div class="nav-icon"><svg class="svg-icon"><use href="#search-icon"></use></svg></div><span id="navExplore"></span></a><a href="#library" class="nav-item" data-tab="library"><div class="nav-icon"><svg class="svg-icon"><use href="#library-icon"></use></svg></div><span id="navLibrary"></span></a><a href="#menu" class="nav-item" data-tab="menu"><div class="nav-icon"><svg class="svg-icon"><use href="#menu-icon"></use></svg></div><span id="navMenu"></span></a></div></nav>
         </div>
         
-        <!-- Menu Modal (with all sections restored) -->
+        <!-- Menu Modal -->
         <div class="modal-overlay" id="menuOverlay">
             <div class="menu-modal" id="menuModal">
                 <div class="modal-header"><h2 class="modal-title" id="menuTitle">Menu</h2><button class="close-btn" id="closeMenuBtn"><svg class="svg-icon"><use href="#close-icon"></use></svg></button></div>
@@ -100,86 +99,52 @@
         </div>
     </div>
     
-    <!-- THE FIXED, WORKING JAVASCRIPT -->
+    <!-- STABLE & WORKING JAVASCRIPT -->
     <script>
+    // --- EMBEDDED DATA (for single-file simplicity) ---
+    const booksDB = [ { id: 'whispering_kothi_001', title: 'The Whispering Kothi', author: 'Sandeep Biswal G', tagline: 'A haunting tale', coverUrl: 'assets/covers/the_whispering_kothi_cover.jpg', sliderImageUrl: 'assets/covers/the_whispering_kothi_slider.jpg', fileUrl: 'assets/books/the_whispering_kothi.pdf', category: 'Horror', isFeaturedInSlider: true, description: 'A chilling secret...' } ];
+    const categoriesDB = [ { name: 'Horror', iconUrl: 'assets/covers/category_horror_icon.jpg' } ];
+    let lang = { appName: 'Mo Bahi', home: 'Home', explore: 'Explore', library: 'Library', menu: 'Menu', readNow: 'Read Now', categories: 'Categories', newArrivals: 'New Arrivals', read: 'Read', language: 'Language', myApps: 'My Apps', myOdiaGames: 'My Odia Games', sbCall: 'SB Call', sbSstvEncoder: 'SB SSTV Encoder', followMe: 'Follow Me', pages: 'Pages', about: 'About', privacy: 'Privacy Policy', terms: 'Terms of Service' };
+    const lang_od = { appName: 'ମୋ ବହି', home: 'ହୋମ୍', explore: 'ଅନୁସନ୍ଧାନ', library: 'ଲାଇବ୍ରେରୀ', menu: 'ମେନୁ', readNow: 'ଏବେ ପଢନ୍ତୁ', categories: 'ବର୍ଗ', newArrivals: 'ନୂଆ ଆଗମନ', read: 'ପଢନ୍ତୁ', language: 'ଭାଷା', myApps: 'ମୋର ଆପ୍ସ', myOdiaGames: 'ମୋ ଓଡିଆ ଗେମ୍ସ', sbCall: 'ଏସବି କଲ୍', sbSstvEncoder: 'ଏସବି SSTV ଏନକୋଡର୍', followMe: 'ମୋତେ ଅନୁସରଣ କରନ୍ତୁ', pages: 'ପୃଷ୍ଠା', about: 'ଆମ ବିଷୟରେ', privacy: 'ଗୋପନୀୟତା ନୀତି', terms: 'ସେବା ସର୍ତ୍ତାବଳୀ' };
+
+    // --- APP STATE ---
     const AppState = { currentRoute: 'home', currentLanguage: 'en', swiper: null, isDesktop: window.innerWidth >= 1024, };
 
-    // --- RENDERER CLASS (Creates HTML from your original design) ---
+    // --- RENDERER CLASS ---
     class PageRenderer {
         static home() {
             const featuredBooks = booksDB.filter(book => book.isFeaturedInSlider);
-            return `
-                <div class="slider-section fade-in">
-                    <div class="swiper"><div class="swiper-wrapper">
-                        ${featuredBooks.map(book => `<div class="swiper-slide slider-slide" style="background-image: url('${book.sliderImageUrl}')"><div class="slider-overlay"></div><div class="slider-content"><div class="slider-title">${book.title}</div><button class="read-now-btn" onclick="BookManager.openReader('${book.id}')">${lang.readNow}</button></div></div>`).join('')}
-                    </div></div>
-                </div>
-                <div class="categories-section slide-in-right"><div class="section-header"><h2 class="section-title">${lang.categories}</h2></div><div class="categories-scroll">${categoriesDB.map(cat => `<a href="#category/${cat.name}" class="category-item"><div class="category-icon" style="background-image: url('${cat.iconUrl}')"></div><div class="category-name">${cat.name}</div></a>`).join('')}</div></div>
-                <div class="new-arrivals-section"><div class="section-header"><h2 class="section-title">${lang.newArrivals}</h2></div><div class="books-grid">${booksDB.map(book => this.bookCard(book)).join('')}</div></div>
-            `;
+            return `<div class="slider-section fade-in"><div class="swiper"><div class="swiper-wrapper">${featuredBooks.map(book => `<div class="swiper-slide slider-slide" style="background-image: url('${book.sliderImageUrl}')"><div class="slider-overlay"></div><div class="slider-content"><div class="slider-title">${book.title}</div><button class="read-now-btn" onclick="BookManager.openReader('${book.id}')">${lang.readNow}</button></div></div>`).join('')}</div></div></div><div class="categories-section slide-in-right"><div class="section-header"><h2 class="section-title">${lang.categories}</h2></div><div class="categories-scroll">${categoriesDB.map(cat => `<a href="#category/${cat.name}" class="category-item"><div class="category-icon" style="background-image: url('${cat.iconUrl}')"></div><div class="category-name">${cat.name}</div></a>`).join('')}</div></div><div class="new-arrivals-section"><div class="section-header"><h2 class="section-title">${lang.newArrivals}</h2></div><div class="books-grid">${booksDB.map(book => this.bookCard(book)).join('')}</div></div>`;
         }
-        static bookCard(book) {
-            return `<div class="book-card" onclick="window.location.hash='book/${book.id}'"><div class="book-cover" style="background-image: url('${book.coverUrl}')"></div><div class="book-info"><h3 class="book-title">${book.title}</h3></div></div>`;
-        }
-        static bookDetails(bookId) {
-            const book = booksDB.find(b => b.id === bookId);
-            if (!book) return '<h2>Book not found</h2>';
-            return `<div class="book-details"><div class="book-hero"><div class="book-cover-large" style="background-image: url('${book.coverUrl}')"></div><div><h1 class="book-title-large">${book.title}</h1><div class="book-actions"><button class="btn-primary" onclick="BookManager.openReader('${book.id}')">${lang.read}</button></div></div></div></div>`;
-        }
-        static menu() {
-            return `
-                <div class="menu-section"><h3 id="languageTitle">${lang.language}</h3><div class="language-grid" id="languageGrid"></div></div>
-                <div class="menu-section"><h3 id="myAppsTitle">${lang.myApps}</h3><div class="menu-items"><a href="#" class="menu-item" id="myOdiaGamesLink">${lang.myOdiaGames}</a><a href="#" class="menu-item" id="sbCallLink">${lang.sbCall}</a><a href="#" class="menu-item" id="sbSstvLink">${lang.sbSstvEncoder}</a></div></div>
-                <div class="menu-section"><h3 id="followMeTitle">${lang.followMe}</h3><div class="menu-items"><a href="https://instagram.com" class="menu-item" target="_blank">Instagram</a></div></div>
-                <div class="menu-section"><h3 id="pagesTitle">${lang.pages}</h3><div class="menu-items"><a href="#" class="menu-item" id="aboutLink">${lang.about}</a><a href="#" class="menu-item" id="privacyLink">${lang.privacy}</a><a href="#" class="menu-item" id="termsLink">${lang.terms}</a></div></div>
-            `;
-        }
+        static bookCard(book) { return `<div class="book-card" onclick="window.location.hash='book/${book.id}'"><div class="book-cover" style="background-image: url('${book.coverUrl}')"></div><div class="book-info"><h3 class="book-title">${book.title}</h3></div></div>`; }
+        static bookDetails(bookId) { const book = booksDB.find(b => b.id === bookId); if (!book) return '<h2>Book not found</h2>'; return `<div class="book-details"><div class="book-hero"><div class="book-cover-large" style="background-image: url('${book.coverUrl}')"></div><div><h1 class="book-title-large">${book.title}</h1><div class="book-actions"><button class="btn-primary" onclick="BookManager.openReader('${book.id}')">${lang.read}</button></div></div></div></div>`; }
+        static menu() { return `<div class="menu-section"><h3 id="languageTitle">${lang.language}</h3><div class="language-grid" id="languageGrid"></div></div><div class="menu-section"><h3 id="myAppsTitle">${lang.myApps}</h3><div class="menu-items"><a href="#" class="menu-item" id="myOdiaGamesLink">${lang.myOdiaGames}</a><a href="#" class="menu-item" id="sbCallLink">${lang.sbCall}</a><a href="#" class="menu-item" id="sbSstvLink">${lang.sbSstvEncoder}</a></div></div><div class="menu-section"><h3 id="followMeTitle">${lang.followMe}</h3><div class="menu-items"><a href="https://instagram.com" class="menu-item" target="_blank">Instagram</a></div></div><div class="menu-section"><h3 id="pagesTitle">${lang.pages}</h3><div class="menu-items"><a href="#" class="menu-item" id="aboutLink">${lang.about}</a><a href="#" class="menu-item" id="privacyLink">${lang.privacy}</a><a href="#" class="menu-item" id="termsLink">${lang.terms}</a></div></div>`; }
     }
+    
     // --- APP LOGIC CLASSES ---
     class LayoutManager {
         static init() { this.updateLayout(); window.addEventListener('resize', this.updateLayout); }
         static updateLayout() {
             const isNowDesktop = window.innerWidth >= 1024;
             if (isNowDesktop === AppState.isDesktop && document.body.dataset.layout) return;
-            AppState.isDesktop = isNowDesktop;
-            document.body.dataset.layout = isNowDesktop ? 'desktop' : 'mobile';
+            AppState.isDesktop = isNowDesktop; document.body.dataset.layout = isNowDesktop ? 'desktop' : 'mobile';
             document.querySelector('.desktop-layout').style.display = isNowDesktop ? 'flex' : 'none';
             document.querySelector('.mobile-layout').style.display = isNowDesktop ? 'none' : 'block';
             if (isNowDesktop) this.setupDesktopNavigation();
-            Router.handleRoute(true); // Force re-render on layout change
+            Router.handleRoute(true);
         }
         static getContainer() { return AppState.isDesktop ? document.getElementById('app-container') : document.getElementById('app-container-mobile'); }
         static getBackBtn() { return AppState.isDesktop ? document.getElementById('backBtn') : document.getElementById('backBtnMobile'); }
         static getHeaderTitle() { return AppState.isDesktop ? document.getElementById('headerTitle') : document.getElementById('headerTitleMobile'); }
-        static setupDesktopNavigation() {
-            const nav = document.getElementById('sidebarNav');
-            if (nav) nav.innerHTML = `<a href="#home" class="sidebar-nav-item" data-tab="home"><svg class="svg-icon"><use href="#home-icon"></use></svg><span>${lang.home}</span></a><a href="#explore" class="sidebar-nav-item" data-tab="explore"><svg class="svg-icon"><use href="#search-icon"></use></svg><span>${lang.explore}</span></a><a href="#library" class="sidebar-nav-item" data-tab="library"><svg class="svg-icon"><use href="#library-icon"></use></svg><span>${lang.library}</span></a><a href="#menu" class="sidebar-nav-item" data-tab="menu"><svg class="svg-icon"><use href="#menu-icon"></use></svg><span>${lang.menu}</span></a>`;
-        }
+        static setupDesktopNavigation() { const nav = document.getElementById('sidebarNav'); if (nav) nav.innerHTML = `<a href="#home" class="sidebar-nav-item" data-tab="home"><svg class="svg-icon"><use href="#home-icon"></use></svg><span>${lang.home}</span></a><a href="#explore" class="sidebar-nav-item" data-tab="explore"><svg class="svg-icon"><use href="#search-icon"></use></svg><span>${lang.explore}</span></a><a href="#library" class="sidebar-nav-item" data-tab="library"><svg class="svg-icon"><use href="#library-icon"></use></svg><span>${lang.library}</span></a><a href="#menu" class="sidebar-nav-item" data-tab="menu"><svg class="svg-icon"><use href="#menu-icon"></use></svg><span>${lang.menu}</span></a>`; }
     }
     class LanguageManager {
         static available = { 'en': 'English', 'od': 'ଓଡ଼ିଆ' };
-        static init(callback) { this.loadScript(localStorage.getItem('selectedLanguage') || 'en', callback); }
-        static switch(code) {
-            this.loadScript(code, () => {
-                localStorage.setItem('selectedLanguage', code);
-                this.updateUI();
-                Router.handleRoute(true);
-                MenuModal.hide();
-            });
-        }
-        static loadScript(code, callback) {
-            const script = document.createElement('script');
-            script.src = `languages/${code}.js`;
-            script.onload = () => { AppState.currentLanguage = code; callback(); };
-            script.onerror = () => { if (code !== 'en') this.loadScript('en', callback); };
-            document.head.appendChild(script);
-        }
+        static init() { const savedLang = localStorage.getItem('selectedLanguage') || 'en'; if (savedLang === 'od') lang = lang_od; AppState.currentLanguage = savedLang; }
+        static switch(code) { if (code === 'en') lang = { ...window.lang }; else if (code === 'od') lang = { ...window.lang_od }; AppState.currentLanguage = code; localStorage.setItem('selectedLanguage', code); this.updateUI(); Router.handleRoute(true); MenuModal.hide(); }
         static updateUI() {
-            const textContent = {'navHome': 'home','navExplore': 'explore','navLibrary': 'library','navMenu': 'menu','menuTitle': 'menu',};
-            Object.entries(textContent).forEach(([id, key]) => {
-                const el = document.getElementById(id);
-                if (el) el.textContent = lang[key];
-            });
+            const textContent = {'navHome':'home','navExplore':'explore','navLibrary':'library','navMenu':'menu','menuTitle':'menu'};
+            Object.entries(textContent).forEach(([id,key]) => { const el = document.getElementById(id); if (el) el.textContent = lang[key]; });
             document.getElementById('menuSectionsContainer').innerHTML = PageRenderer.menu();
             document.getElementById('languageGrid').innerHTML = Object.entries(this.available).map(([code, name]) => `<button class="language-btn ${code === AppState.currentLanguage ? 'active' : ''}" onclick="LanguageManager.switch('${code}')">${name}</button>`).join('');
             if(AppState.isDesktop) LayoutManager.setupDesktopNavigation();
@@ -188,75 +153,22 @@
     }
     class Router {
         static init() { window.addEventListener('hashchange', () => this.handleRoute()); this.handleRoute(true); }
-        static handleRoute(force = false) {
-            const hash = window.location.hash.slice(1) || 'home';
-            const [route, ...params] = hash.split('/');
-            if (!force && route === AppState.currentRoute) return;
-            AppState.currentRoute = route;
-            if (route === 'menu') { MenuModal.show(); } 
-            else { this.render(route, params); }
-        }
-        static render(route, params) {
-            this.updateHeader(route, params);
-            this.updateNav(route);
-            const container = LayoutManager.getContainer();
-            container.innerHTML = '<div class="loading">Loading...</div>';
-            setTimeout(() => {
-                let content = '';
-                if (route === 'home') content = PageRenderer.home();
-                else if (route === 'book') content = PageRenderer.bookDetails(params[0]);
-                else content = `<h2>${route} Page</h2>`;
-                container.innerHTML = `<div class="page-transition active">${content}</div>`;
-                if(route === 'home' && typeof Swiper !== 'undefined') {
-                    if (AppState.swiper) AppState.swiper.destroy();
-                    AppState.swiper = new Swiper('.swiper', { loop: true, autoplay: { delay: 5000 } });
-                }
-            }, 50);
-        }
-        static updateHeader(route, params) {
-            const titleEl = LayoutManager.getHeaderTitle();
-            const backBtn = LayoutManager.getBackBtn();
-            if(route === 'home') { titleEl.textContent = lang.appName; backBtn.classList.add('hidden'); }
-            else {
-                let title = route.charAt(0).toUpperCase() + route.slice(1);
-                if(route === 'book') {
-                    const book = booksDB.find(b=>b.id===params[0]);
-                    if(book) title = book.title;
-                }
-                titleEl.textContent = title;
-                backBtn.classList.remove('hidden');
-            }
-        }
+        static handleRoute(force = false) { const hash = window.location.hash.slice(1) || 'home'; const [route, ...params] = hash.split('/'); if (!force && route === AppState.currentRoute) return; AppState.currentRoute = route; if (route === 'menu') { MenuModal.show(); } else { this.render(route, params); } }
+        static render(route, params) { this.updateHeader(route, params); this.updateNav(route); const container = LayoutManager.getContainer(); container.innerHTML = '<div class="loading">Loading...</div>'; setTimeout(() => { let content = ''; if (route === 'home') content = PageRenderer.home(); else if (route === 'book') content = PageRenderer.bookDetails(params[0]); else content = `<h2>${route} Page</h2>`; container.innerHTML = `<div class="page-transition active">${content}</div>`; if(route === 'home' && typeof Swiper !== 'undefined') { if (AppState.swiper) AppState.swiper.destroy(); AppState.swiper = new Swiper('.swiper', { loop: true, autoplay: { delay: 5000 } }); } }, 50); }
+        static updateHeader(route, params) { const titleEl = LayoutManager.getHeaderTitle(); const backBtn = LayoutManager.getBackBtn(); if(route === 'home') { titleEl.textContent = lang.appName; backBtn.classList.add('hidden'); } else { let title = route.charAt(0).toUpperCase() + route.slice(1); if(route === 'book') { const book = booksDB.find(b=>b.id===params[0]); if(book) title = book.title; } titleEl.textContent = title; backBtn.classList.remove('hidden'); } }
         static updateNav(route) { document.querySelectorAll('.nav-item, .sidebar-nav-item').forEach(i => i.classList.toggle('active', i.dataset.tab === route)); }
     }
-    class BookManager {
-        static openReader(bookId) {
-            const book = booksDB.find(b => b.id === bookId);
-            if (!book) return;
-            window.open(`reader.html?file=${encodeURIComponent(book.fileUrl)}&title=${encodeURIComponent(book.title)}`, '_blank');
-        }
-    }
-    class MenuModal {
-        static init() {
-            document.getElementById('closeMenuBtn').addEventListener('click', this.hide);
-            document.getElementById('menuOverlay').addEventListener('click', (e) => { if(e.target.id==='menuOverlay') this.hide(); });
-        }
-        static show() { document.getElementById('menuOverlay').classList.add('active'); document.getElementById('menuModal').classList.add('active'); }
-        static hide() { document.getElementById('menuOverlay').classList.remove('active'); document.getElementById('menuModal').classList.remove('active'); }
-    }
+    class BookManager { static openReader(bookId) { const book = booksDB.find(b => b.id === bookId); if (!book) return; window.open(`reader.html?file=${encodeURIComponent(book.fileUrl)}&title=${encodeURIComponent(book.title)}`, '_blank'); } }
+    class MenuModal { static init() { document.getElementById('closeMenuBtn').addEventListener('click', this.hide); document.getElementById('menuOverlay').addEventListener('click', (e) => { if(e.target.id==='menuOverlay') this.hide(); }); } static show() { document.getElementById('menuOverlay').classList.add('active'); document.getElementById('menuModal').classList.add('active'); } static hide() { document.getElementById('menuOverlay').classList.remove('active'); document.getElementById('menuModal').classList.remove('active'); } }
 
     // --- APP INITIALIZATION ---
-    function main() {
+    document.addEventListener('DOMContentLoaded', () => {
+        LanguageManager.init();
         LayoutManager.init();
         MenuModal.init();
         LanguageManager.updateUI();
         Router.init();
         document.querySelectorAll('.back-btn').forEach(btn => btn.addEventListener('click', () => history.back()));
-        console.log("App Initialized Successfully!");
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        LanguageManager.init(main);
     });
     </script>
 </body>
