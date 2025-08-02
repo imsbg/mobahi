@@ -10,6 +10,8 @@ const lang = {
     seeAll: 'ସବୁ ଦେଖନ୍ତୁ',
     readNow: 'ଏବେ ପଢନ୍ତୁ',
     description: 'ବିବରଣୀ',
+    category: 'ବର୍ଗ',
+    buyTheEbook: 'ଇ-ବୁକ୍ କିଣନ୍ତୁ',
     listPrice: 'ସୂଚୀ ମୂଲ୍ୟ',
     yourPrice: 'ଆପଣଙ୍କ ମୂଲ୍ୟ',
     download: 'ଡାଉନଲୋଡ୍',
@@ -26,6 +28,9 @@ const lang = {
     privacy: 'ଗୋପନୀୟତା ନୀତି',
     terms: 'ସେବା ସର୍ତ୍ତାବଳୀ',
     myOdiaGames: 'ମୋ ଓଡିଆ ଗେମ୍ସ',
+    sbCall: 'ଏସବି କଲ୍',
+    sbSstvEncoder: 'ଏସବି SSTV ଏନକୋଡର୍',
     free: 'ମାଗଣା',
-    // ... other translations
+    loading: 'ଲୋଡ୍ ହେଉଛି...',
+    error: 'କିଛି ଭୁଲ୍ ହୋଇଗଲା'
 };
