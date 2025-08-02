@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Reader - Mo Bahi</title>
     
-    <!-- DearFlip Dependencies -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dearflip@1.2.23/css/dearflip.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/dearflip@1.2.23/js/dearflip.min.js"></script>
+    <!-- DearFlip Dependencies (jQuery and DearFlip library) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dearflip/dist/css/dflip.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/dearflip/dist/js/dflip.min.js"></script>
     
     <style>
         * {
@@ -19,7 +19,7 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #1a1a1a;
+            background-color: #2c2c2c;
             color: white;
             overflow: hidden;
             height: 100vh;
@@ -39,12 +39,13 @@
             left: 0;
             right: 0;
             height: 60px;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
+            background: rgba(26, 26, 26, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             display: flex;
             align-items: center;
             padding: 0 20px;
-            z-index: 1000;
+            z-index: 10001; /* Must be higher than DearFlip UI */
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
@@ -77,39 +78,35 @@
         }
         
         .reader-container {
-            position: absolute;
-            top: 60px;
-            left: 0;
-            right: 0;
-            bottom: 0;
             width: 100%;
-            height: calc(100vh - 60px);
-            background: #1a1a1a;
+            height: 100vh;
+            background: #2c2c2c;
         }
         
-        #flipbook {
+        /* This is the target for the flipbook */
+        ._df_book-container {
             width: 100%;
             height: 100%;
-            background: #1a1a1a;
         }
         
-        .loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            z-index: 100;
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: #2c2c2c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10002;
+            transition: opacity 0.5s ease;
         }
-        
+
         .loading-spinner {
             width: 50px;
             height: 50px;
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top: 4px solid #2563eb;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top: 4px solid #3b82f6;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
         }
         
         @keyframes spin {
@@ -117,71 +114,38 @@
             100% { transform: rotate(360deg); }
         }
         
-        .error {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .error-message {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none; /* Initially hidden */
+            align-items: center;
+            justify-content: center;
+            z-index: 10003;
+            padding: 20px;
+        }
+        
+        .error-content {
             text-align: center;
-            color: #ff6b6b;
-            background: rgba(0, 0, 0, 0.8);
+            color: #ffdddd;
+            background: #1a1a1a;
             padding: 40px;
             border-radius: 12px;
             border: 1px solid rgba(255, 107, 107, 0.3);
-            max-width: 400px;
+            max-width: 450px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         
-        .error-icon {
-            margin-bottom: 20px;
-            color: #ff6b6b;
-        }
-        
-        .error h2 {
+        .error-content h2 {
             margin-bottom: 12px;
-            font-size: 20px;
+            font-size: 22px;
+            color: #ff8a8a;
         }
         
-        .error p {
-            font-size: 14px;
-            opacity: 0.8;
-            line-height: 1.5;
-        }
-        
-        /* Mobile optimizations */
-        @media (max-width: 768px) {
-            .reader-header {
-                height: 50px;
-                padding: 0 16px;
-            }
-            
-            .reader-container {
-                top: 50px;
-                height: calc(100vh - 50px);
-            }
-            
-            .book-title {
-                font-size: 16px;
-            }
-        }
-        
-        /* DearFlip customizations */
-        .df-ui {
-            background: #1a1a1a !important;
-        }
-        
-        .df-ui .df-ui-btn {
-            background: rgba(255, 255, 255, 0.1) !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            color: white !important;
-        }
-        
-        .df-ui .df-ui-btn:hover {
-            background: rgba(255, 255, 255, 0.2) !important;
-        }
-        
-        .df-ui-bottom {
-            background: rgba(0, 0, 0, 0.8) !important;
-            backdrop-filter: blur(10px);
+        .error-content p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -192,205 +156,113 @@
             <symbol id="close-icon" viewBox="0 0 24 24">
                 <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
             </symbol>
-            
-            <symbol id="book-error-icon" viewBox="0 0 24 24">
-                <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 2 2h12c1.11 0 2-.9 2-2V4c0-1.1-.89-2-2-2zm-1 14H7v-2h10v2zm0-4H7V8h10v4z"/>
-            </symbol>
         </defs>
     </svg>
 
-    <div class="reader-header">
-        <button class="close-btn" onclick="closeReader()" title="Close Reader">
-            <svg class="svg-icon">
-                <use href="#close-icon"></use>
-            </svg>
+    <header class="reader-header">
+        <button class="close-btn" onclick="window.close()" title="Close Reader">
+            <svg class="svg-icon"><use href="#close-icon"></use></svg>
         </button>
         <h1 class="book-title" id="bookTitle">Loading...</h1>
-    </div>
+    </header>
     
     <div class="reader-container">
-        <div class="loading" id="loadingIndicator">
+        <!-- This is the container where DearFlip will render the book -->
+        <div class="_df_book-container"></div>
+
+        <!-- Loading and Error States -->
+        <div class="loading-overlay" id="loadingIndicator">
             <div class="loading-spinner"></div>
-            <p>Loading book...</p>
         </div>
-        
-        <div class="error" id="errorMessage" style="display: none;">
-            <div class="error-icon">
-                <svg class="svg-icon" style="width: 48px; height: 48px;">
-                    <use href="#book-error-icon"></use>
-                </svg>
+        <div class="error-message" id="errorMessage">
+            <div class="error-content">
+                <h2>Unable to Load Book</h2>
+                <p id="errorText">The file might be missing or corrupt. Please ensure the path is correct in `database.js`.</p>
             </div>
-            <h2>Unable to load book</h2>
-            <p id="errorText">Please check if the file exists and try again.</p>
         </div>
-        
-        <div id="flipbook" style="display: none;"></div>
     </div>
 
     <script>
-        let flipbookInstance = null;
-
-        function closeReader() {
-            if (window.opener) {
-                window.close();
-            } else {
-                window.history.back();
-            }
-        }
-
         class BookReader {
             constructor() {
-                this.bookUrl = '';
-                this.bookTitle = '';
+                this.bookUrl = null;
+                this.bookTitle = 'Book Reader';
+                this.flipbookInstance = null;
+                
+                this.dom = {
+                    title: document.getElementById('bookTitle'),
+                    loading: document.getElementById('loadingIndicator'),
+                    error: document.getElementById('errorMessage'),
+                    errorText: document.getElementById('errorText')
+                };
+
                 this.init();
             }
 
             init() {
                 this.parseUrlParams();
-                this.setupEventListeners();
-                this.loadBook();
+                
+                // If jQuery or DFlip is not loaded, we can't continue.
+                if (typeof $ === 'undefined' || typeof $.fn.dFlip === 'undefined') {
+                    this.showError('Essential libraries failed to load. Please check your internet connection.');
+                    return;
+                }
+                
+                // If there's no book URL, show an error.
+                if (!this.bookUrl) {
+                    this.showError('No book file was specified. Please check the link you used to open the reader.');
+                    return;
+                }
+                
+                this.initializeFlipbook();
             }
 
             parseUrlParams() {
                 const urlParams = new URLSearchParams(window.location.search);
-                this.bookUrl = urlParams.get('file') || '';
-                this.bookTitle = urlParams.get('title') || 'Book Reader';
-                
-                // Update title
-                document.getElementById('bookTitle').textContent = this.bookTitle;
+                this.bookUrl = urlParams.get('file');
+                this.bookTitle = urlParams.get('title') || 'Untitled Book';
+
+                this.dom.title.textContent = this.bookTitle;
                 document.title = `${this.bookTitle} - Mo Bahi Reader`;
             }
 
-            setupEventListeners() {
-                // Handle escape key to close
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape') {
-                        closeReader();
-                    }
-                });
-
-                // Handle window resize
-                window.addEventListener('resize', () => {
-                    if (flipbookInstance) {
-                        flipbookInstance.resize();
-                    }
-                });
-            }
-
-            async loadBook() {
-                if (!this.bookUrl) {
-                    this.showError('No book file specified in URL parameters.');
-                    return;
-                }
-
-                console.log('Loading book from:', this.bookUrl);
-
-                try {
-                    // Try to check if file exists
-                    const response = await fetch(this.bookUrl, { method: 'HEAD' });
-                    if (!response.ok) {
-                        throw new Error(`File not found: ${response.status} ${response.statusText}`);
-                    }
-
-                    this.initFlipbook();
-                } catch (error) {
-                    console.error('Error loading book:', error);
-                    this.showError(`Could not load the book file: ${this.bookUrl}\n\nError: ${error.message}`);
-                }
-            }
-
-            initFlipbook() {
-                try {
-                    console.log('Initializing flipbook with URL:', this.bookUrl);
-                    
-                    // Hide loading indicator
-                    document.getElementById('loadingIndicator').style.display = 'none';
-                    document.getElementById('flipbook').style.display = 'block';
-
-                    // Initialize DearFlip
-                    flipbookInstance = $("#flipbook").dearflip({
-                        source: this.bookUrl,
-                        height: "100%",
-                        backgroundColor: "#1a1a1a",
-                        backgroundImage: "",
-                        scrollWheel: true,
-                        zoomRatio: 1.5,
-                        maxTextureSize: 2048,
-                        hard: "none",
-                        pageMode: "auto",
-                        singlePageMode: false,
-                        pageSize: "auto",
-                        autoPlay: false,
-                        autoPlayDuration: 5000,
-                        autoPlayStart: false,
-                        mockupjQuery: true,
-                        downloadable: true,
-                        printable: true,
-                        searchable: true,
-                        thumbElement: "df-thumb",
-                        direction: "ltr",
-                        sound: false,
-                        flipSound: "",
-                        webgl: true,
-                        is3D: true,
-                        texture: true,
-                        onReady: () => {
-                            console.log('Book loaded successfully');
-                            this.onBookReady();
-                        },
-                        onError: (error) => {
-                            console.error('DearFlip error:', error);
-                            this.showError('Failed to display the book. The PDF file might be corrupted or unsupported.');
-                        }
-                    });
-
-                } catch (error) {
-                    console.error('Error initializing flipbook:', error);
-                    this.showError('Failed to initialize book reader. Please make sure the PDF file is valid.');
-                }
-            }
-
-            onBookReady() {
-                console.log('Book reader is ready');
+            initializeFlipbook() {
+                console.log(`Initializing flipbook with PDF: ${this.bookUrl}`);
                 
-                // Additional setup after book loads
-                setTimeout(() => {
-                    // Ensure proper sizing
-                    if (flipbookInstance) {
-                        flipbookInstance.resize();
+                this.flipbookInstance = $('._df_book-container').dFlip({
+                    source: this.bookUrl,
+                    height: '100%', // Fills the container
+                    webgl: true,     // Use 3D rendering for best effect
+                    hard: 'cover',   // Makes the first and last page hard covers
+                    backgroundColor: '#2c2c2c',
+                    
+                    // Event handlers to manage loading/error states
+                    onReady: () => {
+                        console.log('Book is ready and rendered.');
+                        this.dom.loading.style.opacity = '0';
+                        // Hide it completely after the fade-out transition
+                        setTimeout(() => {
+                           this.dom.loading.style.display = 'none';
+                        }, 500);
+                    },
+                    onError: (error) => {
+                        console.error('dFlip Error:', error);
+                        this.showError('Failed to load the book. The file may be missing, corrupt, or blocked by the browser.');
                     }
-                }, 500);
+                });
             }
 
             showError(message) {
-                document.getElementById('loadingIndicator').style.display = 'none';
-                document.getElementById('flipbook').style.display = 'none';
-                
-                const errorElement = document.getElementById('errorMessage');
-                const errorText = document.getElementById('errorText');
-                
-                errorElement.style.display = 'block';
-                errorText.textContent = message;
+                this.dom.loading.style.display = 'none';
+                this.dom.error.style.display = 'flex';
+                this.dom.errorText.textContent = message;
             }
         }
 
-        // Check if jQuery is loaded, then initialize
-        function initializeReader() {
-            if (typeof $ !== 'undefined') {
-                window.bookReader = new BookReader();
-            } else {
-                document.getElementById('loadingIndicator').style.display = 'none';
-                document.getElementById('errorMessage').style.display = 'block';
-                document.getElementById('errorText').textContent = 'Failed to load required libraries. Please check your internet connection.';
-            }
-        }
-
-        // Wait for DOM and jQuery to be ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeReader);
-        } else {
-            initializeReader();
-        }
+        // Initialize the reader once the DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            window.reader = new BookReader();
+        });
     </script>
 </body>
 </html>
