@@ -5,264 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Reader - Mo Bahi</title>
     
-    <!-- DearFlip Dependencies (jQuery and DearFlip library) -->
+    <!-- DearFlip Dependencies -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dearflip/dist/css/dflip.min.css">
     <script src="https://cdn.jsdelivr.net/npm/dearflip/dist/js/dflip.min.js"></script>
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #2c2c2c;
-            color: white;
-            overflow: hidden;
-            height: 100vh;
-        }
-        
-        .svg-icon {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-            display: inline-block;
-            vertical-align: middle;
-        }
-        
-        .reader-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
-            background: rgba(26, 26, 26, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            z-index: 10001; /* Must be higher than DearFlip UI */
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .close-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 8px;
-            margin-right: 16px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-        
-        .book-title {
-            font-size: 18px;
-            font-weight: 600;
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .reader-container {
-            width: 100%;
-            height: 100vh;
-            background: #2c2c2c;
-        }
-        
-        /* This is the target for the flipbook */
-        ._df_book-container {
-            width: 100%;
-            height: 100%;
-        }
-        
-        .loading-overlay {
-            position: fixed;
-            inset: 0;
-            background: #2c2c2c;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10002;
-            transition: opacity 0.5s ease;
-        }
-
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(255, 255, 255, 0.2);
-            border-top: 4px solid #3b82f6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .error-message {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            display: none; /* Initially hidden */
-            align-items: center;
-            justify-content: center;
-            z-index: 10003;
-            padding: 20px;
-        }
-        
-        .error-content {
-            text-align: center;
-            color: #ffdddd;
-            background: #1a1a1a;
-            padding: 40px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 107, 107, 0.3);
-            max-width: 450px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        
-        .error-content h2 {
-            margin-bottom: 12px;
-            font-size: 22px;
-            color: #ff8a8a;
-        }
-        
-        .error-content p {
-            font-size: 16px;
-            opacity: 0.9;
-            line-height: 1.6;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #2c2c2c; color: white; overflow: hidden; height: 100vh; }
+        .svg-icon { width: 20px; height: 20px; fill: currentColor; display: inline-block; vertical-align: middle; }
+        .reader-header { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: rgba(26, 26, 26, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; align-items: center; padding: 0 20px; z-index: 10001; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .close-btn { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; cursor: pointer; padding: 10px; border-radius: 8px; margin-right: 16px; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .close-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.05); }
+        .book-title { font-size: 18px; font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .reader-container { width: 100%; height: 100vh; background: #2c2c2c; }
+        ._df_book-container { width: 100%; height: 100%; }
+        .loading-overlay { position: fixed; inset: 0; background: #2c2c2c; display: flex; align-items: center; justify-content: center; z-index: 10002; transition: opacity 0.5s ease; }
+        .loading-spinner { width: 50px; height: 50px; border: 4px solid rgba(255, 255, 255, 0.2); border-top: 4px solid #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .error-message { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); display: none; align-items: center; justify-content: center; z-index: 10003; padding: 20px; }
+        .error-content { text-align: center; color: #ffdddd; background: #1a1a1a; padding: 40px; border-radius: 12px; border: 1px solid rgba(255, 107, 107, 0.3); max-width: 450px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .error-content h2 { margin-bottom: 12px; font-size: 22px; color: #ff8a8a; }
+        .error-content p { font-size: 16px; opacity: 0.9; line-height: 1.6; }
     </style>
 </head>
 <body>
-    <!-- SVG Icon Definitions -->
-    <svg style="display: none;">
-        <defs>
-            <symbol id="close-icon" viewBox="0 0 24 24">
-                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-            </symbol>
-        </defs>
-    </svg>
-
+    <svg style="display: none;"><defs><symbol id="close-icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></symbol></defs></svg>
     <header class="reader-header">
-        <button class="close-btn" onclick="window.close()" title="Close Reader">
-            <svg class="svg-icon"><use href="#close-icon"></use></svg>
-        </button>
+        <button class="close-btn" onclick="window.close()" title="Close Reader"><svg class="svg-icon"><use href="#close-icon"></use></svg></button>
         <h1 class="book-title" id="bookTitle">Loading...</h1>
     </header>
-    
     <div class="reader-container">
-        <!-- This is the container where DearFlip will render the book -->
         <div class="_df_book-container"></div>
-
-        <!-- Loading and Error States -->
-        <div class="loading-overlay" id="loadingIndicator">
-            <div class="loading-spinner"></div>
-        </div>
-        <div class="error-message" id="errorMessage">
-            <div class="error-content">
-                <h2>Unable to Load Book</h2>
-                <p id="errorText">The file might be missing or corrupt. Please ensure the path is correct in `database.js`.</p>
-            </div>
-        </div>
+        <div class="loading-overlay" id="loadingIndicator"><div class="loading-spinner"></div></div>
+        <div class="error-message" id="errorMessage"><div class="error-content"><h2>Unable to Load Book</h2><p id="errorText">The file might be missing or corrupt.</p></div></div>
     </div>
-
     <script>
         class BookReader {
-            constructor() {
-                this.bookUrl = null;
-                this.bookTitle = 'Book Reader';
-                this.flipbookInstance = null;
-                
-                this.dom = {
-                    title: document.getElementById('bookTitle'),
-                    loading: document.getElementById('loadingIndicator'),
-                    error: document.getElementById('errorMessage'),
-                    errorText: document.getElementById('errorText')
-                };
-
-                this.init();
-            }
-
+            constructor() { this.init(); }
             init() {
-                this.parseUrlParams();
-                
-                // If jQuery or DFlip is not loaded, we can't continue.
-                if (typeof $ === 'undefined' || typeof $.fn.dFlip === 'undefined') {
-                    this.showError('Essential libraries failed to load. Please check your internet connection.');
-                    return;
-                }
-                
-                // If there's no book URL, show an error.
-                if (!this.bookUrl) {
-                    this.showError('No book file was specified. Please check the link you used to open the reader.');
-                    return;
-                }
-                
-                this.initializeFlipbook();
-            }
-
-            parseUrlParams() {
                 const urlParams = new URLSearchParams(window.location.search);
-                this.bookUrl = urlParams.get('file');
-                this.bookTitle = urlParams.get('title') || 'Untitled Book';
+                const bookUrl = urlParams.get('file');
+                const bookTitle = urlParams.get('title') || 'Untitled Book';
+                document.getElementById('bookTitle').textContent = bookTitle;
+                document.title = `${bookTitle} - Mo Bahi Reader`;
 
-                this.dom.title.textContent = this.bookTitle;
-                document.title = `${this.bookTitle} - Mo Bahi Reader`;
-            }
-
-            initializeFlipbook() {
-                console.log(`Initializing flipbook with PDF: ${this.bookUrl}`);
-                
-                this.flipbookInstance = $('._df_book-container').dFlip({
-                    source: this.bookUrl,
-                    height: '100%', // Fills the container
-                    webgl: true,     // Use 3D rendering for best effect
-                    hard: 'cover',   // Makes the first and last page hard covers
-                    backgroundColor: '#2c2c2c',
-                    
-                    // Event handlers to manage loading/error states
-                    onReady: () => {
-                        console.log('Book is ready and rendered.');
-                        this.dom.loading.style.opacity = '0';
-                        // Hide it completely after the fade-out transition
-                        setTimeout(() => {
-                           this.dom.loading.style.display = 'none';
-                        }, 500);
-                    },
-                    onError: (error) => {
-                        console.error('dFlip Error:', error);
-                        this.showError('Failed to load the book. The file may be missing, corrupt, or blocked by the browser.');
-                    }
+                if (!bookUrl || typeof $ === 'undefined' || typeof $.fn.dFlip === 'undefined') { this.showError('File not specified or required libraries failed to load.'); return; }
+                $('._df_book-container').dFlip({
+                    source: bookUrl, height: '100%', webgl: true,
+                    onReady: () => { document.getElementById('loadingIndicator').style.display = 'none'; },
+                    onError: (error) => { this.showError('Failed to load the book. The file may be missing or corrupt.'); }
                 });
             }
-
-            showError(message) {
-                this.dom.loading.style.display = 'none';
-                this.dom.error.style.display = 'flex';
-                this.dom.errorText.textContent = message;
-            }
+            showError(message) { document.getElementById('loadingIndicator').style.display = 'none'; document.getElementById('errorText').textContent = message; document.getElementById('errorMessage').style.display = 'flex'; }
         }
-
-        // Initialize the reader once the DOM is ready
-        document.addEventListener('DOMContentLoaded', () => {
-            window.reader = new BookReader();
-        });
+        document.addEventListener('DOMContentLoaded', () => new BookReader());
     </script>
 </body>
 </html>
