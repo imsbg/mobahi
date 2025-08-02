@@ -10,6 +10,8 @@ const lang = {
     seeAll: 'See All',
     readNow: 'Read Now',
     description: 'Description',
+    category: 'Category',
+    buyTheEbook: 'Buy the eBook',
     listPrice: 'List Price',
     yourPrice: 'Your price',
     download: 'Download',
@@ -26,6 +28,9 @@ const lang = {
     privacy: 'Privacy Policy',
     terms: 'Terms of Service',
     myOdiaGames: 'My Odia Games',
+    sbCall: 'SB Call',
+    sbSstvEncoder: 'SB SSTV Encoder',
     free: 'Free',
-    // ... other translations
+    loading: 'Loading...',
+    error: 'Something went wrong'
 };
